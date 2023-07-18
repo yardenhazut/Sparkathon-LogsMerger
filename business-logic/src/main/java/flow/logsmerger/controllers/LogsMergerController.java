@@ -17,13 +17,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
 @RequestMapping("/flow-visualization")
 public class LogsMergerController {
+
+    @Autowired
+    private FileConversionService fileConversionService;
 
     @Autowired
     private LogsMergerService logsMergerService;
@@ -49,6 +57,26 @@ public class LogsMergerController {
         return null;
     }
 
+    @PostMapping("/save")
+    public ResponseEntity<?> convertData(@RequestBody SaveRequest saveRequest) {
+        try {
+            List<String> data = saveRequest.getLogRows().stream().map(i -> i.getLogGroup() + " | " + i.getMessage()).collect(Collectors.toList());
+            if (Formats.PDF.toString().equalsIgnoreCase(saveRequest.getDesiredFormat().toString())) {
+                byte[] pdfData = fileConversionService.createPdf(data);
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_PDF);
+                headers.setContentDispositionFormData("attachment", "output.pdf");
+                return new ResponseEntity<>(pdfData, headers, HttpStatus.OK);
+            } else if (Formats.JSON.toString().equalsIgnoreCase(saveRequest.getDesiredFormat().toString())) {
+                return new ResponseEntity<>(data, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Invalid output type. Please provide either 'pdf' or 'json'.", HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 //    @PostMapping("/save")
 //    @CrossOrigin(origins = "*")
 //    public ResponseEntity<List<LogsResponse>> saveToFile(@RequestBody SaveRequest saveRequest) {
@@ -68,4 +96,6 @@ public class LogsMergerController {
 //        }
 //        return null;
 //    }
+
+
 }
