@@ -1,0 +1,11 @@
+<div class="main">
+  <h1>Logs Merger</h1>
+  <div class="row">
+    <div class="col-md-8">
+      <logs-area [data]="data"></logs-area>
+    </div>
+    <div class="col-md-4">
+      <rules-area  (dataArrived)="onDataArrived($event)"></rules-area>
+    </div>
+  </div>
+</div>
