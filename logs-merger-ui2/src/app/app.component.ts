@@ -8,7 +8,12 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'logs-merger-ui';
   data:string[] = [];
+  filters:any[] = [];
   onDataArrived(data: string[]) {
     this.data = data;
+  }
+
+  onFilterChanged(filters: any[]) {
+    this.filters = filters;
   }
 }

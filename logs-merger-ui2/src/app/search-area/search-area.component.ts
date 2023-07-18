@@ -10,7 +10,7 @@ export class SearchAreaComponent {
   searchTerm: string = "";
 
   @Output() dataArrived:EventEmitter<string[]> = new EventEmitter<string[]>();
-
+  @Output() filterChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
 
 
   constructor(private apiService: ApiService) {}
@@ -37,5 +37,9 @@ export class SearchAreaComponent {
       },
       error => console.error('Error:', error)
     );
+  }
+
+  onFilterChanges($event: any[]) {
+    this.filterChanged.emit($event);
   }
 }

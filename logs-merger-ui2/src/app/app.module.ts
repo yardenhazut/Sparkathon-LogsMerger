@@ -14,6 +14,8 @@ import {FormsModule} from "@angular/forms";
 import { SearchAreaComponent } from './search-area/search-area.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { FiltersComponent } from './filters/filters.component';
+import { FiltersDialogComponent } from './filters-dialog/filters-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,7 +23,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
     RulesAreaComponent,
     LogsGroupSelectionComponent,
     ConfigureDialogComponent,
-    SearchAreaComponent
+    SearchAreaComponent,
+    FiltersComponent,
+    FiltersDialogComponent
   ],
   imports: [
     BrowserModule,
