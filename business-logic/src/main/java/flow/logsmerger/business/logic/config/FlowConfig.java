@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static flow.logsmerger.business.logic.utils.Utils.ERROR_SEARCH_BEGIN_PERIOD_MISSING;
 import static flow.logsmerger.business.logic.utils.Utils.ERROR_RESULT_LIMIT_VALIDATION;
@@ -77,7 +78,8 @@ public class FlowConfig {
     }
 
     public Set<String> getLogGroups() {
-        return this.flowRules.keySet();
+        //return this.flowRules.keySet();
+        return new HashSet<>(this.rules.stream().map(l->l.getLogGroup()).collect(Collectors.toList()));
     }
 
     public List<Rule> getLogGroupRules(String logGroup) throws ConvertLogMessageException {

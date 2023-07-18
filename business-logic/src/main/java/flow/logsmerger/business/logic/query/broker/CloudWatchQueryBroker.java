@@ -45,7 +45,7 @@ public class CloudWatchQueryBroker implements QueryBroker {
     }
 
     @Override
-    public Optional<List<LogMessage>> runQuery(String searchParameters) throws CloudWatchQueryBrokerException {
+    public GetQueryResultsResult runQuery(String searchParameters) throws CloudWatchQueryBrokerException {
         try {
             StartQueryRequest queryRequest = createQueryRequest(this.flowConfig.getLogGroups(), searchParameters);
             logger.info("runQuery() - Created query request: {}", queryRequest.getQueryString());
@@ -53,8 +53,8 @@ public class CloudWatchQueryBroker implements QueryBroker {
             logger.info("runQuery() - Start running query");
             StartQueryResult queryResult = awsLogs.startQuery(queryRequest);
             logger.info("runQuery() - Finished running query");
-            GetQueryResultsResult finalQueryResult = getAllQueryResult(queryResult);
-            return getQueryResultAsLogMessages(finalQueryResult);
+            return getAllQueryResult(queryResult);
+            //return getQueryResultAsLogMessages(finalQueryResult);
         } catch (Exception e) {
             logger.error("runQuery() - Exception while running query:" + e.getMessage());
             throw new CloudWatchQueryBrokerException(e.getMessage());
