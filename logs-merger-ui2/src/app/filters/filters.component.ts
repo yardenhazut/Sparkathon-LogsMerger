@@ -16,6 +16,7 @@ export class FiltersComponent implements OnInit{
   onConfigure() {
     this.dialog.open(FiltersDialogComponent).afterClosed().subscribe(()=>{
       this.readStorage();
+      this.onSelectionChanged();
     });
   }
 
