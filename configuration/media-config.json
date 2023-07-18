@@ -1,0 +1,18 @@
+{
+  "rules": [
+    {
+      "logGroup": "dev-open-rec-sip-lb",
+      "logGroupRules": [
+        {
+          "messageIncludes": [
+            ""
+          ],
+          "isRequest": true,
+          "arrowText": "Invite",
+          "sourceComponent": "SBC",
+          "destinationComponent": "SIP_LB"
+        }
+      ]
+    }
+  ]
+}

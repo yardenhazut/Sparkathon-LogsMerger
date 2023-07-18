@@ -1,0 +1,71 @@
+{
+  "family": "%STACK%-Sparkathon-LogsMerger-task",
+  "taskRoleArn": "arn:%AWS_PARTITION%:iam::%ACCOUNT_ID%:role/%STACK%-open-rec-applicative-role-%REGION%",
+  "containerDefinitions": [
+    {
+      "name": "Sparkathon-LogsMerger",
+      "image": "%DOCKER_IMAGE_NAME_TAG%:%DOCKER_TAG%",
+      "cpu": 256,
+      "memory": 2048,
+      "entryPoint": [],
+      "environment": [
+        {
+          "name": "wfosaas_props",
+          "value": "s3:/wfm-ci-saas-dev/config/start_ci.properties"
+        },
+        {
+          "name": "boot_props",
+          "value": "s3:/wfm-ci-saas-dev/config/application_ci.properties"
+        },
+        {
+          "name": "JAVA_OPTS",
+          "value": "-server -XX:+UseContainerSupport -XX:MaxRAMPercentage=60.0 -XX:+UseG1GC -XX:MetaspaceSize=100m -XX:MaxMetaspaceSize=400m -XX:CompressedClassSpaceSize=256m -XX:MaxDirectMemorySize=1024m -Xlog:gc -Xlog:gc* -XX:ErrorFile=/usr/share/gc_err_pid_%p.log -Xloggc:/usr/share/gc_logs_%p.log -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/usr/share/gc_oom_err%p.hprof -Djdk.nio.maxCachedBufferSize=1000000 -XX:NativeMemoryTracking=detail -Dorg.apache.tomcat.websocket.DISABLE_BUILTIN_EXTENSIONS=true"},
+        {
+          "name": "SERVICE_NAME",
+          "value": "Sparkathon-LogsMerger"
+        }
+      ],
+      "command": [],
+      "portMappings": [
+        {
+          "hostPort": 9021,
+          "containerPort": 9021,
+          "protocol": "tcp"
+        }
+      ],
+      "volumesFrom": [],
+      "links": [],
+      "mountPoints": [
+        {
+          "readOnly": false,
+          "containerPath": "/var/logs",
+          "sourceVolume": "gc"
+        },
+        {
+          "readOnly": false,
+          "containerPath": "/opt/docker/core",
+          "sourceVolume": "gc"
+        }
+      ],
+      "essential": true,
+      "privileged": true,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "%STACK%-Sparkathon-LogsMerger",
+          "awslogs-region": "us-west-2",
+          "awslogs-stream-prefix": "Sparkathon-LogsMerger",
+          "awslogs-multiline-pattern":  "^\\d{1,2}:\\d\\d:\\d\\d.\\d\\d\\d \\["
+        }
+      }
+    }
+  ],
+  "volumes": [
+    {
+      "name": "gc",
+      "host": {
+        "sourcePath": "/var/logs"
+      }
+    }
+  ]
+}

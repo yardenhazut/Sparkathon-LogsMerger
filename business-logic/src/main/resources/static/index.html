@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head id="head1">
+
+    <script src="js/index.js"></script>
+    <script src="js/index1.js" defer></script>
+    <script id="s1" type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script id="s2" type="text/javascript" src="js/jquery.dataTables.js"></script>
+    <script src="dist/datedreamer.js"></script>
+    <style>
+        input[type=number]::-webkit-inner-spin-button {
+            opacity: 1;
+        }
+        input[type=file] {
+            color: transparent;
+        }
+        .separator {
+            flex: 1;
+            display: flex;
+            text-align: right;
+            border: 15px solid #63B175;
+        }
+
+        .separator::before {
+            content: '';
+            flex: 1;
+            background-color: #63B175;
+        }
+        .large-input {
+            width: 185px;
+        }
+    </style>
+    <meta charset="windows-1255">
+    <title>File Upload Test Page</title>
+</head>
+
+<body id="body1" style="padding-left: 50px;padding-right: 50px;"
+      onload="javascript:loadSelects()">
+<br>
+
+<div class="separator" id="separator" data-ps="">
+    <a href="javascript:dialog()" style="background-color: #63B175; color: white;"><i>admin</i></a>
+</div>
+
+<H1>Visualization</H1>
+
+<TABLE allign="center">
+    <form name="frm2" id="frm2" action="file/upload" method="post">
+        <TR style="vertical-align:top">
+            <TD style="padding: 15px;">
+                <!-- -->
+                <b>Search</b><br><br>
+                <table id="searchloadTable">
+                    <tr>
+                        <td>
+                            Search scope
+                        </td>
+                        <td>
+                            <fieldset>
+                                <legend>Search range:</legend>
+                                <input type="radio" id="LASTHOURS" name="searchRange" value="LASTHOURS" checked
+                                       onclick="handleRadioClick(this);">
+                                <label for="LASTHOURS">Last hours</label>
+                                <input type="radio" id="PERIOD" name="searchRange" value="PERIOD"
+                                       onclick="handleRadioClick(this);">
+                                <label for="PERIOD">Period</label>
+                            </fieldset>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Last Hours :</td>
+                        <td><input type="number" name="searchLastHours" id="searchLastHours" value="72" class="large-input"></td>
+                    </tr>
+                    <tr>
+                        <td>Begin Period :</td>
+                        <td><input type="text" name="searchBeginPeriod" id="searchBeginPeriod" value="" class="large-input"
+                                   onclick="javascript:showCalendar(this)" disabled></td>
+                    </tr>
+                    <tr>
+                        <td>End Period :</td>
+                        <td><input type="text" name="searchEndPeriod" id="searchEndPeriod" value="" class="large-input"
+                                   onclick="javascript:showCalendar(this)" disabled></td>
+                    </tr>
+                    <tr>
+                        <td>Result Limit :</td>
+                        <td><input type="number" name="resultLimit" id="resultLimit" value="1000" class="large-input"></td>
+                    </tr>
+                    <tr>
+                        <td>Parameters :</td>
+                        <td><input type="text" name="parameters" id="parameters" value="" class="large-input" placeholder="Type your search terms (comma separated)"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button type="button" onclick="javascript:download('flow-visualization/search')">Begin
+                                Search
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </TD>
+            <TD style="padding: 15px;">
+                <!-- -->
+                <b>Handle Config Files</b><br><br>
+                <table id="downloadTable">
+                    <tr>
+                        <td>Select Config File:</td>
+                        <td>
+                            <select name="configFileName" id="configFileName"></select>
+                            <button type="button" onclick="document.getElementById('userFolder').value='';javascript:download('flow-visualization/download')">
+                                Download
+                            </button>&nbsp;&nbsp;
+                            <button type="button" onclick="javascript:download('flow-visualization/delete')">Delete
+                            </button>&nbsp;&nbsp;
+
+                            <button name="files" id="files"
+                                    onclick="document.getElementById('configFile').click(); return false;">Upload
+                            </button>
+                            <input type="file" name="configFile" id="configFile" style="visibility: hidden;"
+                                   accept=".json"
+                                   onChange="javascript:listOrUploadCall('flow-visualization/upload');this.value=null;">
+                        </td>
+                    </tr>
+                </table>
+            </TD>
+        </TR>
+
+        <TR>
+            <TD style="padding: 15px;">
+                &nbsp;
+            </TD>
+            <TD style="padding: 15px;">
+                <!-- -->
+                <b>Template Files</b><br><br>
+                <table id="tmltDownloadTable">
+                    <tr>
+                        <td>Select Config File:</td>
+                        <td>
+                            <select name="tmltConfigFileName" id="tmltConfigFileName"></select>
+                            <button type="button" onclick="document.getElementById('userFolder').value='templates';javascript:download('flow-visualization/download')">
+                                Download
+                            </button>&nbsp;&nbsp;
+
+                            <button type="button" id="tmpltDelete" onclick="document.getElementById('userFolder').value='templates';javascript:download('flow-visualization/delete')" disabled>Delete
+                            </button>&nbsp;&nbsp;
+
+                            <button name="files" id="tmltFiles"
+                                    onclick="document.getElementById('userFolder').value='templates';document.getElementById('configFile').click(); return false;" disabled>Upload
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </TD>
+        </TR>
+        <br>
+        <input type="hidden" name="userFolder" id="userFolder">
+    </form>
+</TABLE>
+
+<img id="image1"/>
+<div id="outputDiv"></div>
+<div id="calendar" style="display: none"></div>
+
+</body>
+</html>

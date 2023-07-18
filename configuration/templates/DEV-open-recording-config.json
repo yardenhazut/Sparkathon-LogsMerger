@@ -1,0 +1,1426 @@
+{
+  "rules": [
+    {
+      "logGroup": "dev-open-rec-sip-lb",
+      "logGroupRules": [
+        {
+          "messageIncludes": [
+            "received INVITE SIP Request",
+            "INVITE",
+            "From: <sip:acmeSrc",
+            "To: \"VRSP\""
+          ],
+          "isRequest": true,
+          "arrowText": "Invite",
+          "sourceComponent": "SBC",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "received INVITE SIP Request",
+            "INVITE ",
+            "From: \"Voip Sdk\"",
+            "To: \"ESFU\""
+          ],
+          "isRequest": true,
+          "arrowText": "Invite",
+          "sourceComponent": "RECORDER",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "received INVITE SIP Request",
+            "INVITE ",
+            "From: \"ESFU\"",
+            "To: \"VRSP\""
+          ],
+          "isRequest": true,
+          "arrowText": "Invite",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "Try to read list from table 0 in Redis"
+          ],
+          "isRequest": true,
+          "arrowText": "Read table 0",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "REDIS"
+        },
+        {
+          "messageIncludes": [
+            "Contact URI was not found in cache",
+            "nodeType:VRSP"
+          ],
+          "isRequest": false,
+          "arrowText": "VRSP Contact URI not found",
+          "sourceComponent": "REDIS",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "Retrieving contact URI from /lite-vrsp/get-sip-contact"
+          ],
+          "isRequest": true,
+          "arrowText": "Get Contact URI",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "Read successfully contact URI from cache",
+            "nodeType:VRSP"
+          ],
+          "isRequest": false,
+          "arrowText": "VRSP Contact URI found",
+          "sourceComponent": "REDIS",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "SIP contact URI received from VRSP"
+          ],
+          "isRequest": false,
+          "arrowText": "Contact URI",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "Added value",
+            "to list of interaction keys for contact URI"
+          ],
+          "isRequest": false,
+          "arrowText": "interaction keys saved",
+          "sourceComponent": "REDIS",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "Going to send redirect response",
+            "302 Moved Temporarily",
+            "From: <sip:acmeSrc",
+            "To: \"VRSP\""
+          ],
+          "isRequest": true,
+          "arrowText": "302 Moved Temporarily",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "SBC"
+        },
+        {
+          "messageIncludes": [
+            "Got a session eviction request for VRSP"
+          ],
+          "isRequest": true,
+          "arrowText": "start VRSP session eviction",
+          "sourceComponent": "SESSION_EVICTION_LAMBDA",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "Successfully performed session eviction for VRSP"
+          ],
+          "isRequest": false,
+          "arrowText": "VRSP session eviction successes",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "SESSION_EVICTION_LAMBDA"
+        },
+        {
+          "messageIncludes": [
+            "Try to read list from table 1 in Redis"
+          ],
+          "isRequest": true,
+          "arrowText": "Read table 1",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "REDIS"
+        },
+        {
+          "messageIncludes": [
+            "Contact URI was not found in cache",
+            "nodeType:ESFU"
+          ],
+          "isRequest": false,
+          "arrowText": "ESFU Contact URI not found",
+          "sourceComponent": "REDIS",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "Retrieving contact URI from /esfu/get-sip-contact"
+          ],
+          "isRequest": true,
+          "arrowText": "Get Contact URI",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": [
+            "Read successfully contact URI from cache",
+            "nodeType:ESFU"
+          ],
+          "isRequest": false,
+          "arrowText": "ESFU Contact URI found",
+          "sourceComponent": "REDIS",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "SIP contact URI received from ESFU"
+          ],
+          "isRequest": false,
+          "arrowText": "Contact URI",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "Going to send redirect response",
+            "302 Moved Temporarily",
+            "From: \"Voip Sdk\"",
+            "To: \"ESFU\""
+          ],
+          "isRequest": true,
+          "arrowText": "302 Moved Temporarily",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "RECORDER"
+        },
+        {
+          "messageIncludes": [
+            "Got a session eviction request for ESFU"
+          ],
+          "isRequest": true,
+          "arrowText": "start ESFU session eviction",
+          "sourceComponent": "SESSION_EVICTION_LAMBDA",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "Successfully performed session eviction for ESFU"
+          ],
+          "isRequest": false,
+          "arrowText": "ESFU session eviction successes",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "SESSION_EVICTION_LAMBDA"
+        },
+        {
+          "messageIncludes": [
+            "Received a request with unsupported node type"
+          ],
+          "isRequest": false,
+          "arrowText": "ERROR: unsupported node type",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "An exception occurred while trying to write to cache"
+          ],
+          "isRequest": false,
+          "arrowText": "ERROR: can't write to cache",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "Failure in saveInteractionKey"
+          ],
+          "isRequest": false,
+          "arrowText": "ERROR: can't save interaction key on cache",
+          "sourceComponent": "REDIS",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "Removed key",
+            "successfully from cache"
+          ],
+          "isRequest": false,
+          "arrowText": "Key removed from cache",
+          "sourceComponent": "REDIS",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "Fail to remove",
+            "from cache",
+            "Key does not exist"
+          ],
+          "isRequest": false,
+          "arrowText": "ERROR: Key does not exist",
+          "sourceComponent": "REDIS",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "Going to delete interaction key from cache"
+          ],
+          "isRequest": true,
+          "arrowText": "Delete interaction key from cache",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "REDIS"
+        },
+        {
+          "messageIncludes": [
+            "Sending failover request to"
+          ],
+          "isRequest": true,
+          "arrowText": "Failover request",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "Received continuity request"
+          ],
+          "isRequest": true,
+          "arrowText": "Continuity request",
+          "sourceComponent": "SESSION_CONTINUITY_LAMBDA",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "Sending continuity request to /lite-vrsp/continuity"
+          ],
+          "isRequest": true,
+          "arrowText": "Continuity request",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "Received response Status Code: 200 OK, URL: /lite-vrsp/continuity,"
+          ],
+          "isRequest": false,
+          "arrowText": "Continuity request - 200 OK",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "Sending continuity request to /esfu/continuity"
+          ],
+          "isRequest": true,
+          "arrowText": "Continuity request",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": [
+            "Received response Status Code: 200 OK, URL: /esfu/continuity,"
+          ],
+          "isRequest": false,
+          "arrowText": "Continuity request - 200 OK",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "Successfully performed session continuity"
+          ],
+          "isRequest": false,
+          "arrowText": "Successfully performed session continuity",
+          "sourceComponent": "SESSION_CONTINUITY_LAMBDA",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "Failed to allocate new VRSP node in session continuity"
+          ],
+          "isRequest": true,
+          "arrowText": "ERROR: Failed to allocate new VRSP node in session continuity",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "SESSION_CONTINUITY_LAMBDA"
+        },
+        {
+          "messageIncludes": [
+            "Failed to allocate new ESFU node in session continuity"
+          ],
+          "isRequest": true,
+          "arrowText": "ERROR: Failed to allocate new ESFU node in session continuity",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "SESSION_CONTINUITY_LAMBDA"
+        },
+        {
+          "messageIncludes": [
+            "Received vrsp failover request"
+          ],
+          "isRequest": true,
+          "arrowText": "Received vrsp failover request",
+          "sourceComponent": "FAILOVER_LAMBDA",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "FailoverWorkerImpl",
+            "Going to look for interaction keys in the cache for key"
+          ],
+          "isRequest": true,
+          "arrowText": "Get interaction keys",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "REDIS"
+        },
+        {
+          "messageIncludes": [
+            "FailoverWorkerImpl",
+            "Number of received interaction keys for key"
+          ],
+          "isRequest": false,
+          "arrowText": "Interaction keys",
+          "sourceComponent": "REDIS",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "FailoverWorkerImpl",
+            "Received a valid contact URI",
+            "Node Type: VRSP"
+          ],
+          "isRequest": true,
+          "arrowText": "valid contact URI",
+          "sourceComponent": "FAILOVER_LAMBDA",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "FailoverWorkerImpl",
+            "Going to update contact uri in list",
+            "Node Type: VRSP"
+          ],
+          "isRequest": false,
+          "arrowText": "Update contact URI",
+          "sourceComponent": "FAILOVER_LAMBDA",
+          "destinationComponent": "REDIS"
+        },
+        {
+          "messageIncludes": [
+            "FailoverWorkerImpl",
+            "Received an WriteRedisConnectionException while trying to update the 0 item with value"
+          ],
+          "isRequest": false,
+          "arrowText": "ERROR: WriteRedisConnectionException",
+          "sourceComponent": "REDIS",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "Received esfu failover request"
+          ],
+          "isRequest": true,
+          "arrowText": "Received esfu failover request",
+          "sourceComponent": "MEDIA_STREAMING_FAILOVER_LAMBDA",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "FailoverWorkerImpl",
+            "Received a valid contact URI",
+            "Node Type: ESFU"
+          ],
+          "isRequest": true,
+          "arrowText": "valid contact URI",
+          "sourceComponent": "MEDIA_STREAMING_FAILOVER_LAMBDA",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "FailoverWorkerImpl",
+            "Going to update contact uri in list",
+            "Node Type: ESFU"
+          ],
+          "isRequest": false,
+          "arrowText": "Update contact URI",
+          "sourceComponent": "MEDIA_STREAMING_FAILOVER_LAMBDA",
+          "destinationComponent": "REDIS"
+        },
+        {
+          "messageIncludes": [
+            "FailoverWorkerImpl",
+            "Received an WriteRedisConnectionException while trying to update the 0 item with value"
+          ],
+          "isRequest": false,
+          "arrowText": "ERROR: WriteRedisConnectionException",
+          "sourceComponent": "REDIS",
+          "destinationComponent": "SIP_LB"
+        }
+      ]
+    },
+    {
+      "logGroup": "dev-open-rec-lite-vrsp",
+      "logGroupRules": [
+        {
+          "messageIncludes": [
+            "Received SIP INVITE request",
+            "INVITE",
+            "From: \"ESFU\"",
+            "To: \"VRSP\""
+          ],
+          "isRequest": true,
+          "arrowText": "Invite",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "Received SIP INVITE request",
+            "INVITE",
+            "From: <sip:acmeSrc"
+          ],
+          "isRequest": true,
+          "arrowText": "Invite",
+          "sourceComponent": "SBC",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "SIP Match was successful"
+          ],
+          "isRequest": true,
+          "arrowText": "SIP Match",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "Received SIP ACK request",
+            "ACK",
+            "From: \"ESFU\"",
+            "To: \"VRSP\""
+          ],
+          "isRequest": false,
+          "arrowText": "ACK",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "Received SIP ACK request",
+            "ACK",
+            "From: <sip:acmeSrc"
+          ],
+          "isRequest": false,
+          "arrowText": "ACK",
+          "sourceComponent": "SBC",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "Received a SIP response: 200",
+            "200 OK",
+            "To: <sip:acmeSrc"
+          ],
+          "isRequest": false,
+          "arrowText": "200 OK",
+          "sourceComponent": "SBC",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "Sent response 200",
+            "200 OK",
+            "From: <sip:acmeSrc"
+          ],
+          "isRequest": false,
+          "arrowText": "200 OK",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "SBC"
+        },
+        {
+          "messageIncludes": [
+            "Received SIP BYE request",
+            "BYE",
+            "From: <sip:acmeSrc"
+          ],
+          "isRequest": true,
+          "arrowText": "BYE",
+          "sourceComponent": "SBC",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "Received a SIP response: 200",
+            "200 OK",
+            "From: \"VRSP\"",
+            "To: \"ESFU\""
+          ],
+          "isRequest": false,
+          "arrowText": "200 OK",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "Clear Internal Cache"
+          ],
+          "isRequest": false,
+          "arrowText": "Clear Internal Cache",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "Sending message to",
+            "open-rec-sessions",
+            "SQS"
+          ],
+          "isRequest": true,
+          "arrowText": "Send message to sessions SQS",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "SESSION_SQS"
+        },
+        {
+          "messageIncludes": [
+            "Message was sent successfully to SQS"
+          ],
+          "isRequest": false,
+          "arrowText": "Message was sent successfully",
+          "sourceComponent": "SESSION_SQS",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "There was a problem sending the message to the SNS"
+          ],
+          "isRequest": false,
+          "arrowText": "ERROR: Message not send to SNS",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "Unable to update recording session in REDIS"
+          ],
+          "isRequest": false,
+          "arrowText": "ERROR: Unable to update recording session in REDIS",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "CallId is missing from the transaction"
+          ],
+          "isRequest": false,
+          "arrowText": "ERROR: CallId is missing from the transaction",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "There was a problem sending the message to the SQS"
+          ],
+          "isRequest": false,
+          "arrowText": "ERROR: Message not send to SQS",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "Sip match timeout"
+          ],
+          "isRequest": false,
+          "arrowText": "ERROR: No sip match",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "Received continuity request"
+          ],
+          "isRequest": true,
+          "arrowText": "Continuity request",
+          "sourceComponent": "ECS",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "Could not send message to SQS"
+          ],
+          "isRequest": true,
+          "arrowText": "ERROR: Could not send message to SQS",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": [
+            "Sent response 504",
+            "504 Gateway timeout",
+            "From: \"ESFU\"",
+            "To: \"VRSP\""
+          ],
+          "isRequest": true,
+          "arrowText": "ERROR: Gateway timeout",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": [
+            "Received a SIP response: 491"
+          ],
+          "isRequest": true,
+          "arrowText": "Received a SIP response: 491",
+          "sourceComponent": "SBC",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "Sip match timeout",
+            "No IMR request"
+          ],
+          "isRequest": false,
+          "arrowText": "ERROR - No match",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "Sip match timeout",
+            "No IMP request"
+          ],
+          "isRequest": false,
+          "arrowText": "No match",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": [
+            "Sent replaces INVITE initial time for this VRSP instance",
+            "Require: replaces",
+            "From: \"VRSP\"",
+            "To: <sip:acmeSrc"
+          ],
+          "isRequest": true,
+          "arrowText": "Invite replaces header",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "SBC"
+        },
+        {
+          "messageIncludes": [
+            "Sent replaces INVITE initial time for this VRSP instance",
+            "Require: replaces",
+            "From: \"VRSP\"",
+            "To: \"ESFU\""
+          ],
+          "isRequest": true,
+          "arrowText": "Invite replaces header",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "ESFU"
+        }
+      ]
+    },
+    {
+      "logGroup": "dev-open-rec-esfu",
+      "logGroupRules": [
+        {
+          "messageIncludes": [
+            "Received a SIP INVITE request",
+            "INVITE",
+            "X-Media-Source-Type: SIP",
+            "From: \"Voip Sdk\"",
+            "To: \"ESFU\""
+          ],
+          "isRequest": true,
+          "arrowText": "Invite (SIP)",
+          "sourceComponent": "RECORDER",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": [
+            "Received a SIP INVITE request",
+            "INVITE",
+            "X-Media-Source-Type: DMCC",
+            "From: \"Voip Sdk\"",
+            "To: \"ESFU\""
+          ],
+          "isRequest": true,
+          "arrowText": "Invite (DMCC)",
+          "sourceComponent": "RECORDER",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": [
+            "Received a SIP Redirect response",
+            "302 Moved Temporarily",
+            "From: \"ESFU\"",
+            "To: \"VRSP\""
+          ],
+          "isRequest": false,
+          "arrowText": "302 Moved Temporarily",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": [
+            "Received a SIP response",
+            "100 Trying",
+            "From: \"ESFU\"",
+            "To: \"VRSP\""
+          ],
+          "isRequest": false,
+          "arrowText": "100 Trying",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": [
+            "Received a SIP OK response",
+            "200 OK",
+            "From: \"ESFU\"",
+            "To: \"VRSP\""
+          ],
+          "isRequest": false,
+          "arrowText": "200 OK",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": [
+            "A new response created successfully",
+            "200 OK",
+            "From: \"Voip Sdk\"",
+            "To: \"ESFU\""
+          ],
+          "isRequest": false,
+          "arrowText": "200 OK",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "RECORDER"
+        },
+        {
+          "messageIncludes": [
+            "Received a SIP ACK request",
+            "ACK ",
+            "From: \"Voip Sdk\"",
+            "To: \"ESFU\""
+          ],
+          "isRequest": false,
+          "arrowText": "ACK",
+          "sourceComponent": "RECORDER",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": [
+            "Sending session to SQS",
+            "\"nodeType\": \"ESFU\""
+          ],
+          "isRequest": false,
+          "arrowText": "Session eviction",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "SESSION_SQS"
+        },
+        {
+          "messageIncludes": [
+            "Received a SIP BYE request",
+            "BYE",
+            "From: \"VRSP\"",
+            "To: \"ESFU\""
+          ],
+          "isRequest": true,
+          "arrowText": "BYE",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": [
+            "Received a SIP BYE request",
+            "BYE",
+            "From: \"Voip Sdk\"",
+            "To: \"ESFU\""
+          ],
+          "isRequest": true,
+          "arrowText": "BYE",
+          "sourceComponent": "RECORDER",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": [
+            "failed saving session data to redis"
+          ],
+          "isRequest": true,
+          "arrowText": "ERROR: Failed saving session data to redis",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": [
+            "Media source type mismatch in RE-INVITE/INVITE before BYE request"
+          ],
+          "isRequest": true,
+          "arrowText": "ERROR: Media source type mismatch",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": [
+            "Could not send message to SQS"
+          ],
+          "isRequest": true,
+          "arrowText": "ERROR: Could not send message to SQS",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": [
+            "Can't report SIP Invite Failure due to missing media source"
+          ],
+          "isRequest": false,
+          "arrowText": "ERROR: missing media source type",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": [
+            "Received a SIP response:\nSIP/2.0 491 Request Pending"
+          ],
+          "isRequest": false,
+          "arrowText": "491 Request Pending",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": [
+            "A new response created successfully:\nSIP/2.0 491 Request Pending"
+          ],
+          "isRequest": false,
+          "arrowText": "491 Request Pending",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "RECORDER"
+        },
+        {
+          "messageIncludes": [
+            "Sent replaces INVITE initial time for this ESFU instance",
+            "Require: replaces",
+            "From: \"ESFU\"",
+            "To: \"Voip Sdk\""
+          ],
+          "isRequest": true,
+          "arrowText": "Invite replaces header",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "RECORDER"
+        },
+        {
+          "messageIncludes": [
+            "Sent replaces INVITE initial time for this ESFU instance",
+            "Require: replaces",
+            "From: \"ESFU\"",
+            "To: \"Voip Sdk\""
+          ],
+          "isRequest": true,
+          "arrowText": "Invite replaces header",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "VRSP"
+        }
+      ]
+    },
+    {
+      "logGroup": "/aws/lambda/dev-lambda-open-rec-session-eviction",
+      "logGroupRules": [
+        {
+          "messageIncludes": [
+            "Session eviction Lambda was triggered by the event"
+          ],
+          "isRequest": true,
+          "arrowText": "Session eviction triggered",
+          "sourceComponent": "SESSION_SQS",
+          "destinationComponent": "SESSION_EVICTION_LAMBDA"
+        },
+        {
+          "messageIncludes": [
+            "The messages sent back to the SQS for retry"
+          ],
+          "isRequest": true,
+          "arrowText": "ERROR: Retry",
+          "sourceComponent": "SESSION_EVICTION_LAMBDA",
+          "destinationComponent": "SESSION_EVICTION_LAMBDA"
+        }
+      ]
+    },
+    {
+      "logGroup": "/aws/lambda/dev-lambda-open-rec-session-continuity",
+      "logGroupRules": [
+        {
+          "messageIncludes": [
+            "Session continuity Lambda was triggered by the event"
+          ],
+          "isRequest": true,
+          "arrowText": "Session continuity",
+          "sourceComponent": "SNS",
+          "destinationComponent": "SESSION_CONTINUITY_LAMBDA"
+        }
+      ]
+    },
+    {
+      "logGroup": "/aws/lambda/dev-lambda-open-rec-failover",
+      "logGroupRules": [
+        {
+          "messageIncludes": [
+            "Failover Lambda was triggered by the event:"
+          ],
+          "isRequest": true,
+          "arrowText": "Failover",
+          "sourceComponent": "ECS",
+          "destinationComponent": "FAILOVER_LAMBDA"
+        }
+      ]
+    },
+    {
+      "logGroup": "/aws/lambda/dev-lambda-open-rec-media-streaming-failover",
+      "logGroupRules": [
+        {
+          "messageIncludes": [
+            "ESFU Failover Lambda was triggered by the event"
+          ],
+          "isRequest": true,
+          "arrowText": "Failover",
+          "sourceComponent": "ECS",
+          "destinationComponent": "MEDIA_STREAMING_FAILOVER_LAMBDA"
+        },
+        {
+          "messageIncludes": [
+            "Lambda ended successfully"
+          ],
+          "isRequest": false,
+          "arrowText": "Ended successfully",
+          "sourceComponent": "MEDIA_STREAMING_FAILOVER_LAMBDA",
+          "destinationComponent": "ECS"
+        }
+      ]
+    },
+    {
+      "logGroup": "dev-mcr-stickysessionmanager",
+      "logGroupRules": [
+        {
+          "messageIncludes": [
+            "Controller: Open interactions - start"
+          ],
+          "isRequest": true,
+          "arrowText": "Open START_SEGMENT (Normal)",
+          "sourceComponent": "OPEN",
+          "destinationComponent": "SSM"
+        },
+        {
+          "messageIncludes": [
+            "Controller: Open interactions - stop"
+          ],
+          "isRequest": true,
+          "arrowText": "Open STOP_SEGMENT",
+          "sourceComponent": "OPEN",
+          "destinationComponent": "SSM"
+        },
+        {
+          "messageIncludes": [
+            "Controller: Open interactions - hold"
+          ],
+          "isRequest": true,
+          "arrowText": "Open UPDATE_SEGMENT (Hold)",
+          "sourceComponent": "OPEN",
+          "destinationComponent": "SSM"
+        },
+        {
+          "messageIncludes": [
+            "Controller: Open interactions - resume"
+          ],
+          "isRequest": true,
+          "arrowText": "Open UPDATE_SEGMENT (Resume)",
+          "sourceComponent": "OPEN",
+          "destinationComponent": "SSM"
+        },
+        {
+          "messageIncludes": [
+            "Received IM response for Url",
+            "response body"
+          ],
+          "isRequest": false,
+          "arrowText": "Response",
+          "sourceComponent": "IM",
+          "destinationComponent": "SSM"
+        }
+      ]
+    },
+    {
+      "logGroup": "dev-mcr-interaction-management",
+      "logGroupRules": [
+        {
+          "messageIncludes": [
+            "IMOpenController"
+          ],
+          "isRequest": true,
+          "arrowText": "Open event",
+          "sourceComponent": "SSM",
+          "destinationComponent": "IM"
+        },
+        {
+          "messageIncludes": [
+            "Starting to add recording decisions to the segment"
+          ],
+          "isRequest": true,
+          "arrowText": "Data segment",
+          "sourceComponent": "IM",
+          "destinationComponent": "IM-recording-decision"
+        },
+        {
+          "messageIncludes": [
+            "Response to start recording request received on media VOICE"
+          ],
+          "isRequest": false,
+          "arrowText": "Response to Start Recording",
+          "sourceComponent": "RECORDER",
+          "destinationComponent": "IM"
+        },
+        {
+          "messageIncludes": [
+            "Response to stop recording received on media: VOICE"
+          ],
+          "isRequest": false,
+          "arrowText": "Response to Stop Recording",
+          "sourceComponent": "RECORDER",
+          "destinationComponent": "IM"
+        },
+        {
+          "messageIncludes": [
+            "Got Exception in gotEvent"
+          ],
+          "isRequest": false,
+          "arrowText": "ERROR: error im got event",
+          "sourceComponent": "IM",
+          "destinationComponent": "IM"
+        }
+      ]
+    },
+    {
+      "logGroup": "dev-mcr-recorder",
+      "logGroupRules": [
+        {
+          "messageIncludes": [
+            "Start record",
+            "request:"
+          ],
+          "isRequest": true,
+          "arrowText": "Start Recording",
+          "sourceComponent": "IM",
+          "destinationComponent": "RECORDER"
+        },
+        {
+          "messageIncludes": [
+            "Stop record",
+            "request:"
+          ],
+          "isRequest": true,
+          "arrowText": "Stop Recording",
+          "sourceComponent": "IM",
+          "destinationComponent": "RECORDER"
+        }
+      ]
+    },
+    {
+      "logGroup": "dev-connectivity-open-rec",
+      "logGroupRules": [
+        {
+          "messageIncludes": [
+            "Got RESPONSE from CTI Link - CM_RST_FAILURE"
+          ],
+          "isRequest": false,
+          "arrowText": "ERROR: CM_RST_FAILURE",
+          "sourceComponent": "CTI",
+          "destinationComponent": "CONNECTION_MANAGER"
+        },
+
+        {
+          "messageIncludes": [
+            "Got GetDeviceID Request for device"
+          ],
+          "isRequest": true,
+          "arrowText": "Get Device ID",
+          "sourceComponent": "DEVICE",
+          "destinationComponent": "CONNECTION_MANAGER"
+        },
+        {
+          "messageIncludes": [
+            "Got GetDeviceID Request for device"
+          ],
+          "isRequest": true,
+          "arrowText": "Get Device ID",
+          "sourceComponent": "DEVICE",
+          "destinationComponent": "CONNECTION_MANAGER"
+        },
+        {
+          "messageIncludes": [
+            "Failed to poll events from AES"
+          ],
+          "isRequest": false,
+          "arrowText": "ERROR: Failed to poll events from AES",
+          "sourceComponent": "AES",
+          "destinationComponent": "CONNECTION_MANAGER"
+        },
+        {
+          "messageIncludes": [
+            "Succeeded to close connection to AES Server"
+          ],
+          "isRequest": true,
+          "arrowText": "Close connection",
+          "sourceComponent": "CONNECTION_MANAGER",
+          "destinationComponent": "AES"
+        },
+        {
+          "messageIncludes": [
+            "ConnectToAES",
+            "AES",
+            "Connection successful"
+          ],
+          "isRequest": true,
+          "arrowText": "Connect",
+          "sourceComponent": "CONNECTION_MANAGER",
+          "destinationComponent": "AES"
+        },
+        {
+          "messageIncludes": [
+            "CTI Link created successfully"
+          ],
+          "isRequest": false,
+          "arrowText": "Created",
+          "sourceComponent": "CTI",
+          "destinationComponent": "CONNECTION_MANAGER"
+        },
+        {
+          "messageIncludes": [
+            "CCTILinkFactory::GetCTILink",
+            "Creating AvayaDMCCCTILink"
+          ],
+          "isRequest": true,
+          "arrowText": "Creating AvayaDMCCCTILink",
+          "sourceComponent": "CONNECTION_MANAGER",
+          "destinationComponent": "CTI"
+        },
+        {
+          "messageIncludes": [
+            "GetDevicesAsync",
+            "reading devices from Device Manager"
+          ],
+          "isRequest": true,
+          "arrowText": "Reading devices",
+          "sourceComponent": "DRIVER",
+          "destinationComponent": "DEVICE"
+        },
+        {
+          "messageIncludes": [
+            "GetDevicesFromConfigurationServiceAsyn",
+            "get devices from URL"
+          ],
+          "isRequest": true,
+          "arrowText": "Reading devices",
+          "sourceComponent": "CONFIGURATION",
+          "destinationComponent": "DRIVER"
+        },
+        {
+          "messageIncludes": [
+            "GetDevicesAsync",
+            "received: DeviceManagerClientData.DevicesData"
+          ],
+          "isRequest": false,
+          "arrowText": "Get devices",
+          "sourceComponent": "CONFIGURATION",
+          "destinationComponent": "DRIVER"
+        },
+        {
+          "messageIncludes": [
+            "LinkHandler",
+            "PrintMonitorStatus",
+            "Total devices:",
+            "Failed:",
+            "Successful:"
+          ],
+          "isRequest": false,
+          "arrowText": "Devices",
+          "sourceComponent": "DEVICES",
+          "destinationComponent": "DRIVER"
+        },
+        {
+          "messageIncludes": ["Opening Compound"],
+          "isRequest": true,
+          "arrowText": "Receive start call event",
+          "sourceComponent": "CTI",
+          "destinationComponent": "DRIVER"
+        },
+        {
+          "messageIncludes": ["Sending message", "START_SEGMENT"],
+          "isRequest": true,
+          "arrowText": "Sending message - start segment",
+          "sourceComponent": "DRIVER",
+          "destinationComponent": "IM"
+        },
+        {
+          "messageIncludes": ["Event was sent successfully"],
+          "isRequest": false,
+          "arrowText": "Sent successfully",
+          "sourceComponent": "IM",
+          "destinationComponent": "DRIVER"
+        },
+        {
+          "messageIncludes": ["Sending message", "STOP_SEGMENT"],
+          "isRequest": true,
+          "arrowText": "Sending message - stop segment",
+          "sourceComponent": "DRIVER",
+          "destinationComponent": "IM"
+        },
+        {
+          "messageIncludes": ["Sending message", "UPDATE_SEGMENT", "HOLD"],
+          "isRequest": true,
+          "arrowText": "Sending message - hold interaction",
+          "sourceComponent": "DRIVER",
+          "destinationComponent": "IM"
+        },
+        {
+          "messageIncludes": ["Sending message", "UPDATE_SEGMENT", "RESUME"],
+          "isRequest": true,
+          "arrowText": "Sending message - resume interaction",
+          "sourceComponent": "DRIVER",
+          "destinationComponent": "IM"
+        },
+        {
+          "messageIncludes": ["remove successfully"],
+          "isRequest": true,
+          "arrowText": "Compound removed successfully",
+          "sourceComponent": "DRIVER",
+          "destinationComponent": "DRIVER"
+        },
+        {
+          "messageIncludes": ["ReadConfiguration"],
+          "isRequest": true,
+          "arrowText": "Read configuration",
+          "sourceComponent": "CONFIGURATION",
+          "destinationComponent": "CONNECTION_MANAGER"
+        },
+        {
+          "messageIncludes": ["ConnectToCTServer", "acsOpenStream success"],
+          "isRequest": false,
+          "arrowText": "Connected",
+          "sourceComponent": "CTI",
+          "destinationComponent": "CONNECTION_MANAGER"
+        },
+        {
+          "messageIncludes": ["ConnectToCTServer", "acsOpenStream success"],
+          "isRequest": false,
+          "arrowText": "Connected",
+          "sourceComponent": "CTI",
+          "destinationComponent": "CONNECTION_MANAGER"
+        },
+        {
+          "messageIncludes": [
+            "Got Device Type"
+          ],
+          "isRequest": false,
+          "arrowText": "Got device type",
+          "sourceComponent": "CONFIGURATION",
+          "destinationComponent": "DRIVER"
+        },
+        {
+          "messageIncludes": [
+            "Sending REQUEST CM_RQT_MONITOR_DEVICE"
+          ],
+          "isRequest": true,
+          "arrowText": "Get events",
+          "sourceComponent": "DRIVER",
+          "destinationComponent": "CONNECTION_MANAGER"
+        },
+        {
+          "messageIncludes": [
+            "Got REQUEST from CTI client",
+            "Request: CM_RQT_QUERY_DEVICE_INFO"
+          ],
+          "isRequest": true,
+          "arrowText": "Get device info",
+          "sourceComponent": "CONNECTION_MANAGER",
+          "destinationComponent": "CTI"
+        },
+        {
+          "messageIncludes": [
+            "Got RESPONSE from CTI Link",
+            "CM_RST_QUERY_DEVICE_INFO"
+          ],
+          "isRequest": false,
+          "arrowText": "Device info",
+          "sourceComponent": "CTI",
+          "destinationComponent": "CONNECTION_MANAGER"
+        },
+        {
+          "messageIncludes": [
+            "Got REQUEST from CTI client",
+            "CM_RST_MONITOR_DEVICE"
+          ],
+          "isRequest": true,
+          "arrowText": "Device monitor request",
+          "sourceComponent": "DRIVER",
+          "destinationComponent": "CONNECTION_MANAGER"
+        },
+        {
+          "messageIncludes": [
+            "Got RESPONSE from CTI Link",
+            "CM_RST_MONITOR_DEVICE"
+          ],
+          "isRequest": false,
+          "arrowText": "Device monitor response",
+          "sourceComponent": "CONNECTION_MANAGER",
+          "destinationComponent": "DRIVER"
+        },
+        {
+          "messageIncludes": [
+            "Got Event from CTI Link",
+            "EVENT_DELIVERED"
+          ],
+          "isRequest": true,
+          "arrowText": "Event deliverd",
+          "sourceComponent": "CTI",
+          "destinationComponent": "CONNECTION_MANAGER"
+        },
+        {
+          "messageIncludes": [
+            "SendEvent to client",
+            "EVENT_DELIVERED"
+          ],
+          "isRequest": true,
+          "arrowText": "Event deliverd",
+          "sourceComponent": "CONNECTION_MANAGER",
+          "destinationComponent": "DRIVER"
+        },
+        {
+          "messageIncludes": [
+            "Got Event from CTI Link",
+            "EVENT_START_CALL"
+          ],
+          "isRequest": true,
+          "arrowText": "Start call",
+          "sourceComponent": "CTI",
+          "destinationComponent": "CONNECTION_MANAGER"
+        },
+        {
+          "messageIncludes": [
+            "SendEvent to client",
+            "EVENT_START_CALL"
+          ],
+          "isRequest": true,
+          "arrowText": "Start call",
+          "sourceComponent": "CONNECTION_MANAGER",
+          "destinationComponent": "DRIVER"
+        },
+        {
+          "messageIncludes": [
+            "Got Event from CTI Link",
+            "EVENT_CONNECTION_CLEARED"
+          ],
+          "isRequest": true,
+          "arrowText": "Connection created",
+          "sourceComponent": "CTI",
+          "destinationComponent": "CONNECTION_MANAGER"
+        },
+        {
+          "messageIncludes": [
+            "SendEvent to client",
+            "EVENT_CONNECTION_CLEARED"
+          ],
+          "isRequest": true,
+          "arrowText": "Connection created",
+          "sourceComponent": "CONNECTION_MANAGER",
+          "destinationComponent": "DRIVER"
+        }
+      ]
+    }
+  ]
+}
