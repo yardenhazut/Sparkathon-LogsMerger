@@ -1,10 +1,12 @@
 package flow.logsmerger.controllers;
 
+import com.amazonaws.services.logs.model.ResultField;
 import flow.logsmerger.business.logic.exceptions.FlowVisualizationErrorException;
 import flow.logsmerger.business.logic.exceptions.InvalidRestRequestParamException;
 import flow.logsmerger.business.logic.exceptions.LoadFlowConfigException;
-import flow.logsmerger.business.logic.models.Request;
+import flow.logsmerger.business.logic.models.LogsResponse;
 import flow.logsmerger.business.logic.models.UploadInputForm;
+import org.apache.catalina.authenticator.SavedRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +31,11 @@ public class LogsMergerController {
 
     @PostMapping("/search")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<LogResults> validateFlow(@RequestBody UploadInputForm uploadInput) {
+    public ResponseEntity<List<LogsResponse>> validateFlow(@RequestBody UploadInputForm uploadInput) {
         try {
-            LogResults result = new LogResults(logsMergerService.validateFlow(uploadInput));
+         //   LogResults result = new LogResults(logsMergerService.validateFlow(uploadInput));
 
-            return ResponseEntity.ok().body(result);
+            return ResponseEntity.ok().body(logsMergerService.validateFlow(uploadInput));
 
         } catch (LoadFlowConfigException e) {
             e.printStackTrace();
@@ -46,4 +48,24 @@ public class LogsMergerController {
         }
         return null;
     }
+
+//    @PostMapping("/save")
+//    @CrossOrigin(origins = "*")
+//    public ResponseEntity<List<LogsResponse>> saveToFile(@RequestBody SaveRequest saveRequest) {
+//        try {
+//            //   LogResults result = new LogResults(logsMergerService.validateFlow(uploadInput));
+//
+//            return ResponseEntity.ok().body(logsMergerService.validateFlow(uploadInput));
+//
+//        } catch (LoadFlowConfigException e) {
+//            e.printStackTrace();
+//        } catch (InvalidRestRequestParamException e) {
+//            e.printStackTrace();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (FlowVisualizationErrorException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 }

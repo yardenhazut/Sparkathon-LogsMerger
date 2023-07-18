@@ -1,6 +1,8 @@
 package flow.logsmerger.controllers;
 
+import com.amazonaws.services.logs.model.ResultField;
 import flow.logsmerger.business.logic.flow.LogFlowHandler;
+import flow.logsmerger.business.logic.models.LogsResponse;
 import flow.logsmerger.business.logic.models.UploadInputForm;
 import flow.logsmerger.business.logic.utils.Utils;
 import flow.logsmerger.business.logic.exceptions.FlowVisualizationErrorException;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FlowVisualizationServiceImpl extends ServiceBase implements LogsMergerService {
@@ -21,7 +24,7 @@ public class FlowVisualizationServiceImpl extends ServiceBase implements LogsMer
     private LogFlowHandler logFlowHandler;
     private static final Logger logger = LoggerFactory.getLogger(FlowVisualizationServiceImpl.class);
 
-    public List<String> validateFlow(UploadInputForm uploadInput) throws LoadFlowConfigException, InvalidRestRequestParamException, FileNotFoundException, FlowVisualizationErrorException {
+    public List<LogsResponse> validateFlow(UploadInputForm uploadInput) throws LoadFlowConfigException, InvalidRestRequestParamException, FileNotFoundException, FlowVisualizationErrorException {
         logger.info("validateFlow() - Got user (ui) configuration:" + uploadInput);
         //String configFile = uploadInput.getConfigFileName();
         String configFile = "dummy_dev-visualization.json";
@@ -32,9 +35,20 @@ public class FlowVisualizationServiceImpl extends ServiceBase implements LogsMer
         logger.info("validateFlow() -  parameters:" + parameters, ", searchParameters:" + searchParameters);
 
         logger.info("validateFlow() - start running the flow..");
-        List<String> logResults = logFlowHandler.runFlow(configFile, uploadInput, searchParameters);
+        List<List<ResultField>> logResults = logFlowHandler.runFlow(configFile, uploadInput, searchParameters);
         //logger.info("validateFlow() - returning diagramUrl:" + diagramUrl);
-        return logResults;
+
+
+        return logResults.stream().map(x->getLogResponse(x)).collect(Collectors.toList());
+    }
+
+    private LogsResponse getLogResponse(List<ResultField> list){
+        LogsResponse logResponse = new LogsResponse();
+        logResponse.setTimestamp(list.get(0).getValue());
+        String fullLogGroup = list.get(1).getValue();
+        logResponse.setLogGroup(fullLogGroup.substring(fullLogGroup.indexOf(":") +1 ));
+        logResponse.setMessage(list.get(2).getValue());
+        return logResponse;
     }
 
     private void validateConfigFileParameter(String configFile) throws LoadFlowConfigException {
