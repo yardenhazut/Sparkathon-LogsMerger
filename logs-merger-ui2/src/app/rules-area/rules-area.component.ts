@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Output} from '@angular/core';
+import {DataItem} from "../model/DataItem";
 
 @Component({
   selector: 'rules-area',
@@ -6,11 +7,11 @@ import {Component, EventEmitter, Output} from '@angular/core';
   styleUrls: ['./rules-area.component.scss']
 })
 export class RulesAreaComponent {
-  @Output() dataArrived:EventEmitter<string[]> = new EventEmitter<string[]>();
+  @Output() dataArrived:EventEmitter<DataItem[]> = new EventEmitter<DataItem[]>();
   @Output() filterChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
 
   @Output() excludeChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
-  onDataArrived(data: any) {
+  onDataArrived(data: DataItem[]) {
     this.dataArrived.emit(data);
   }
 

@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {ApiService} from "../services/api-service";
+import {DataItem} from "../model/DataItem";
 
 @Component({
   selector: 'search-area',
@@ -9,7 +10,7 @@ import {ApiService} from "../services/api-service";
 export class SearchAreaComponent {
   searchTerm: string = "";
   isLoading: boolean = false;
-  @Output() dataArrived:EventEmitter<string[]> = new EventEmitter<string[]>();
+  @Output() dataArrived:EventEmitter<DataItem[]> = new EventEmitter<DataItem[]>();
   @Output() filterChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() excludeChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
 
@@ -44,7 +45,11 @@ export class SearchAreaComponent {
       response => {
         this.isLoading = false;
         console.log('Response from REST API:', response);
-        this.dataArrived.emit((<any>response).logRows);
+
+        response.forEach(item=>item.message = item.message.replaceAll("\r\n","<br>"));
+        response.forEach(item=>item.message = item.message.replaceAll("\n","<br>"));
+
+        this.dataArrived.emit(response);
       },
       error =>  {
         console.error('Error:', error);

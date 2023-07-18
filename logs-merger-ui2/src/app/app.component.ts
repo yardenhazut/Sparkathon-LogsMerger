@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {DataItem} from "./model/DataItem";
 
 @Component({
   selector: 'app-root',
@@ -7,10 +8,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'logs-merger-ui';
-  data:string[] = [];
+  data:DataItem[] = [];
   filters:any[] = [];
   excludes:any[] = [];
-  onDataArrived(data: string[]) {
+  onDataArrived(data: DataItem[]) {
     this.data = data;
   }
 

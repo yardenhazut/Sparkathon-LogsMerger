@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable, of} from 'rxjs';
+import {DataItem} from "../model/DataItem";
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,7 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  postSearch(data: any): Observable<string[]> {
-    return this.http.post<any>(this.API_URL, data);
-    //return of(["1234","12345"]);
+  postSearch(data: any): Observable<DataItem[]> {
+    return this.http.post<DataItem[]>(this.API_URL, data);
   }
 }
