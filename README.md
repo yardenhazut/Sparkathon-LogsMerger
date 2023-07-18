@@ -1,2 +1,2 @@
-# Sparkaton-LogsMerger
+# Sparkathon-LogsMerger
 Adapters log tool for Sparkaton
