@@ -23,12 +23,13 @@ public class FlowVisualizationServiceImpl extends ServiceBase implements LogsMer
 
     public List<String> validateFlow(UploadInputForm uploadInput) throws LoadFlowConfigException, InvalidRestRequestParamException, FileNotFoundException, FlowVisualizationErrorException {
         logger.info("validateFlow() - Got user (ui) configuration:" + uploadInput);
-        String configFile = uploadInput.getConfigFileName();
+        //String configFile = uploadInput.getConfigFileName();
+        String configFile = "dummy_dev-visualization.json";
         String parameters = uploadInput.getParameters();
 
-        validateConfigFileParameter(configFile);
+        //validateConfigFileParameter(configFile);
         String searchParameters = getSearchParameters(parameters);
-        logger.info("validateFlow() - configFile:" + configFile + ", parameters:" + parameters, ", searchParameters:" + searchParameters);
+        logger.info("validateFlow() -  parameters:" + parameters, ", searchParameters:" + searchParameters);
 
         logger.info("validateFlow() - start running the flow..");
         List<String> logResults = logFlowHandler.runFlow(configFile, uploadInput, searchParameters);

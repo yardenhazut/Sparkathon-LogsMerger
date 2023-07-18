@@ -5,6 +5,7 @@ import com.google.gson.JsonSyntaxException;
 import flow.logsmerger.business.logic.exceptions.ValidateFlowConfigException;
 import flow.logsmerger.business.logic.models.UploadInputForm;
 import flow.logsmerger.business.logic.query.broker.QueryTimestamps;
+import flow.logsmerger.business.logic.rules.RulesByLogGroup;
 import flow.logsmerger.business.logic.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static flow.logsmerger.business.logic.utils.Utils.*;
 
@@ -45,23 +47,24 @@ public class ConfigLoader {
     }
 
     private void completeFromOnlineParameters(String configFile, UploadInputForm uploadInput, FlowConfig flowConfig) throws ValidateFlowConfigException {
-        switch(uploadInput.getSearchRange()){
-            case PERIOD:
-                flowConfig.setSearchLastHours(0);
-                flowConfig.setSearchBeginPeriod(uploadInput.getSearchBeginPeriod());
-                flowConfig.setSearchEndPeriod(uploadInput.getSearchEndPeriod());
-                break;
-            case LASTHOURS:
-                flowConfig.setSearchLastHours(uploadInput.getSearchLastHours());
+//        switch(uploadInput.getSearchRange()){
+//            case PERIOD:
+//                flowConfig.setSearchLastHours(0);
+//                flowConfig.setSearchBeginPeriod(uploadInput.getSearchBeginPeriod());
+//                flowConfig.setSearchEndPeriod(uploadInput.getSearchEndPeriod());
+//                break;
+//            case LASTHOURS:
+                flowConfig.setSearchLastHours(72);
                 flowConfig.setSearchBeginPeriod("");
                 flowConfig.setSearchEndPeriod("");
-                break;
-        }
-        flowConfig.setSearchRange(uploadInput.getSearchRange().toString());
+//                break;
+//        }
+        //flowConfig.setSearchRange(uploadInput.getSearchRange().toString());
         flowConfig.setResultLimit(uploadInput.getResultLimit());
 
         validateConfigFile(flowConfig, configFile);
         flowConfig.updateFlowConfigParameters();
+        flowConfig.setRules(uploadInput.getLogGroups().stream().map(lg -> new RulesByLogGroup(lg)).collect(Collectors.toList()));
     }
 
     public FlowConfig loadConfigFile(String configFile) throws ValidateFlowConfigException {

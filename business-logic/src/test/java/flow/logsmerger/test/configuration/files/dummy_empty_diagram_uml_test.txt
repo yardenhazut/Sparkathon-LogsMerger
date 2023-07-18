@@ -1,9 +1,0 @@
-@startuml
-skinparam defaultFontSize 14
-skinparam ParticipantFontSize 14
-skinparam ArrowFontSize 13
-skinparam NoteBackgroundColor #gold
-
-title Flow Diagram
-footer Param 1 (green): dummy_text1\nParam 2 (red): dummy_text2\nParam 3 (blue): dummy_text3
-@enduml
