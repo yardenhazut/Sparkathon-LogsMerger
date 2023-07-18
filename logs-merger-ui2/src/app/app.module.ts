@@ -16,6 +16,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { FiltersComponent } from './filters/filters.component';
 import { FiltersDialogComponent } from './filters-dialog/filters-dialog.component';
+import { ExcludesDialogComponent } from './excludes-dialog/excludes-dialog.component';
+import { ExcludesAreaComponent } from './excludes-area/excludes-area.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +27,9 @@ import { FiltersDialogComponent } from './filters-dialog/filters-dialog.componen
     ConfigureDialogComponent,
     SearchAreaComponent,
     FiltersComponent,
-    FiltersDialogComponent
+    FiltersDialogComponent,
+    ExcludesDialogComponent,
+    ExcludesAreaComponent
   ],
   imports: [
     BrowserModule,
