@@ -1,0 +1,316 @@
+{
+  "searchLastHours": 72,
+  "searchBeginPeriod": "02/12/2023 12:00:00",
+  "searchEndPeriod": "02/12/2023 17:00:00",
+  "searchRange": "LastHours",
+  "resultLimit": 10000,
+  "awsProfile": "cxca-dev-assume",
+  "awsRegion": "us-west-2",
+  "rules": [
+    {
+      "logGroup": "dev-open-rec-sip-lb",
+      "logGroupRules":
+      [
+        {
+          "messageIncludes": ["Received a SIP INVITE","From: \"ESFU\""],
+          "isRequest": true,
+          "arrowText": "Invite",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": ["Received a SIP INVITE", "From: <sip:acmeSr", "To: \"VRSP\""],
+          "isRequest": true,
+          "arrowText": "Invite",
+          "sourceComponent": "SBC",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": ["Received a SIP INVITE", "From: \"Voip Sdk\"", "To: \"ESFU\""],
+          "isRequest": true,
+          "arrowText": "Invite",
+          "sourceComponent": "RECORDER",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": ["Sent response:\nSIP/2.0 100 Trying", "From: <sip:acmeSr", "To: \"VRSP\""],
+          "isRequest": false,
+          "arrowText": "100 Trying",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "SBC"
+        },
+        {
+          "messageIncludes": ["Sent response:\nSIP/2.0 100 Trying", "From: \"Voip Sdk\"", "To: \"ESFU\""],
+          "isRequest": false,
+          "arrowText": "100 Trying",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "RECORDER"
+        },
+        {
+          "messageIncludes": ["Sent response:\nSIP/2.0 302 Moved Temporarily", "From: <sip:acmeSr", "To: \"VRSP\""],
+          "isRequest": false,
+          "arrowText": "302 Moved Temporarily",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "SBC"
+        },
+        {
+          "messageIncludes": ["Sent response:\nSIP/2.0 302 Moved Temporarily", "From: \"Voip Sdk\"", "To: \"ESFU\""],
+          "isRequest": false,
+          "arrowText": "302 Moved Temporarily",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "RECORDER"
+        },
+        {
+          "messageIncludes": ["Going to look for key"],
+          "isRequest": true,
+          "arrowText": "Get Interaction Key",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "REDIS"
+        },
+        {
+          "messageIncludes": ["was not found in the cache."],
+          "isRequest": false,
+          "arrowText": "key not found",
+          "sourceComponent": "REDIS",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": ["Going to retrieve Contact URI from /lite-vrsp/get-sip-contact"],
+          "isRequest": true,
+          "arrowText": "Get ContactURI",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": ["Going to retrieve Contact URI from /esfu/get-sip-contact"],
+          "isRequest": true,
+          "arrowText": "Get ContactURI",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": ["Write successfully SIP contact URI to cache"],
+          "isRequest": true,
+          "arrowText": "Write ContactURI",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "REDIS"
+        },
+        {
+          "messageIncludes": ["Successful read from Redis"],
+          "isRequest": false,
+          "arrowText": "Interaction Key",
+          "sourceComponent": "REDIS",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": ["SIP contact URI received from", "VRSP"],
+          "isRequest": false,
+          "arrowText": "ContactURI",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": ["SIP contact URI received from", "ESFU"],
+          "isRequest": false,
+          "arrowText": "ContactURI",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": ["Could not retrieve Contact URI"],
+          "isRequest": false,
+          "arrowText": "Could not retrieve Contact URI",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "SIP_LB"
+        },
+        {
+          "messageIncludes": ["Sent response:\nSIP/2.0 302 Moved Temporarily", "To: \"VRSP\"", "From: \"ESFU\""],
+          "isRequest": false,
+          "arrowText": "302 MOVED_TEMPORARILY",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": ["Sent response:\nSIP/2.0 500 Server Internal Error", "From: <sip:acmeSrc", "To: \"VRSP\""],
+          "isRequest": false,
+          "arrowText": "500 Internal Error",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "SBC"
+        }
+      ]
+    },
+    {
+      "logGroup": "dev-open-rec-lite-vrsp",
+      "logGroupRules":
+      [
+        {
+          "messageIncludes": ["SIP Match was successful"],
+          "isRequest": false,
+          "arrowText": "SIP Match",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": ["Received SIP INVITE request ", "From: <sip:acmeSr"],
+          "isRequest": true,
+          "arrowText": "INVITE",
+          "sourceComponent": "SBC",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": ["Sent response 200 ", "From: <sip:acmeSr"],
+          "isRequest": true,
+          "arrowText": "200 OK",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "SBC"
+        },
+        {
+          "messageIncludes": ["Received SIP ACK request ", "From: <sip:acmeSr"],
+          "isRequest": true,
+          "arrowText": "ACK",
+          "sourceComponent": "SBC",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": ["Sent RE-INVITE", "To: <sip:acmeSr"],
+          "isRequest": true,
+          "arrowText": "Re-Invite (Start RTP)",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "SBC"
+        },
+        {
+          "messageIncludes": ["Received SIP BYE request", "From: <sip:acmeSrc"],
+          "isRequest": true,
+          "arrowText": "Bye",
+          "sourceComponent": "SBC",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": ["Received SIP BYE request", "From: \"ESFU\""],
+          "isRequest": true,
+          "arrowText": "Bye",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": ["Received a SIP response: 491"],
+          "isRequest": false,
+          "arrowText": "Received a SIP response: 491",
+          "sourceComponent": "SBC",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": ["Sip match timeout", "No IMR request"],
+          "isRequest": false,
+          "arrowText": "ERROR - No match",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": ["Sip match timeout", "No IMP request"],
+          "isRequest": false,
+          "arrowText": "No match",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": ["Sending message to dev-open-rec-sessions SQS"],
+          "isRequest": true,
+          "arrowText": "Sending message to dev-open-rec-sessions SQS",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "SESSION_SQS"
+        },
+        {
+          "messageIncludes": ["Message was sent successfully to SQS"],
+          "isRequest": false,
+          "arrowText": "Message was sent successfully to SQS",
+          "sourceComponent": "SESSION_SQS",
+          "destinationComponent": "VRSP"
+        }
+      ,
+        {
+          "messageIncludes": ["Clear Internal Cache"],
+          "isRequest": true,
+          "arrowText": "Clear Internal Cache",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "VRSP"
+        }
+      ]
+    },
+    {
+      "logGroup": "dev-open-rec-esfu",
+      "logGroupRules": [
+        {
+          "messageIncludes": ["Sent redirect invite", "From: \"ESFU\"", "To: \"VRSP\""],
+          "isRequest": true,
+          "arrowText": "Invite",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": ["Received a SIP request:\nINVITE ", "From: \"Voip Sdk\"", "To: \"ESFU\""],
+          "isRequest": true,
+          "arrowText": "Invite",
+          "sourceComponent": "RECORDER",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": ["Sent redirect invite:\nINVITE", "From: \"ESFU\"", "To: \"VRSP\" "],
+          "isRequest": true,
+          "arrowText": "INVITE",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "VRSP"
+        },
+        {
+          "messageIncludes": ["Received a SIP response:\nSIP/2.0 491 Request Pending"],
+          "isRequest": false,
+          "arrowText": "491 Request Pending",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": ["A new response created successfully:\nSIP/2.0 491 Request Pending"],
+          "isRequest": false,
+          "arrowText": "491 Request Pending",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "RECORDER"
+        },
+        {
+          "messageIncludes": ["Received a SIP response:\nSIP/2.0 302 Moved Temporarily", "To: \"VRSP\"", "From: \"ESFU\""],
+          "isRequest": false,
+          "arrowText": "302 MOVED_TEMPORARILY",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": ["Received a SIP response:\nSIP/2.0 200 OK", "To: \"VRSP\"", "From: \"ESFU\""],
+          "isRequest": false,
+          "arrowText": "200 OK",
+          "sourceComponent": "VRSP",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": ["A new response created successfully:\nSIP/2.0 200 OK", "To: \"ESFU\"", "From: \"Voip Sdk\""],
+          "isRequest": false,
+          "arrowText": "200 OK",
+          "sourceComponent": "ESFU",
+          "destinationComponent": "RECORDER"
+        },
+        {
+          "messageIncludes": ["Received a SIP response:\nSIP/2.0 302 Moved Temporarily"],
+          "isRequest": false,
+          "arrowText": "302 MOVED_TEMPORARILY",
+          "sourceComponent": "SIP_LB",
+          "destinationComponent": "ESFU"
+        },
+        {
+          "messageIncludes": ["Received a SIP request:\nBYE", "From: \"Voip Sdk\"", "To: \"ESFU\""],
+          "isRequest": false,
+          "arrowText": "Bye",
+          "sourceComponent": "RECORDER",
+          "destinationComponent": "ESFU"
+        }
+      ]
+    }
+  ]
+}

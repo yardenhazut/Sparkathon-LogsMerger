@@ -20,6 +20,10 @@ public class RulesByLogGroup {
     @Valid
     private final List<Rule> logGroupRules = new ArrayList<>();
 
+    public RulesByLogGroup(String logGroup) {
+        this.logGroup = logGroup;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
