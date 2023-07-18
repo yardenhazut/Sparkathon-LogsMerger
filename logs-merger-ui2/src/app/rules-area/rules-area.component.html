@@ -1,3 +1,5 @@
 <div class="bordered-component p-3 mb-2 bg-light border border-dark rounded full-height">
-  <search-area (dataArrived)="onDataArrived($event)" ></search-area>
+  <search-area (dataArrived)="onDataArrived($event)"
+               (filterChanged)="onFilterChanged($event)"
+               (excludeChanged)="onExcludeChanged($event)" ></search-area>
 </div>

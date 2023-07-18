@@ -11,7 +11,7 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   postSearch(data: any): Observable<string[]> {
-    //return this.http.post<any>(this.API_URL, data);
-    return of(["1234","12345"]);
+    return this.http.post<any>(this.API_URL, data);
+    //return of(["1234","12345"]);
   }
 }
