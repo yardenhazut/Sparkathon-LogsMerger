@@ -1,0 +1,25 @@
+<div >
+  <div class="row" >
+    <div class="col-md-10">
+      <input class="form-control"  placeholder="ESFU" [(ngModel)]="searchTerm">
+     </div>
+    <div class="col-md-1">
+      <button type="button" class="btn btn-info" (click)="onSearch()" >Search</button>
+    </div>
+  </div>
+  <br>
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Log Groups
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+     <app-logs-group-selection></app-logs-group-selection>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <hr>
+
+
+</div>
