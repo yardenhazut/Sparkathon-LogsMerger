@@ -19,11 +19,10 @@ export class SearchAreaComponent implements OnInit {
 
   constructor(private apiService: ApiService) {
     const ret = localStorage.getItem("SearchHistory");
-    if(ret) {
+    if (ret) {
       this.historySearch = JSON.parse(ret);
     }
   }
-  constructor(private apiService: ApiService) {}
 
   onFocusOut() {
     localStorage.setItem("relativeKey", this.relativeTerm);
