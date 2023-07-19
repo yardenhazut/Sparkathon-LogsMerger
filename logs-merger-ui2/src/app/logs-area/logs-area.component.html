@@ -1,9 +1,31 @@
 <div class="bordered-component p-3 mb-2 bg-light border border-dark rounded full-height" style="overflow-y: auto">
+  <mat-accordion *ngIf="logGroupFilter && logGroupFilter.length>1">
+    <mat-expansion-panel expanded="false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Log Groups
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div style="text-align: center;display: flex;width: 100%;justify-content: space-evenly;">
+        <button *ngFor="let grp of logGroupFilter" type="button" class="btn" [ngClass]="grp.selected ? 'btn-primary':'btn-outline-primary'"
+                  (click)="onClickFilter(grp)" >{{grp.label}}</button>
+      </div>
 
+    </mat-expansion-panel>
+  </mat-accordion>
   <div *ngFor="let singleLine of filteredData;let odd=odd;let idx=index"  style="margin: 10px;" >
-    <span style="float:right">#{{idx+1}}</span>
-    <div  [style.background-color]="odd?'white':null"
-         [innerHTML]="singleLine.message">
+    <div class="row">
+      <div class="col-md-1" *ngIf="logGroupsCount>1">
+        <span style="background-color: {{singleLine.logGroupBGColor}};writing-mode: vertical-rl;padding:15px 5px">
+          {{singleLine.logGroupLabel}}
+        </span>
+      </div>
+      <div class="col-md-11">
+        <span style="float:right">#{{idx+1}}</span>
+        <div  [style.background-color]="odd?'white':null"
+              [innerHTML]="singleLine.message">
+        </div>
+      </div>
     </div>
     <hr>
   </div>
