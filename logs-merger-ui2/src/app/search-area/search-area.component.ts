@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ApiService} from "../services/api-service";
 import {DataItem} from "../model/DataItem";
 
@@ -7,8 +7,9 @@ import {DataItem} from "../model/DataItem";
   templateUrl: './search-area.component.html',
   styleUrls: ['./search-area.component.scss']
 })
-export class SearchAreaComponent {
+export class SearchAreaComponent implements OnInit {
   searchTerm: string = "";
+  relativeTerm: string = "72";
   historySearch:string[]= [];
   isLoading: boolean = false;
   @Output() dataArrived:EventEmitter<DataItem[]> = new EventEmitter<DataItem[]>();
@@ -18,10 +19,15 @@ export class SearchAreaComponent {
 
   constructor(private apiService: ApiService) {
     const ret = localStorage.getItem("SearchHistory");
-    if(ret) {
+    if (ret) {
       this.historySearch = JSON.parse(ret);
     }
   }
+
+  onFocusOut() {
+    localStorage.setItem("relativeKey", this.relativeTerm);
+  }
+
   onSearch() {
     if (this.searchTerm && !this.historySearch.includes(this.searchTerm)) {
       this.historySearch.unshift(this.searchTerm);
@@ -49,10 +55,15 @@ export class SearchAreaComponent {
       return;
     }
 
+    if(!this.relativeTerm) {
+      alert("Please type a relative term");
+      return;
+    }
+
     const data = {
       "logGroups" : filtered.map(item=>item.value),
       "parameters" : this.searchTerm,
-      "searchLastHours" : "72",
+      "searchLastHours" : this.relativeTerm,
       "resultLimit" : "10000"
     }
     this.isLoading = true;
@@ -80,4 +91,9 @@ export class SearchAreaComponent {
   onExcludeChanged($event: any[]) {
     this.excludeChanged.emit($event);
   }
+
+  ngOnInit(): void {
+    this.relativeTerm = localStorage.getItem("relativeKey") || "24";
+  }
+
 }

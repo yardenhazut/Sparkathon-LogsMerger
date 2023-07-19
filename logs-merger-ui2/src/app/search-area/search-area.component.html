@@ -29,7 +29,7 @@
       </mat-expansion-panel-header>
      <app-logs-group-selection></app-logs-group-selection>
     </mat-expansion-panel>
-    <mat-expansion-panel expanded="true">
+    <mat-expansion-panel expanded="false">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Filters
@@ -37,7 +37,7 @@
       </mat-expansion-panel-header>
       <app-filters (filterChanged)="onFilterChanges($event)"></app-filters>
     </mat-expansion-panel>
-    <mat-expansion-panel expanded="true">
+    <mat-expansion-panel expanded="false">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Excludes
@@ -45,7 +45,19 @@
       </mat-expansion-panel-header>
       <app-excludes-area (excludesChanged)="onExcludeChanged($event)"></app-excludes-area>
     </mat-expansion-panel>
-  </mat-accordion>
+    <mat-expansion-panel expanded="false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Relative
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="col-md-12">
+        <label for="relativeTime">Relative Time In Hours</label>
+        <input id="relativeTime" min="1" max="10000" class="form-control" placeholder="Type relative time period in hours" type="number"
+               [(ngModel)]="relativeTerm" (focusout)="onFocusOut()" >
 
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
 
 </div>
