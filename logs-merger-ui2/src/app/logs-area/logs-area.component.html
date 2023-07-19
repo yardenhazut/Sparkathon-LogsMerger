@@ -7,5 +7,12 @@
     </div>
     <hr>
   </div>
-  <span style="margin-left: 15px">Showing {{filteredData && filteredData.length}} lines</span>
+  <div class="row">
+    <div class="d-flex align-items-center w-100 justify-content-between">
+      <span>Showing {{filteredData && filteredData.length}} lines</span>
+      <button type="button" class="btn btn-success" (click)="onSave()">
+        <i class="fas fa-save"></i> Save
+      </button>
+    </div>
+  </div>
 </div>
