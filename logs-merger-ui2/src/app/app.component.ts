@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import {DataItem} from "./model/DataItem";
 import {ApiService} from "./services/api-service";
 import {AIService} from "./services/AI-service";
+import {MatDialog} from "@angular/material/dialog";
+import {ExcludesDialogComponent} from "./excludes-dialog/excludes-dialog.component";
+import {AiDialogComponent} from "./ai-dialog/ai-dialog.component";
 
 @Component({
   selector: 'app-root',
@@ -14,11 +17,11 @@ export class AppComponent {
   filters:any[] = [];
   excludes:any[] = [];
 
-  constructor(private aiService: AIService) {
+  constructor(public dialog: MatDialog) {
 
   }
 
-    onDataArrived(data: DataItem[]) {
+  onDataArrived(data: DataItem[]) {
     this.data = data;
   }
 
@@ -32,6 +35,12 @@ export class AppComponent {
   }
 
   openAI() {
-    this.aiService.callAI();
+    this.dialog.open(AiDialogComponent,{
+      height: '80%',
+      width: '80%'
+    }).afterClosed().subscribe(()=>{
+
+    });
+
   }
 }

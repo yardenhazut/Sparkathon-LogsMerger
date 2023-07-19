@@ -4,6 +4,7 @@ import {ApiService} from "../services/api-service";
 import { saveAs } from 'file-saver';
 import {SaveDataItem} from "../model/SaveDataItem";
 import _ from 'lodash';
+import {DataService} from "../services/data-service";
 
 
 @Component({
@@ -23,7 +24,7 @@ export class LogsAreaComponent {
 
   public callIds:string[] = [];
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService,private dataService:DataService) {
   }
 
   @Input()
@@ -132,6 +133,7 @@ export class LogsAreaComponent {
     }
     const result = tempData2.filter(item => !toExclude.includes(item));
     this.filteredData = result;
+    this.dataService.filteredData = result;
   }
 
   private read(key:string){

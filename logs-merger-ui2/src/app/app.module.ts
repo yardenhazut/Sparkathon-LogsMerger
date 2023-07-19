@@ -22,6 +22,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { AiDialogComponent } from './ai-dialog/ai-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     FiltersComponent,
     FiltersDialogComponent,
     ExcludesDialogComponent,
-    ExcludesAreaComponent
+    ExcludesAreaComponent,
+    AiDialogComponent
   ],
   imports: [
     BrowserModule,
