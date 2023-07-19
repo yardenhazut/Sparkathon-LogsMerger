@@ -143,7 +143,7 @@ export class LogsAreaComponent {
   }
 
   onSave() {
-    const copiedData = _.cloneDeep(this.filteredData);
+    const copiedData:any[] = _.cloneDeep(this.filteredData);
     copiedData.forEach(item=>item.message = item.message.replaceAll("<br>", "\n\n"));
 
     const saveDataItem:SaveDataItem = {
@@ -153,8 +153,6 @@ export class LogsAreaComponent {
     };
     this.apiService.postSave(saveDataItem).subscribe(
       response => {
-
-        console.log("lal")
         // Convert the Blob to a MIME type
         const fileBlob = new Blob([response], { type: 'application/pdf' });
         saveAs(fileBlob, 'downloaded_file.pdf');
