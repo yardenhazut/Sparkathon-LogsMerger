@@ -38,11 +38,13 @@ export class SearchAreaComponent implements OnInit {
       }
       localStorage.setItem('SearchHistory', JSON.stringify(this.historySearch));
     }
-      const ret = localStorage.getItem("LogGroupLabels");
+
+    const ret = localStorage.getItem("LogGroupLabels");
     if(!ret) {
       alert("Please configure log groups");
       return;
     }
+
     const list:any[] = JSON.parse(ret);
     const filtered = list.filter(item=>item.selected);
     if(!filtered || filtered.length===0) {
@@ -67,6 +69,7 @@ export class SearchAreaComponent implements OnInit {
       "resultLimit" : "10000"
     }
     this.isLoading = true;
+    this.dataArrived.emit([]);
     this.apiService.postSearch(data).subscribe(
       response => {
         this.isLoading = false;
