@@ -1,10 +1,11 @@
 <div class="bordered-component p-3 mb-2 bg-light border border-dark rounded full-height" style="overflow-y: auto">
 
-  <div *ngFor="let singleLine of filteredData;let odd=odd" class="row" style="margin: 10px;" >
-    <div class="col-md-12" [style.background-color]="odd?'white':null">
-      <label>{{singleLine}}</label>
-      <hr>
+  <div *ngFor="let singleLine of filteredData;let odd=odd;let idx=index"  style="margin: 10px;" >
+    <span style="float:right">#{{idx+1}}</span>
+    <div  [style.background-color]="odd?'white':null"
+         [innerHTML]="singleLine.message">
     </div>
+    <hr>
   </div>
   <span style="margin-left: 15px">Showing {{filteredData && filteredData.length}} lines</span>
 </div>

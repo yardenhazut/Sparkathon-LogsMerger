@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {DataItem} from "../model/DataItem";
 
 @Component({
   selector: 'logs-area',
@@ -6,10 +7,10 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
   styleUrls: ['./logs-area.component.scss']
 })
 export class LogsAreaComponent {
-  private _data:string[] = [];
+  private _data:DataItem[] = [];
   private _filters:any[] = [];
   private _excludes:any[] = [];
-  public filteredData:string[] = [];
+  public filteredData:DataItem[] = [];
 
 
   @Input()
@@ -41,36 +42,39 @@ export class LogsAreaComponent {
     return this._data;
   }
 
-  public set data(newData:string[]) {
+  public set data(newData:DataItem[]) {
     this._data = newData;
     this.processData();
   }
 
   private processData() {
     this.filteredData = [];
+    if(!this._data) {
+      return;
+    }
     const rules = this.readRules();
     const excludes = this.readExcludes();
     const rulesRegExs = rules.map(item=>new RegExp((item).value));
     const excludesRegExs = excludes.map(item=>new RegExp((item).value));
 
-    const tempData = [];
+    const tempData:DataItem[] = [];
      // includes
     for(const element of this._data) {
       const line = element;
       for(const element of rulesRegExs) {
         const rule: RegExp = element;
-        if(rule.test(line)){
+        if(rule.test(line.message)){
           tempData.push(line);
           break;
         }
       }
     }
-    const toExclude:any[] = [];
+    const toExclude:DataItem[] = [];
     for(const element of tempData) {
       const line = element;
       for(const element of excludesRegExs) {
         const rule: RegExp = element;
-        if(rule.test(line)){
+        if(rule.test(line.message)){
           toExclude.push(line);
           break;
         }
