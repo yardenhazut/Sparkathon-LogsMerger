@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import {DataItem} from "./model/DataItem";
+import {ApiService} from "./services/api-service";
+import {AIService} from "./services/AI-service";
 
 @Component({
   selector: 'app-root',
@@ -11,7 +13,12 @@ export class AppComponent {
   data:DataItem[] = [];
   filters:any[] = [];
   excludes:any[] = [];
-  onDataArrived(data: DataItem[]) {
+
+  constructor(private aiService: AIService) {
+
+  }
+
+    onDataArrived(data: DataItem[]) {
     this.data = data;
   }
 
@@ -24,4 +31,7 @@ export class AppComponent {
     this.excludes = excludes;
   }
 
+  openAI() {
+    this.aiService.callAI();
+  }
 }
