@@ -1,5 +1,10 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {DataItem} from "../model/DataItem";
+import {ApiService} from "../services/api-service";
+import { saveAs } from 'file-saver';
+import {SaveDataItem} from "../model/SaveDataItem";
+import _ from 'lodash';
+
 
 @Component({
   selector: 'logs-area',
@@ -16,6 +21,9 @@ export class LogsAreaComponent {
 
   public logGroupsCount = 0;
 
+  constructor(private apiService: ApiService) {
+  }
+
   @Input()
   public get filters() {
     return this._filters;
@@ -27,6 +35,7 @@ export class LogsAreaComponent {
       this.processData();
     }
   }
+
   @Input()
   public get excludes() {
     return this._excludes;
@@ -133,6 +142,28 @@ export class LogsAreaComponent {
     return this.read("ExcludeLabels");
   }
 
+  onSave() {
+    const copiedData = _.cloneDeep(this.filteredData);
+    copiedData.forEach(item=>item.message = item.message.replaceAll("<br>", "\n\n"));
+
+    const saveDataItem:SaveDataItem = {
+      "logRows": copiedData,
+      "desiredFormat": "PDF",
+      "query": "aaa"
+    };
+    this.apiService.postSave(saveDataItem).subscribe(
+      response => {
+
+        console.log("lal")
+        // Convert the Blob to a MIME type
+        const fileBlob = new Blob([response], { type: 'application/pdf' });
+        saveAs(fileBlob, 'downloaded_file.pdf');
+      },
+      error => {
+        console.error('Error:', error);
+      }
+    );
+  }
   private enhanceData(logGroups: any[]) {
     const logGroupsMap:any = {};
     const logGroupsColorMap:any = {};
