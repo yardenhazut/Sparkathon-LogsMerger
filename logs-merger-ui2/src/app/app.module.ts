@@ -18,6 +18,11 @@ import { FiltersComponent } from './filters/filters.component';
 import { FiltersDialogComponent } from './filters-dialog/filters-dialog.component';
 import { ExcludesDialogComponent } from './excludes-dialog/excludes-dialog.component';
 import { ExcludesAreaComponent } from './excludes-area/excludes-area.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +44,11 @@ import { ExcludesAreaComponent } from './excludes-area/excludes-area.component';
     MatButtonModule,
     FormsModule,
     HttpClientModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatInputModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatAutocompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent]

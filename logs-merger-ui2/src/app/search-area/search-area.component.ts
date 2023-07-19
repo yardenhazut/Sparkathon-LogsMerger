@@ -9,15 +9,30 @@ import {DataItem} from "../model/DataItem";
 })
 export class SearchAreaComponent {
   searchTerm: string = "";
+  historySearch:string[]= [];
   isLoading: boolean = false;
   @Output() dataArrived:EventEmitter<DataItem[]> = new EventEmitter<DataItem[]>();
   @Output() filterChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() excludeChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
 
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService) {
+    const ret = localStorage.getItem("SearchHistory");
+    if(ret) {
+      this.historySearch = JSON.parse(ret);
+    }
+  }
   onSearch() {
-    const ret = localStorage.getItem("LogGroupLabels");
+    if (this.searchTerm && !this.historySearch.includes(this.searchTerm)) {
+      this.historySearch.unshift(this.searchTerm);
+
+      // Limit the history list size to 10
+      if (this.historySearch.length > 10) {
+        this.historySearch.pop();
+      }
+      localStorage.setItem('SearchHistory', JSON.stringify(this.historySearch));
+    }
+      const ret = localStorage.getItem("LogGroupLabels");
     if(!ret) {
       alert("Please configure log groups");
       return;
