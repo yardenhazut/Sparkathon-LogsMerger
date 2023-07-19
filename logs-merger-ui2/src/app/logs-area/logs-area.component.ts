@@ -21,6 +21,8 @@ export class LogsAreaComponent {
 
   public logGroupsCount = 0;
 
+  public callIds:string[] = [];
+
   constructor(private apiService: ApiService) {
   }
 
@@ -82,9 +84,17 @@ export class LogsAreaComponent {
     const excludesRegExs = excludes.map(item=>new RegExp((item).value));
 
     const tempData1:DataItem[] = [];
-
+    const callIdsSet = new Set();
     const selectedLogFilters = this.logGroupFilter.filter(item=>item.selected);
     for(const line of this._data) {
+
+      const callIdIdx = line.message.indexOf("Call-ID:");
+      if(callIdIdx>0){
+          const endCallIdIdx = line.message.indexOf("@",callIdIdx);
+          const callId = line.message.substring(callIdIdx+8,endCallIdIdx);
+          callIdsSet.add(callId);
+      }
+
       if(this.logGroupsCount<2){
         tempData1.push(line);
       }else {
@@ -96,6 +106,8 @@ export class LogsAreaComponent {
         }
       }
     }
+
+    this.callIds =  <string[]>Array.from(callIdsSet);
 
     const tempData2:DataItem[] = [];
      // includes
