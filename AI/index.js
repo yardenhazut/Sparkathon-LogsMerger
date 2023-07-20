@@ -11,6 +11,7 @@ async function getAccessToken() {
   try {  
     const credential = new DefaultAzureCredential();
     const token = await credential.getToken("https://cognitiveservices.azure.com/.default");
+    console.error('Got Token:', token.token);
     return token.token;  
   } catch (error) {  
     console.error('Error getting access token:', error);  
@@ -29,7 +30,7 @@ async function queryAzureOpenAI(prompt) {
   
   const data = {  
     prompt: prompt,  
-    max_tokens: 1000,  
+    max_tokens: 1000,
     n: 1,  
     stop: null,  
     temperature: 1,  
@@ -54,7 +55,7 @@ app.use(express.json());
 app.post('/api/endpoint', (req, res) => {  
   console.error(req);
   const data = req.body;  
-  console.log('Data received:', data);  
+
 
   let prompt = `
 Hello, I would like you to help us improve our work in our company.  
@@ -92,7 +93,7 @@ please make sure all the events happened in each flow
   `;
   prompt+="\n";
   prompt+=data.msg;
-
+  console.log('prompt:', data);
 
   queryAzureOpenAI(prompt)  
   .then(result => {    
