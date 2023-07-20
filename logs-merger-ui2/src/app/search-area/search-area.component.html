@@ -5,8 +5,9 @@
   <br>
   <div class="row">
     <div class="col-md-9">
-      <mat-form-field appearance="outline" class="w-100">
-        <input matInput [(ngModel)]="searchTerm" [matAutocomplete]="auto" placeholder="Type search term like Interaction Key" style="width: 100%;">
+      <mat-form-field appearance="outline">
+        <input matInput [(ngModel)]="searchTerm" [matAutocomplete]="auto"
+               placeholder="Type search term">
         <mat-autocomplete #auto="matAutocomplete">
           <mat-option *ngFor="let historyItem of historySearch" [value]="historyItem">
             {{ historyItem }}
@@ -15,7 +16,9 @@
       </mat-form-field>
     </div>
     <div class="col-md-1">
-      <button type="button" class="btn btn-info" (click)="onSearch()" style="height: 55px">Search</button>
+      <button type="button" class="btn btn-info" (click)="onSearch()" style="height: 55px">
+        <i class="fas fa-search fa-lg"></i>
+      </button>
     </div>
   </div>
 
