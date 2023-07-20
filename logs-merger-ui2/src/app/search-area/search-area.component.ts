@@ -107,4 +107,6 @@ export class SearchAreaComponent implements OnInit {
     this.historySearch.splice(this.historySearch.indexOf(historyItem),1);
     localStorage.setItem('SearchHistory', JSON.stringify(this.historySearch));
   }
+
+
 }

@@ -1,4 +1,10 @@
-<div class="bordered-component p-3 mb-2 bg-light border border-dark rounded full-height" style="overflow-y: auto">
+<div class="bordered-component p-3 mb-2 bg-light border border-dark rounded full-height"
+     style="overflow-y: auto;position: relative">
+  <button type="button" class="btn btn-close"
+          style="position: absolute;
+    border: solid thin black;
+    left: 3px;
+    top: 3px" (click)="closeSearch()" >  </button>
   <search-area (dataArrived)="onDataArrived($event)"
                (filterChanged)="onFilterChanged($event)"
                (excludeChanged)="onExcludeChanged($event)" ></search-area>

@@ -16,6 +16,7 @@ export class AppComponent {
   data:DataItem[] = [];
   filters:any[] = [];
   excludes:any[] = [];
+  searchOpen: boolean = true;
 
   constructor(public dialog: MatDialog) {
 
@@ -42,5 +43,9 @@ export class AppComponent {
 
     });
 
+  }
+
+  onSearchClosed() {
+    this.searchOpen = false;
   }
 }

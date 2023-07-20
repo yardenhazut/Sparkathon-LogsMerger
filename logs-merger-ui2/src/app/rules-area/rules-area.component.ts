@@ -10,6 +10,7 @@ export class RulesAreaComponent {
   @Output() dataArrived:EventEmitter<DataItem[]> = new EventEmitter<DataItem[]>();
   @Output() filterChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
 
+  @Output() searchClosed:EventEmitter<void> = new EventEmitter<void>();
   @Output() excludeChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
   onDataArrived(data: DataItem[]) {
     this.dataArrived.emit(data);
@@ -21,5 +22,9 @@ export class RulesAreaComponent {
 
   onExcludeChanged($event: any[]) {
     this.excludeChanged.emit($event);
+  }
+
+  closeSearch() {
+    this.searchClosed.emit();
   }
 }
