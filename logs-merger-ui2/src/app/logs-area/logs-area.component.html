@@ -42,8 +42,8 @@
       </div>
       <div [ngClass]="logGroupsCount>1?'col-md-11':'col-md-12'">
         <span style="float:right">#{{idx+1}}</span>
-        <div  [style.background-color]="odd?'white':null" class="main-log-line"
-              [innerHTML]="singleLine.message">
+        <div  [style.background-color]="odd?'white':null" class="main-log-line">
+          <pre style="white-space: pre-wrap">{{singleLine.message}}</pre>
         </div>
       </div>
     </div>

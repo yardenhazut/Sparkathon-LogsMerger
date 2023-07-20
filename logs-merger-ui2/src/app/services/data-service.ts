@@ -5,5 +5,5 @@ import {DataItem} from "../model/DataItem";
   providedIn: 'root'
 })
 export class DataService {
-  public filteredData:DataItem[];
+  public filteredData:DataItem[] = [];
 }
