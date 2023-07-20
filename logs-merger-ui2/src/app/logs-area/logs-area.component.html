@@ -1,18 +1,38 @@
 <div class="bordered-component p-3 mb-2 bg-light border border-dark rounded full-height" style="overflow-y: auto">
-  <mat-accordion *ngIf="logGroupFilter && logGroupFilter.length>1">
-    <mat-expansion-panel expanded="false">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Log Groups
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <div style="text-align: center;display: flex;width: 100%;justify-content: space-evenly;">
-        <button *ngFor="let grp of logGroupFilter" type="button" class="btn" [ngClass]="grp.selected ? 'btn-primary':'btn-outline-primary'"
-                  (click)="onClickFilter(grp)" >{{grp.label}}</button>
-      </div>
+  <div class="row">
+    <div class="col-md-6" *ngIf="logGroupFilter && logGroupFilter.length>1">
+      <mat-accordion>
+        <mat-expansion-panel expanded="false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Log Groups
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div style="text-align: center;display: flex;width: 100%;justify-content: space-evenly;">
+            <button *ngFor="let grp of logGroupFilter" type="button" class="btn" [ngClass]="grp.selected ? 'btn-primary':'btn-outline-primary'"
+                    (click)="onClickFilter(grp)" >{{grp.label}}</button>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <div class="col-md-6" *ngIf="callIds && callIds.length>0">
+      <mat-accordion>
+        <mat-expansion-panel expanded="false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Call IDS
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div *ngFor="let callId of callIds;let idx = index" style="display: flex;align-items: center;margin-top: 3px" >
+            #{{idx+1}}
+            <input readonly class="form-control" value="{{callId}}" style="margin-left: 8px">
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
 
-    </mat-expansion-panel>
-  </mat-accordion>
+
   <div *ngFor="let singleLine of filteredData;let odd=odd;let idx=index"  style="margin: 10px;" >
     <div class="row">
       <div class="col-md-1" *ngIf="logGroupsCount>1">
@@ -20,28 +40,16 @@
           {{singleLine.logGroupLabel}}
         </span>
       </div>
-      <div class="col-md-11">
+      <div [ngClass]="logGroupsCount>1?'col-md-11':'col-md-12'">
         <span style="float:right">#{{idx+1}}</span>
-        <div  [style.background-color]="odd?'white':null"
+        <div  [style.background-color]="odd?'white':null" class="main-log-line"
               [innerHTML]="singleLine.message">
         </div>
       </div>
     </div>
     <hr>
   </div>
-  <mat-accordion *ngIf="callIds && callIds.length>0">
-    <mat-expansion-panel expanded="false">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Call IDS
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <div *ngFor="let callId of callIds;let idx = index" style="display: flex;align-items: center;margin-top: 3px" >
-        #{{idx+1}}
-        <input readonly class="form-control" value="{{callId}}" style="margin-left: 8px">
-      </div>
-    </mat-expansion-panel>
-  </mat-accordion>
+
   <div class="row" >
     <div class="d-flex align-items-center w-100 justify-content-between">
       <span>Showing {{filteredData && filteredData.length}} lines</span>
