@@ -5,12 +5,13 @@
   <br>
   <div class="row">
     <div class="col-md-9">
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
         <input matInput [(ngModel)]="searchTerm" [matAutocomplete]="auto"
                placeholder="Type search term">
         <mat-autocomplete #auto="matAutocomplete">
           <mat-option *ngFor="let historyItem of historySearch" [value]="historyItem">
-            {{ historyItem }}
+            <div style="display: flex;align-items: center">
+              <i style="color: darkred" class="fas fa-remove" (click)="deleteItemFromHistory(historyItem)" ></i> {{ historyItem }}</div>
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
@@ -21,6 +22,7 @@
       </button>
     </div>
   </div>
+  <div *ngIf="showNoData" style="color: coral">No data available</div>
 
   <br>
   <mat-accordion multi="true" >

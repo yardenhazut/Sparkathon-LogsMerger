@@ -21,3 +21,4 @@ velocity.log
 **/integration-tests/src/main/java/jsystemProject.properties
 /integration-tests/reportportal.lock
 /integration-tests/reportportal.sync
+/AI/node_modules/

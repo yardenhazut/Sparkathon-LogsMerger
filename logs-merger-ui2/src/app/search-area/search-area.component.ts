@@ -12,6 +12,8 @@ export class SearchAreaComponent implements OnInit {
   relativeTerm: string = "72";
   historySearch:string[]= [];
   isLoading: boolean = false;
+  showNoData: boolean = false;
+
   @Output() dataArrived:EventEmitter<DataItem[]> = new EventEmitter<DataItem[]>();
   @Output() filterChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() excludeChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
@@ -69,6 +71,7 @@ export class SearchAreaComponent implements OnInit {
       "resultLimit" : "10000"
     }
     this.isLoading = true;
+    this.showNoData = false;
     this.dataArrived.emit([]);
     this.apiService.postSearch(data).subscribe(
       response => {
@@ -79,6 +82,7 @@ export class SearchAreaComponent implements OnInit {
         response.forEach(item=>item.message = item.message.replaceAll("\n","<br>"));
 
         this.dataArrived.emit(response);
+        this.showNoData = response.length == 0;
       },
       error =>  {
         console.error('Error:', error);
@@ -99,4 +103,8 @@ export class SearchAreaComponent implements OnInit {
     this.relativeTerm = localStorage.getItem("relativeKey") || "24";
   }
 
+  deleteItemFromHistory(historyItem:string ) {
+    this.historySearch.splice(this.historySearch.indexOf(historyItem),1);
+    localStorage.setItem('SearchHistory', JSON.stringify(this.historySearch));
+  }
 }
