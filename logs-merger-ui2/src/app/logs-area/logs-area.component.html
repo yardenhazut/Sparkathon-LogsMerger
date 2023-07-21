@@ -1,5 +1,5 @@
 <div class="bordered-component p-3 mb-2 bg-light border border-dark rounded full-height" style="overflow-y: auto">
-  <div class="row">
+  <div class="row" style="position: sticky;top: 0;">
     <div class="col-md-6" *ngIf="logGroupFilter && logGroupFilter.length>1">
       <mat-accordion>
         <mat-expansion-panel expanded="false">
@@ -23,31 +23,34 @@
               Call IDS
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <div *ngFor="let callId of callIds;let idx = index" style="display: flex;align-items: center;margin-top: 3px" >
+          <div *ngFor="let callId of callIds;let idx = index"
+               style="display: flex;align-items: center;margin-top: 3px" >
             #{{idx+1}}
-            <input readonly class="form-control" value="{{callId}}" style="margin-left: 8px">
+            <input readonly class="form-control" value="{{callId}}"
+                   style="margin-left: 8px;color:{{colors[idx % colors.length]}}">
           </div>
         </mat-expansion-panel>
       </mat-accordion>
     </div>
   </div>
 
-
-  <div *ngFor="let singleLine of filteredData;let odd=odd;let idx=index"  style="margin: 10px;" >
-    <div class="row">
-      <div class="col-md-1" *ngIf="logGroupsCount>1">
-        <span style="background-color: {{singleLine.logGroupBGColor}};writing-mode: vertical-rl;padding:15px 5px">
-          {{singleLine.logGroupLabel}}
-        </span>
-      </div>
-      <div [ngClass]="logGroupsCount>1?'col-md-11':'col-md-12'">
-        <span style="float:right">#{{idx+1}}</span>
-        <div  [style.background-color]="odd?'white':null" class="main-log-line">
-          <pre style="white-space: pre-wrap">{{singleLine.message}}</pre>
+  <div>
+    <div *ngFor="let singleLine of filteredData;let odd=odd;let idx=index"  style="margin: 5px 10px;" >
+      <div class="row">
+        <div class="col-md-1" *ngIf="logGroupsCount>1">
+          <span style="background-color: {{singleLine.logGroupBGColor}};writing-mode: vertical-rl;padding:15px 5px">
+            {{singleLine.logGroupLabel}}
+          </span>
+        </div>
+        <div [ngClass]="logGroupsCount>1?'col-md-11':'col-md-12'">
+          <span style="font-weight: bold">#{{idx+1}}</span>
+          <div  [style.background-color]="odd?'white':null" class="main-log-line">
+            <span style="white-space: pre-wrap" [innerHTML]="getLine(singleLine)"></span>
+          </div>
         </div>
       </div>
+      <hr>
     </div>
-    <hr>
   </div>
 
   <div class="row" >

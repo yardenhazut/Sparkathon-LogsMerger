@@ -24,6 +24,8 @@ export class LogsAreaComponent {
 
   public callIds:string[] = [];
 
+  public colors:string[] = [ "Blue", "Green", "Orange", "Purple", "Gray", "Brown", "Cyan", "Magenta", "Lime", "Maroon", "Navy", "Olive", "Teal", "Silver", "Gold", "Pink", "Indigo", "Coral", "Yellow"];
+
   constructor(private apiService: ApiService,private dataService:DataService) {
   }
 
@@ -134,6 +136,33 @@ export class LogsAreaComponent {
     const result = tempData2.filter(item => !toExclude.includes(item));
     this.filteredData = result;
     this.dataService.filteredData = result;
+
+    setTimeout(this.startFormatting,1000);
+  }
+  private startFormatting = () => {
+    if(!this.filteredData){
+      return;
+    }
+    this.filteredData.forEach(line=>{
+      this.formatLine(line);
+    })
+  }
+  private formatLine(line:DataItem) {
+    let msg = line.message.replaceAll("<","&lt;").replaceAll(">","&gt;");
+    msg = msg.replaceAll("\r\n","<br>").replaceAll("\n","<br>");
+
+    let callIdIdx = 0;
+    for(const callId of this.callIds) {
+
+      const idx = msg.indexOf(callId);
+      if(idx>=0){
+        const color = this.colors[callIdIdx];
+        msg = msg.replaceAll(callId,"<font color='"+color+"'>"+callId+"</font>");
+      }
+      callIdIdx++;
+      callIdIdx = callIdIdx % this.colors.length;
+    }
+    line.formatted = msg;
   }
 
   private read(key:string){
@@ -211,5 +240,12 @@ export class LogsAreaComponent {
   onClickFilter(grp:any) {
     grp.selected = !grp.selected;
     this.processData();
+  }
+
+  getLine(line:DataItem) {
+    if (line.formatted) {
+      return line.formatted;
+    }
+    return line.message;
   }
 }

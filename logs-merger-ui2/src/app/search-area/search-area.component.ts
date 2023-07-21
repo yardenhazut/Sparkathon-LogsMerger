@@ -78,8 +78,7 @@ export class SearchAreaComponent implements OnInit {
         this.isLoading = false;
         console.log('Response from REST API:', response);
 
-       // response.forEach(item=>item.message = item.message.replaceAll("\r\n","<br>"));
-       // response.forEach(item=>item.message = item.message.replaceAll("\n","<br>"));
+        response.forEach(item=>item.message = item.message.substring(0,item.message.length-3));
 
         this.dataArrived.emit(response);
         this.showNoData = response.length == 0;
@@ -106,6 +105,7 @@ export class SearchAreaComponent implements OnInit {
   deleteItemFromHistory(historyItem:string ) {
     this.historySearch.splice(this.historySearch.indexOf(historyItem),1);
     localStorage.setItem('SearchHistory', JSON.stringify(this.historySearch));
+    this.searchTerm = "";
   }
 
 
