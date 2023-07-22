@@ -8,8 +8,8 @@ import {SaveDataItem} from "../model/SaveDataItem";
   providedIn: 'root'
 })
 export class ApiService {
-  private readonly SEARCH_API_URL = 'http://localhost:9021/flow-visualization/flow-visualization/search';
-  private readonly SAVE_API_URL = 'http://127.0.0.1:9021/flow-visualization/flow-visualization/save';
+  private readonly SEARCH_API_URL = 'http://localhost:9021/flow-visualization/search';
+  private readonly SAVE_API_URL = 'http://127.0.0.1:9021/flow-visualization/save';
 
   constructor(private http: HttpClient) { }
 
