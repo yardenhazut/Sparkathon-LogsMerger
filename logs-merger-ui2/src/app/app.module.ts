@@ -26,7 +26,8 @@ import { AiDialogComponent } from './ai-dialog/ai-dialog.component';
 import {SafeHtmlPipe} from "./pipe/SafeHtmlPipe";
 import { ColorsAreaComponent } from './colors-area/colors-area.component';
 import { ColorsDialogComponent } from './colors-dialog/colors-dialog.component';
-
+import {ClipboardModule} from '@angular/cdk/clipboard';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,7 +57,9 @@ import { ColorsDialogComponent } from './colors-dialog/colors-dialog.component';
     MatInputModule,
     MatSelectModule,
     MatFormFieldModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    ClipboardModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

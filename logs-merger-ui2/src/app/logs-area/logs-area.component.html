@@ -57,9 +57,19 @@
   <div class="row" >
     <div class="d-flex align-items-center w-100 justify-content-between">
       <span>Showing {{filteredData && filteredData.length}} lines</span>
-      <button type="button" [disabled]="!filteredData || !filteredData.length"  class="btn btn-info" style="margin: 5px" (click)="onSave()">
-        <i class="fas fa-save"></i> Save
-      </button>
+      <div>
+        <button type="button" [disabled]="!filteredData || !filteredData.length"  class="btn btn-info" style="margin: 5px" (click)="onSave()">
+          <i class="fas fa-save"></i> Save
+        </button>
+        <button type="button" [cdkCopyToClipboard]="copyToClip()"
+                (click)="onCopy()"  class="btn btn-info" style="margin: 5px">
+          <i class="fas fa-clipboard"></i> Copy to clipboard
+        </button>
+        <button type="button"
+                (click)="cleanLogs()"  class="btn btn-info" style="margin: 5px">
+          <i class="fas fa-remove"></i> Remove Prefix
+        </button>
+      </div>
     </div>
   </div>
 </div>

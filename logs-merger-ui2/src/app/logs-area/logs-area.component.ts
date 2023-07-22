@@ -5,6 +5,7 @@ import { saveAs } from 'file-saver';
 import {SaveDataItem} from "../model/SaveDataItem";
 import _ from 'lodash';
 import {DataService} from "../services/data-service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 
 @Component({
@@ -28,7 +29,9 @@ export class LogsAreaComponent implements OnInit {
 
   public colorsSet:string[] = [ "Blue", "Green", "Orange", "Purple", "Gray", "Brown", "Cyan", "Magenta", "Lime", "Maroon", "Navy", "Olive", "Teal", "Silver", "Gold", "Pink", "Indigo", "Coral", "Yellow"];
 
-  constructor(private apiService: ApiService,private dataService:DataService) {
+  constructor(private apiService: ApiService,
+              private dataService:DataService,
+              private snackBar: MatSnackBar) {
   }
   ngOnInit(): void {
       this._colors = this.read("ColorsLabels");
@@ -277,5 +280,30 @@ export class LogsAreaComponent implements OnInit {
       return line.formatted;
     }
     return line.message;
+  }
+  cleanLogs() {
+    const regEx = new RegExp("\\[[\\w-]*\\] \\[\\d+\\.\\d+\\] \\[\\] \\[\\] ");
+    if(this._data){
+      for(const line of this._data){
+        line.message = line.message.replace(regEx,"");
+        line.formatted = "";
+      }
+    }
+  }
+  copyToClip() {
+    let msg = "";
+    for(const line of this.filteredData){
+      msg+=line.message;
+      msg+="\n\n";
+      msg+="=======================================================\n\n";
+    }
+
+    return msg;
+  }
+
+  onCopy() {
+    this.snackBar.open("Copied!",'', {
+      duration: 2000,
+    });
   }
 }
