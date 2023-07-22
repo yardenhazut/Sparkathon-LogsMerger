@@ -23,6 +23,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AiDialogComponent } from './ai-dialog/ai-dialog.component';
+import {SafeHtmlPipe} from "./pipe/SafeHtmlPipe";
+import { ColorsAreaComponent } from './colors-area/colors-area.component';
+import { ColorsDialogComponent } from './colors-dialog/colors-dialog.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +39,10 @@ import { AiDialogComponent } from './ai-dialog/ai-dialog.component';
     FiltersDialogComponent,
     ExcludesDialogComponent,
     ExcludesAreaComponent,
-    AiDialogComponent
+    AiDialogComponent,
+    SafeHtmlPipe,
+    ColorsAreaComponent,
+    ColorsDialogComponent
   ],
   imports: [
     BrowserModule,

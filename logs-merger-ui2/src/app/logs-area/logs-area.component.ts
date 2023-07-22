@@ -18,6 +18,8 @@ export class LogsAreaComponent {
   private _excludes:any[] = [];
   public filteredData:DataItem[] = [];
 
+  callsExpanded: boolean = false;
+
   public logGroupFilter:any[] = [];
 
   public logGroupsCount = 0;
@@ -89,13 +91,16 @@ export class LogsAreaComponent {
     const tempData1:DataItem[] = [];
     const callIdsSet = new Set();
     const selectedLogFilters = this.logGroupFilter.filter(item=>item.selected);
+    this.callIds = [];
     for(const line of this._data) {
-
       const callIdIdx = line.message.indexOf("Call-ID:");
       if(callIdIdx>0){
           const endCallIdIdx = line.message.indexOf("@",callIdIdx);
-          const callId = line.message.substring(callIdIdx+8,endCallIdIdx);
-          callIdsSet.add(callId);
+          const callId = line.message.substring(callIdIdx+9,endCallIdIdx);
+          if(!callIdsSet.has(callId)){
+            callIdsSet.add(callId);
+            this.callIds.push(callId);
+          }
       }
 
       if(this.logGroupsCount<2){
@@ -109,8 +114,6 @@ export class LogsAreaComponent {
         }
       }
     }
-
-    this.callIds =  <string[]>Array.from(callIdsSet);
 
     const tempData2:DataItem[] = [];
      // includes
@@ -147,6 +150,7 @@ export class LogsAreaComponent {
       this.formatLine(line);
     })
   }
+
   private formatLine(line:DataItem) {
     let msg = line.message.replaceAll("<","&lt;").replaceAll(">","&gt;");
     msg = msg.replaceAll("\r\n","<br>").replaceAll("\n","<br>");
@@ -157,7 +161,7 @@ export class LogsAreaComponent {
       const idx = msg.indexOf(callId);
       if(idx>=0){
         const color = this.colors[callIdIdx];
-        msg = msg.replaceAll(callId,"<font color='"+color+"'>"+callId+"</font>");
+        msg = msg.replaceAll(callId,"<label style='color:"+color+"' id='"+callId+"'>"+callId+"</label>");
       }
       callIdIdx++;
       callIdIdx = callIdIdx % this.colors.length;

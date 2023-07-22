@@ -1,4 +1,4 @@
-<div class="bordered-component p-3 mb-2 bg-light border border-dark rounded full-height" style="overflow-y: auto">
+<div class="bordered-component p-3 mb-2 bg-light border border-dark rounded full-height">
   <div class="row" style="position: sticky;top: 0;">
     <div class="col-md-6" *ngIf="logGroupFilter && logGroupFilter.length>1">
       <mat-accordion>
@@ -28,13 +28,14 @@
             #{{idx+1}}
             <input readonly class="form-control" value="{{callId}}"
                    style="margin-left: 8px;color:{{colors[idx % colors.length]}}">
+           &nbsp; <a href="#{{callId}}" >go</a>
           </div>
         </mat-expansion-panel>
       </mat-accordion>
     </div>
   </div>
 
-  <div>
+  <div style="max-height: calc(100vh - 250px);overflow-y: auto;overflow-x: hidden">
     <div *ngFor="let singleLine of filteredData;let odd=odd;let idx=index"  style="margin: 5px 10px;" >
       <div class="row">
         <div class="col-md-1" *ngIf="logGroupsCount>1">
@@ -45,7 +46,7 @@
         <div [ngClass]="logGroupsCount>1?'col-md-11':'col-md-12'">
           <span style="font-weight: bold">#{{idx+1}}</span>
           <div  [style.background-color]="odd?'white':null" class="main-log-line">
-            <span style="white-space: pre-wrap" [innerHTML]="getLine(singleLine)"></span>
+            <div style="white-space: pre-wrap" [innerHTML]="getLine(singleLine) | safeHtml"></div>
           </div>
         </div>
       </div>
