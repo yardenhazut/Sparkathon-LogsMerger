@@ -16,6 +16,7 @@ export class AppComponent {
   data:DataItem[] = [];
   filters:any[] = [];
   excludes:any[] = [];
+  colors:any[] = [];
   searchOpen: boolean = true;
 
   constructor(public dialog: MatDialog) {
@@ -33,6 +34,9 @@ export class AppComponent {
 
   onExcludeChanged(excludes: any[]) {
     this.excludes = excludes;
+  }
+  onColorsClosed(excludes: any[]) {
+    this.colors = excludes;
   }
 
   openAI() {

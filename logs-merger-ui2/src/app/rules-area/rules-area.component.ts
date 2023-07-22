@@ -12,6 +12,7 @@ export class RulesAreaComponent {
 
   @Output() searchClosed:EventEmitter<void> = new EventEmitter<void>();
   @Output() excludeChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
+  @Output() colorsChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
   onDataArrived(data: DataItem[]) {
     this.dataArrived.emit(data);
   }
@@ -22,6 +23,10 @@ export class RulesAreaComponent {
 
   onExcludeChanged($event: any[]) {
     this.excludeChanged.emit($event);
+  }
+
+  onColorsChanged($event: any[]) {
+    this.colorsChanged.emit($event);
   }
 
   closeSearch() {

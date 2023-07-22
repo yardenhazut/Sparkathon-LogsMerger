@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DataItem} from "../model/DataItem";
 import {ApiService} from "../services/api-service";
 import { saveAs } from 'file-saver';
@@ -12,13 +12,13 @@ import {DataService} from "../services/data-service";
   templateUrl: './logs-area.component.html',
   styleUrls: ['./logs-area.component.scss']
 })
-export class LogsAreaComponent {
+export class LogsAreaComponent implements OnInit {
   private _data:DataItem[] = [];
   private _filters:any[] = [];
   private _excludes:any[] = [];
-  public filteredData:DataItem[] = [];
+  private _colors:any[] = [];
 
-  callsExpanded: boolean = false;
+  public filteredData:DataItem[] = [];
 
   public logGroupFilter:any[] = [];
 
@@ -26,11 +26,13 @@ export class LogsAreaComponent {
 
   public callIds:string[] = [];
 
-  public colors:string[] = [ "Blue", "Green", "Orange", "Purple", "Gray", "Brown", "Cyan", "Magenta", "Lime", "Maroon", "Navy", "Olive", "Teal", "Silver", "Gold", "Pink", "Indigo", "Coral", "Yellow"];
+  public colorsSet:string[] = [ "Blue", "Green", "Orange", "Purple", "Gray", "Brown", "Cyan", "Magenta", "Lime", "Maroon", "Navy", "Olive", "Teal", "Silver", "Gold", "Pink", "Indigo", "Coral", "Yellow"];
 
   constructor(private apiService: ApiService,private dataService:DataService) {
   }
-
+  ngOnInit(): void {
+      this._colors = this.read("ColorsLabels");
+  }
   @Input()
   public get filters() {
     return this._filters;
@@ -50,6 +52,18 @@ export class LogsAreaComponent {
 
   public set excludes(newExcludes:any[]) {
     this._excludes = newExcludes;
+    if(this._data) {
+      this.processData();
+    }
+  }
+
+  @Input()
+  public get colors() {
+    return this._colors;
+  }
+
+  public set colors(newColors:any[]) {
+    this._colors = newColors;
     if(this._data) {
       this.processData();
     }
@@ -156,16 +170,28 @@ export class LogsAreaComponent {
     msg = msg.replaceAll("\r\n","<br>").replaceAll("\n","<br>");
 
     let callIdIdx = 0;
+
     for(const callId of this.callIds) {
 
       const idx = msg.indexOf(callId);
       if(idx>=0){
-        const color = this.colors[callIdIdx];
+        const color = this.colorsSet[callIdIdx];
         msg = msg.replaceAll(callId,"<label style='color:"+color+"' id='"+callId+"'>"+callId+"</label>");
+        break;//??
       }
       callIdIdx++;
-      callIdIdx = callIdIdx % this.colors.length;
+      callIdIdx = callIdIdx % this.colorsSet.length;
     }
+
+    for(let i=0;i< this._colors.length;i++) {
+      const colorItem = this._colors[i];
+      const idx = msg.indexOf(colorItem.value);
+      if(idx>=0){
+        msg = msg.replaceAll(colorItem.value,"<label style='font-weight:bold;color:"+colorItem.color+"'>"+colorItem.value+"</label>");
+        break;//??
+      }
+    }
+
     line.formatted = msg;
   }
 

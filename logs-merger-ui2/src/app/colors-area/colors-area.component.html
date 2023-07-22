@@ -1,1 +1,13 @@
-<p>colors-area works!</p>
+<div style="max-height: 150px;overflow-y: auto">
+  <button type="button" class="btn btn-link float-btn"   (click)="onConfigure()" >
+    <i class="fas fa-cogs"></i>
+  </button>
+
+  <div *ngFor="let label1 of labelsList" class="row" style="margin: 10px 0">
+    <div class="col-md-10" style="color:{{label1.color}}">
+      <input class="form-check-input" type="checkbox" [(ngModel)]="label1.selected"
+             (ngModelChange)="onSelectionChanged()"  > {{label1.key}}<br>
+    </div>
+  </div>
+
+</div>

@@ -17,6 +17,7 @@ export class SearchAreaComponent implements OnInit {
   @Output() dataArrived:EventEmitter<DataItem[]> = new EventEmitter<DataItem[]>();
   @Output() filterChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() excludeChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
+  @Output() colorsChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
 
 
   constructor(private apiService: ApiService) {
@@ -96,6 +97,9 @@ export class SearchAreaComponent implements OnInit {
 
   onExcludeChanged($event: any[]) {
     this.excludeChanged.emit($event);
+  }
+  onColorsChanged($event: any[]) {
+    this.colorsChanged.emit($event);
   }
 
   ngOnInit(): void {

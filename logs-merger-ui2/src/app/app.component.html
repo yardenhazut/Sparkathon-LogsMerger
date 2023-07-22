@@ -6,13 +6,15 @@
 
   <div class="row">
     <div [ngClass]="searchOpen ?'col-md-8':'col-md-11'">
-      <logs-area [data]="data" [filters]="filters" [excludes]="excludes"  ></logs-area>
+      <logs-area [data]="data" [filters]="filters"
+                 [excludes]="excludes" [colors]="colors" ></logs-area>
     </div>
     <div class="col-md-4" *ngIf="searchOpen">
       <rules-area  (dataArrived)="onDataArrived($event)"
                    (filterChanged)="onFilterChanged($event)"
                    (excludeChanged)="onExcludeChanged($event)"
-                   (searchClosed)="onSearchClosed()"></rules-area>
+                   (searchClosed)="onSearchClosed()"
+                   (colorsChanged)="onColorsClosed($event)" ></rules-area>
     </div>
     <div class="col-md-1 bordered-component p-3 bg-light border border-dark rounded full-height" *ngIf="!searchOpen">
           <button style="writing-mode: vertical-rl" type="button"

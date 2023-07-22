@@ -52,6 +52,14 @@
     <mat-expansion-panel expanded="false">
       <mat-expansion-panel-header>
         <mat-panel-title>
+          Colors
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-colors-area (colorsChanged)="onColorsChanged($event)"></app-colors-area>
+    </mat-expansion-panel>
+    <mat-expansion-panel expanded="false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
           Relative
         </mat-panel-title>
       </mat-expansion-panel-header>
