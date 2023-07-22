@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "postbuild":"xcopy /s \".\\dist\\logs-merger-ui\" \"..\\business-logic\\src\\main\\resources\\static\\\" \/Y",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
