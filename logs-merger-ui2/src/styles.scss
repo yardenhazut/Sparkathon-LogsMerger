@@ -6,7 +6,13 @@
   right: 40px;
   top: 8px;
 }
-
+.mat-mdc-snack-bar-container {
+  &.red-snackbar {
+    --mdc-snackbar-container-color: red;
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+}
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 

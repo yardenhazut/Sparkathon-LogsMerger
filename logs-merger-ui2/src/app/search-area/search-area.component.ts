@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ApiService} from "../services/api-service";
 import {DataItem} from "../model/DataItem";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'search-area',
@@ -20,7 +21,7 @@ export class SearchAreaComponent implements OnInit {
   @Output() colorsChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
 
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService,private snackBar: MatSnackBar) {
     const ret = localStorage.getItem("SearchHistory");
     if (ret) {
       this.historySearch = JSON.parse(ret);
@@ -44,24 +45,24 @@ export class SearchAreaComponent implements OnInit {
 
     const ret = localStorage.getItem("LogGroupLabels");
     if(!ret) {
-      alert("Please configure log groups");
+      this.showMsg("Please configure log groups");
       return;
     }
 
     const list:any[] = JSON.parse(ret);
     const filtered = list.filter(item=>item.selected);
     if(!filtered || filtered.length===0) {
-      alert("Please select log groups");
+      this.showMsg("Please select log groups");
       return;
     }
 
     if(!this.searchTerm) {
-      alert("Please type a search term");
+      this.showMsg("Please type a search term");
       return;
     }
 
     if(!this.relativeTerm) {
-      alert("Please type a relative term");
+      this.showMsg("Please type a relative term");
       return;
     }
 
@@ -89,6 +90,13 @@ export class SearchAreaComponent implements OnInit {
         this.isLoading = false;
       }
     );
+  }
+
+  showMsg(msg:string) {
+    this.snackBar.open(msg,'', {
+      duration: 2000,
+      panelClass: ['red-snackbar']
+    });
   }
 
   onFilterChanges($event: any[]) {

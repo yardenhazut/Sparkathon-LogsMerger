@@ -288,6 +288,7 @@ export class LogsAreaComponent implements OnInit {
         line.message = line.message.replace(regEx,"");
         line.formatted = "";
       }
+      setTimeout(this.startFormatting,1000);
     }
   }
   copyToClip() {
