@@ -28,6 +28,7 @@ import { ColorsAreaComponent } from './colors-area/colors-area.component';
 import { ColorsDialogComponent } from './colors-dialog/colors-dialog.component';
 import {ClipboardModule} from '@angular/cdk/clipboard';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { SummaryDialogComponent } from './summary-dialog/summary-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +44,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     AiDialogComponent,
     SafeHtmlPipe,
     ColorsAreaComponent,
-    ColorsDialogComponent
+    ColorsDialogComponent,
+    SummaryDialogComponent
   ],
   imports: [
     BrowserModule,

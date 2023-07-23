@@ -6,6 +6,10 @@ import {SaveDataItem} from "../model/SaveDataItem";
 import _ from 'lodash';
 import {DataService} from "../services/data-service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {SummaryItem} from "../model/SummaryItem";
+import {MatDialog} from "@angular/material/dialog";
+import {FiltersDialogComponent} from "../filters-dialog/filters-dialog.component";
+import {SummaryDialogComponent} from "../summary-dialog/summary-dialog.component";
 
 
 @Component({
@@ -26,12 +30,14 @@ export class LogsAreaComponent implements OnInit {
   public logGroupsCount = 0;
 
   public callIds:string[] = [];
+  public callIdToColor:any = {};
 
   public colorsSet:string[] = [ "Blue", "Green", "Orange", "Purple", "Gray", "Brown", "Cyan", "Magenta", "Lime", "Maroon", "Navy", "Olive", "Teal", "Silver", "Gold", "Pink", "Indigo", "Coral", "Yellow"];
 
   constructor(private apiService: ApiService,
               private dataService:DataService,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private dialog: MatDialog) {
   }
   ngOnInit(): void {
       this._colors = this.read("ColorsLabels");
@@ -88,7 +94,7 @@ export class LogsAreaComponent implements OnInit {
     if(!this._data) {
       return;
     }
-
+    this.callIdToColor = {};
     const rules = this.readRules();
     const excludes = this.readExcludes();
     const logGroups = this.readLogGroups();
@@ -109,13 +115,12 @@ export class LogsAreaComponent implements OnInit {
     const selectedLogFilters = this.logGroupFilter.filter(item=>item.selected);
     this.callIds = [];
     for(const line of this._data) {
-      const callIdIdx = line.message.indexOf("Call-ID:");
-      if(callIdIdx>0){
-          const endCallIdIdx = line.message.indexOf("@",callIdIdx);
-          const callId = line.message.substring(callIdIdx+9,endCallIdIdx);
+      const callId = this.findCallId(line);
+      if(callId){
           if(!callIdsSet.has(callId)){
             callIdsSet.add(callId);
             this.callIds.push(callId);
+            this.callIdToColor[callId]=this.colorsSet[this.callIds.length-1];
           }
       }
 
@@ -195,6 +200,24 @@ export class LogsAreaComponent implements OnInit {
     }
 
     line.formatted = msg;
+  }
+
+  private findTimeStamp(line:DataItem):string {
+    const end = line.message.indexOf("[");
+    if (end > 0) {
+      const ts = line.message.substring(0 ,end-1);
+      return ts;
+    }
+    return "";
+  }
+  private findCallId(line:DataItem):string|null {
+    const callIdIdx = line.message.indexOf("Call-ID:");
+    if (callIdIdx > 0) {
+      const endCallIdIdx = line.message.indexOf("@", callIdIdx);
+      const callId = line.message.substring(callIdIdx + 9, endCallIdIdx);
+      return callId;
+    }
+    return "";
   }
 
   private read(key:string){
@@ -291,6 +314,7 @@ export class LogsAreaComponent implements OnInit {
     }
     return line.message;
   }
+
   cleanLogs() {
     const regEx = new RegExp("\\[[\\w-]*\\] \\[\\d+\\.\\d+\\] \\[\\] \\[\\] ");
     if(this._data){
@@ -301,6 +325,57 @@ export class LogsAreaComponent implements OnInit {
       setTimeout(this.startFormatting,1000);
     }
   }
+
+  summary() {
+      const summaryMap:Map<string,SummaryItem> = new Map<string, SummaryItem>();
+      const invites:string[] = ["Received SIP INVITE request","Received a SIP INVITE request"];
+      const byes:string[] = ["Received SIP BYE request","Received a SIP BYE request"];
+      for(const line of this.filteredData){
+        for(const invite of invites){
+          if(line.message.includes(invite)){
+            const callId:string|null = this.findCallId(line);
+            if(callId) {
+              const item = summaryMap.get(callId);
+              if(item){
+                item.inviteTime = this.findTimeStamp(line)||"";
+              }else{
+                summaryMap.set(callId,{
+                  inviteTime: this.findTimeStamp(line),
+                  callId:callId,
+                  byeTime:"",
+                  color:this.callIdToColor[callId]
+                });
+              }
+            }
+            break;
+          }
+        }
+        for(const bye of byes){
+          if(line.message.includes(bye)){
+            const callId = this.findCallId(line);
+            if(callId) {
+              const item = summaryMap.get(callId);
+              if(item){
+                item.byeTime = this.findTimeStamp(line)||"";
+              }else{
+                summaryMap.set(callId,{
+                  byeTime: this.findTimeStamp(line),
+                  callId:callId,
+                  inviteTime:"",
+                  color:this.callIdToColor[callId]
+                });
+              }
+            }
+            break;
+          }
+        }
+      }
+      this.dialog.open(SummaryDialogComponent,{
+        data: summaryMap,
+        width: "60%"
+      }).afterClosed().subscribe();
+  }
+
   copyToClip() {
     let msg = "";
     for(const line of this.filteredData){
