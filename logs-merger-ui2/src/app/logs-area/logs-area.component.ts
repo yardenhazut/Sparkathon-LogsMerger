@@ -98,9 +98,8 @@ export class LogsAreaComponent implements OnInit {
       this.enhanceData(logGroups);
     }
 
-    if(this.logGroupFilter.length!=this.logGroupsCount){
-      this.createLogFilter(logGroups);
-    }
+    this.createLogFilter(logGroups);
+
 
     const rulesRegExs = rules.map(item=>new RegExp((item).value));
     const excludesRegExs = excludes.map(item=>new RegExp((item).value));
@@ -261,12 +260,23 @@ export class LogsAreaComponent implements OnInit {
   }
 
   private createLogFilter(logGroups:any[]) {
+    const pre = this.logGroupFilter;
     this.logGroupFilter = [];
     for(const grp of logGroups) {
       this.logGroupFilter.push({
         label: grp.key,
         selected:true
       });
+    }
+    if(pre && pre.length) {
+      for(const preGrp of pre) {
+        for(const newGrp of this.logGroupFilter) {
+            if(preGrp.label === newGrp.label){
+              newGrp.selected = preGrp.selected;
+              break;
+            }
+        }
+      }
     }
   }
 

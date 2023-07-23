@@ -9,8 +9,10 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
           <div style="text-align: center;display: flex;width: 100%;justify-content: space-evenly;">
-            <button *ngFor="let grp of logGroupFilter" type="button" class="btn" [ngClass]="grp.selected ? 'btn-primary':'btn-outline-primary'"
-                    (click)="onClickFilter(grp)" >{{grp.label}}</button>
+            <div *ngFor="let grp of logGroupFilter" class="form-check form-switch">
+              <input class="form-check-input" (click)="onClickFilter(grp)" type="checkbox" id="flexSwitchCheckChecked" [checked]="grp.selected">
+              <label class="form-check-label" for="flexSwitchCheckChecked">{{grp.label}}</label>
+            </div>
           </div>
         </mat-expansion-panel>
       </mat-accordion>
