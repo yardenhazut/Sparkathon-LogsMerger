@@ -194,7 +194,7 @@ export class LogsAreaComponent implements OnInit {
       const colorItem = this._colors[i];
       const idx = msg.indexOf(colorItem.value);
       if(idx>=0){
-        msg = msg.replaceAll(colorItem.value,"<label c"+colorItem.color+"'>"+colorItem.value+"</label>");
+        msg = msg.replaceAll(colorItem.value,"<label style='font-weight:bold;color:"+colorItem.color+"'>"+colorItem.value+"</label>");
         break;//??
       }
     }
