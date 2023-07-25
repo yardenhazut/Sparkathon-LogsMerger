@@ -337,13 +337,18 @@ export class LogsAreaComponent implements OnInit {
             if(callId) {
               const item = summaryMap.get(callId);
               if(item){
-                item.inviteTime = this.findTimeStamp(line)||"";
+                if(!item.inviteTime) {
+                  item.inviteTime = this.findTimeStamp(line) || "";
+                  item.inviteTimeFull = line.timestamp;
+                }
               }else{
                 summaryMap.set(callId,{
                   inviteTime: this.findTimeStamp(line),
                   callId:callId,
                   byeTime:"",
-                  color:this.callIdToColor[callId]
+                  color:this.callIdToColor[callId],
+                  inviteTimeFull: line.timestamp,
+                  byeTimeFull:""
                 });
               }
             }
@@ -357,12 +362,15 @@ export class LogsAreaComponent implements OnInit {
               const item = summaryMap.get(callId);
               if(item){
                 item.byeTime = this.findTimeStamp(line)||"";
+                item.byeTimeFull = line.timestamp;
               }else{
                 summaryMap.set(callId,{
                   byeTime: this.findTimeStamp(line),
                   callId:callId,
                   inviteTime:"",
-                  color:this.callIdToColor[callId]
+                  color:this.callIdToColor[callId],
+                  inviteTimeFull: "",
+                  byeTimeFull:line.timestamp
                 });
               }
             }
