@@ -82,7 +82,7 @@ export class SearchAreaComponent implements OnInit {
 
         response.forEach(item=> {
           if(item.message.endsWith("\n")){
-            item.message = item.message.substring(0,item.message.length-2);
+            item.message = item.message.substring(0,item.message.length-1);
           }
         });
 

@@ -5,4 +5,5 @@ export class SummaryItem {
   byeTime:string = "";
   byeTimeFull:string = "";
   color:string = "";
+  group:string = "";
 }
