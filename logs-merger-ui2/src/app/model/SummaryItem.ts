@@ -6,4 +6,5 @@ export class SummaryItem {
   byeTimeFull:string = "";
   color:string = "";
   group:string = "";
+  diff:number = 0;
 }

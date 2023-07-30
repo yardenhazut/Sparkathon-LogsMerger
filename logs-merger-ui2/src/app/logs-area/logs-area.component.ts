@@ -349,7 +349,8 @@ export class LogsAreaComponent implements OnInit {
                   color:this.callIdToColor[callId],
                   inviteTimeFull: line.timestamp,
                   byeTimeFull:"",
-                  group:line.logGroupLabel
+                  group:line.logGroupLabel,
+                  diff:0
                 });
               }
             }
@@ -372,7 +373,8 @@ export class LogsAreaComponent implements OnInit {
                   color:this.callIdToColor[callId],
                   inviteTimeFull: "",
                   byeTimeFull:line.timestamp,
-                  group:line.logGroupLabel
+                  group:line.logGroupLabel,
+                  diff:0
                 });
               }
             }

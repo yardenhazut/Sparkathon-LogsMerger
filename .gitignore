@@ -22,3 +22,4 @@ velocity.log
 /integration-tests/reportportal.lock
 /integration-tests/reportportal.sync
 /AI/node_modules/
+/package-lock.json
