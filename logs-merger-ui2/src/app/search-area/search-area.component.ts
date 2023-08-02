@@ -80,11 +80,13 @@ export class SearchAreaComponent implements OnInit {
         this.isLoading = false;
         console.log('Response from REST API:', response);
 
-        response.forEach(item=> {
-          if(item.message.endsWith("\n")){
-            item.message = item.message.substring(0,item.message.length-1);
-          }
-        });
+        if(response) {
+          response.forEach(item => {
+            if (item.message.endsWith("\n")) {
+              item.message = item.message.substring(0, item.message.length - 1);
+            }
+          });
+        }
 
         this.dataArrived.emit(response);
         this.showNoData = response.length == 0;
