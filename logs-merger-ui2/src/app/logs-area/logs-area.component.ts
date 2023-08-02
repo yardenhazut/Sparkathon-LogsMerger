@@ -343,6 +343,9 @@ export class LogsAreaComponent implements OnInit {
                   item.inviteTime = this.findTimeStamp(line) || "";
                   item.inviteTimeFull = line.timestamp;
                 }
+                if(item.groups && !item.groups.includes(line.logGroupLabel)){
+                  item.groups.push(line.logGroupLabel);
+                }
               }else{
                 summaryMap.set(callId,{
                   inviteTime: this.findTimeStamp(line),
@@ -351,7 +354,7 @@ export class LogsAreaComponent implements OnInit {
                   color:this.callIdToColor[callId],
                   inviteTimeFull: line.timestamp,
                   byeTimeFull:"",
-                  group:line.logGroupLabel,
+                  groups:[line.logGroupLabel],
                   diff:0
                 });
               }
@@ -367,6 +370,9 @@ export class LogsAreaComponent implements OnInit {
               if(item){
                 item.byeTime = this.findTimeStamp(line)||"";
                 item.byeTimeFull = line.timestamp;
+                if(item.groups && !item.groups.includes(line.logGroupLabel)){
+                  item.groups.push(line.logGroupLabel);
+                }
               }else{
                 summaryMap.set(callId,{
                   byeTime: this.findTimeStamp(line),
@@ -375,7 +381,7 @@ export class LogsAreaComponent implements OnInit {
                   color:this.callIdToColor[callId],
                   inviteTimeFull: "",
                   byeTimeFull:line.timestamp,
-                  group:line.logGroupLabel,
+                  groups:[line.logGroupLabel],
                   diff:0
                 });
               }
@@ -386,7 +392,7 @@ export class LogsAreaComponent implements OnInit {
       }
       this.dialog.open(SummaryDialogComponent,{
         data: summaryMap,
-        width: "60%"
+        width: "70%"
       }).afterClosed().subscribe();
   }
 

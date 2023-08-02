@@ -63,16 +63,16 @@
         <button type="button" [disabled]="!filteredData || !filteredData.length"  class="btn btn-info" style="margin: 5px" (click)="onSave()">
           <i class="fas fa-save"></i> Save
         </button>
-        <button type="button" [cdkCopyToClipboard]="copyToClip()"
+        <button type="button"  [disabled]="!filteredData || !filteredData.length" [cdkCopyToClipboard]="copyToClip()"
                 (click)="onCopy()"  class="btn btn-info" style="margin: 5px">
           <i class="fas fa-clipboard"></i> Copy to clipboard
         </button>
         <button type="button"
-                (click)="cleanLogs()"  class="btn btn-info" style="margin: 5px">
+                (click)="cleanLogs()" [disabled]="!filteredData || !filteredData.length"  class="btn btn-info" style="margin: 5px">
           <i class="fas fa-remove"></i> Remove Prefix
         </button>
         <button type="button"
-                (click)="summary()"  class="btn btn-info" style="margin: 5px">
+                (click)="summary()" [disabled]="!filteredData || !filteredData.length" class="btn btn-info" style="margin: 5px">
           <i class="fas fa-list-alt"></i> Summary
         </button>
       </div>

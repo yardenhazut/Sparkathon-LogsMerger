@@ -5,6 +5,6 @@ export class SummaryItem {
   byeTime:string = "";
   byeTimeFull:string = "";
   color:string = "";
-  group:string = "";
+  groups:string[] = [];
   diff:number = 0;
 }

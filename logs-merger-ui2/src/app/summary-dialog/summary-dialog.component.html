@@ -1,17 +1,33 @@
-<h2 mat-dialog-title>Calls Summary</h2>
+<h3 mat-dialog-title>
+  <div style="display: flex;width: 100%;">
+    <div style="width: 50%;">
+      Calls Summary
+    </div>
+    <div style="width: 50%;display: flex;justify-content: flex-end;font-size: 1rem;line-height: 1.5rem">
+      <div *ngFor="let grp of logGroupFilter" class="form-check form-switch" style="margin-left: 4px">
+        <input class="form-check-input" (click)="onClickFilter(grp)" type="checkbox" id="flexSwitchCheckChecked" [checked]="grp.selected">
+        <label class="form-check-label" for="flexSwitchCheckChecked">{{grp.label}}</label>
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-close" [mat-dialog-close]="true" style="position: absolute;
+    right: 6px;top: 6px;border: black thin solid">
+
+  </button>
+</h3>
 <div mat-dialog-content>
   <div style="padding: 10px">
     <table class="table table-striped table-bordered table-hover">
-      <tr><th>Call Id</th><th>Group</th><th>Invite</th><th>Bye</th><th>Duration (ms)</th></tr>
-      <tr *ngFor="let item of items">
+      <tr><th>Call Id</th><th>Group(s)</th><th>Invite</th><th>Bye</th><th>Duration (ms)</th></tr>
+      <tr *ngFor="let item of findSelectedItems(items)">
         <td style="color:{{item.color}}">{{item.callId}}</td>
-        <td>{{item.group}}</td>
+        <td>{{item.groups}}</td>
         <td>{{item.inviteTime}}</td>
         <td>{{item.byeTime}}</td>
         <td>{{item.diff}}</td>
     </table>
   </div>
 </div>
-<div mat-dialog-actions>
-  <button mat-button mat-dialog-close>Cancel</button>
+<div mat-dialog-actions align="end" s>
+  <button mat-button color="primary" mat-raised-button mat-dialog-close style="margin-right: 8px;margin-bottom: 8px">Close</button>
 </div>
