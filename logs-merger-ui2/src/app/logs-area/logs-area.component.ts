@@ -329,7 +329,9 @@ export class LogsAreaComponent implements OnInit {
   summary() {
       const summaryMap:Map<string,SummaryItem> = new Map<string, SummaryItem>();
       const invites:string[] = ["Received SIP INVITE request","Received a SIP INVITE request"];
-      const byes:string[] = ["Received SIP BYE request","Received a SIP BYE request"];
+      const byes:string[] = ["Received SIP BYE request",
+        "Received a SIP BYE request",
+        "Received a SIP OK response:\nSIP/2.0 200 OK\r\nCSeq: 1 BYE"];
       for(const line of this.filteredData){
         for(const invite of invites){
           if(line.message.includes(invite)){
