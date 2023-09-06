@@ -10,7 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { ConfigureDialogComponent } from './configure-dialog/configure-dialog.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { SearchAreaComponent } from './search-area/search-area.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -29,6 +29,8 @@ import { ColorsDialogComponent } from './colors-dialog/colors-dialog.component';
 import {ClipboardModule} from '@angular/cdk/clipboard';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { SummaryDialogComponent } from './summary-dialog/summary-dialog.component';
+import {MatTabsModule} from "@angular/material/tabs";
+import {DpDatePickerModule} from "ng2-date-picker";
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,22 +49,25 @@ import { SummaryDialogComponent } from './summary-dialog/summary-dialog.componen
     ColorsDialogComponent,
     SummaryDialogComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatDialogModule,
-    MatButtonModule,
-    FormsModule,
-    HttpClientModule,
-    MatExpansionModule,
-    MatInputModule,
-    MatSelectModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
-    ClipboardModule,
-    MatSnackBarModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatDialogModule,
+        MatButtonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        MatExpansionModule,
+        MatInputModule,
+        MatSelectModule,
+        MatFormFieldModule,
+        MatAutocompleteModule,
+        ClipboardModule,
+        MatSnackBarModule,
+        MatTabsModule,
+        DpDatePickerModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
