@@ -8,7 +8,6 @@ import {DataService} from "../services/data-service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {SummaryItem} from "../model/SummaryItem";
 import {MatDialog} from "@angular/material/dialog";
-import {FiltersDialogComponent} from "../filters-dialog/filters-dialog.component";
 import {SummaryDialogComponent} from "../summary-dialog/summary-dialog.component";
 
 
@@ -28,6 +27,7 @@ export class LogsAreaComponent implements OnInit {
   public logGroupFilter:any[] = [];
 
   public logGroupsCount = 0;
+  public noWrap = false;
 
   public callIds:string[] = [];
   public callIdToColor:any = {};
@@ -106,7 +106,6 @@ export class LogsAreaComponent implements OnInit {
 
     this.createLogFilter(logGroups);
 
-
     const rulesRegExs = rules.map(item=>new RegExp((item).value));
     const excludesRegExs = excludes.map(item=>new RegExp((item).value));
 
@@ -173,8 +172,16 @@ export class LogsAreaComponent implements OnInit {
   }
 
   private formatLine(line:DataItem) {
+
     let msg = line.message.replaceAll("<","&lt;").replaceAll(">","&gt;");
-    msg = msg.replaceAll("\r\n","<br>").replaceAll("\n","<br>");
+    if(!this.noWrap){
+      msg = msg.replaceAll("\r\n","<br>").replaceAll("\n","<br>");
+    }else{
+      msg = msg.replaceAll("\r\n"," ").replaceAll("\n"," ");
+    }
+    if(this.noWrap){
+      msg = "<label style=\"background-color: "+line.logGroupBGColor+"\">" + line.logGroupLabel +"</label> " + msg;
+    }
 
     let callIdIdx = 0;
 
@@ -240,6 +247,10 @@ export class LogsAreaComponent implements OnInit {
     return this.read("ExcludeLabels");
   }
 
+  onNoWrap() {
+    this.noWrap = !this.noWrap;
+    this.processData();
+  }
   onSave() {
     const copiedData:any[] = _.cloneDeep(this.filteredData);
     copiedData.forEach(item=>item.message = item.message.replaceAll("<br>", "\n\n"));

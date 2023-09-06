@@ -37,43 +37,51 @@
     </div>
   </div>
 
-  <div style="max-height: calc(100vh - 250px);overflow-y: auto;overflow-x: hidden">
+  <div style="max-height: calc(100vh - 190px);overflow-y: auto;overflow-x: auto;padding-right: 5px">
     <div *ngFor="let singleLine of filteredData;let odd=odd;let idx=index"  style="margin: 5px 10px;" >
       <div class="row">
-        <div class="col-md-1" *ngIf="logGroupsCount>1">
-          <span style="background-color: {{singleLine.logGroupBGColor}};writing-mode: vertical-rl;padding:15px 5px">
+        <div class="col-md-1" *ngIf="logGroupsCount>1" style="text-align: center">
+          <span style="font-weight: bold">#{{idx+1}}</span>
+          <span *ngIf="!noWrap" style="background-color: {{singleLine.logGroupBGColor}};writing-mode: vertical-rl;padding:15px 5px">
             {{singleLine.logGroupLabel}}
           </span>
         </div>
         <div [ngClass]="logGroupsCount>1?'col-md-11':'col-md-12'">
-          <span style="font-weight: bold">#{{idx+1}}</span>
-          <div  [style.background-color]="odd?'white':null" class="main-log-line">
-            <div style="white-space: pre-wrap" [innerHTML]="getLine(singleLine) | safeHtml"></div>
+          <div [style.background-color]="odd?'white':null" class="main-log-line">
+            <div [style.white-space]="noWrap?'pre':'pre-wrap'"  [innerHTML]="getLine(singleLine) | safeHtml"></div>
           </div>
         </div>
       </div>
       <hr>
     </div>
   </div>
-
+  <div class="row no-data" *ngIf="filteredData && filteredData.length==0" >
+      <label style="font-size: 100px;width: fit-content;">No Data</label>
+  </div>
   <div class="row" >
     <div class="d-flex align-items-center w-100 justify-content-between">
       <span>Showing {{filteredData && filteredData.length}} lines</span>
       <div>
-        <button type="button" [disabled]="!filteredData || !filteredData.length"  class="btn btn-info" style="margin: 5px" (click)="onSave()">
-          <i class="fas fa-save"></i> Save
+        <button type="button" title="No Wrap" [disabled]="!filteredData || !filteredData.length"  class="btn btn-light" style="margin: 5px"
+                (click)="onNoWrap()">
+          <i class="fas fa-align-center" *ngIf="!noWrap"></i>
+          <i class="fas fa-water" *ngIf="noWrap"></i>
+
         </button>
-        <button type="button"  [disabled]="!filteredData || !filteredData.length" [cdkCopyToClipboard]="copyToClip()"
-                (click)="onCopy()"  class="btn btn-info" style="margin: 5px">
-          <i class="fas fa-clipboard"></i> Copy to clipboard
+        <button type="button" title="Save" [disabled]="!filteredData || !filteredData.length"  class="btn btn-light" style="margin: 5px" (click)="onSave()">
+          <i class="fas fa-save"></i>
         </button>
-        <button type="button"
-                (click)="cleanLogs()" [disabled]="!filteredData || !filteredData.length"  class="btn btn-info" style="margin: 5px">
-          <i class="fas fa-remove"></i> Remove Prefix
+        <button type="button" title="Copy To Clipboard" [disabled]="!filteredData || !filteredData.length" [cdkCopyToClipboard]="copyToClip()"
+                (click)="onCopy()" class="btn btn-light" style="margin: 5px">
+          <i class="fas fa-clipboard"></i>
         </button>
-        <button type="button"
-                (click)="summary()" [disabled]="!filteredData || !filteredData.length" class="btn btn-info" style="margin: 5px">
-          <i class="fas fa-list-alt"></i> Summary
+        <button type="button" title="Remove Prefix"
+                (click)="cleanLogs()" [disabled]="!filteredData || !filteredData.length"  class="btn btn-light" style="margin: 5px">
+          <i class="fas fa-remove"></i>
+        </button>
+        <button type="button" title="Summary"
+                (click)="summary()" [disabled]="!filteredData || !filteredData.length" class="btn btn-light" style="margin: 5px">
+          <i class="fas fa-list-alt"></i>
         </button>
       </div>
     </div>
