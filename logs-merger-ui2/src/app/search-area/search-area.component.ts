@@ -138,7 +138,7 @@ export class SearchAreaComponent implements OnInit {
 
       data["searchLastHours"] = "0";
       data["searchLastMinutes"] = "0";
-      data["searchRange"] = "PRIOD";
+      data["searchRange"] = "PERIOD";
       data["searchBeginPeriod"] = this.filterForm.get("dateFrom")?.value;
       data["searchEndPeriod"] = this.filterForm.get("dateTo")?.value;
     }
