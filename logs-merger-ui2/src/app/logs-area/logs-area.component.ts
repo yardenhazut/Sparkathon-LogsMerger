@@ -281,12 +281,18 @@ export class LogsAreaComponent implements OnInit {
     );
   }
   private enhanceData(logGroups: any[]) {
+
+
+
     const logGroupsMap:any = {};
     const logGroupsColorMap:any = {};
 
     const colors = ["aquamarine","chartreuse","fuchsia","violet","yellow","orange"];
+    const envs = ["dev-",'test-','perf-','staging-'];
     for (const grp of logGroups) {
-      logGroupsMap[grp.value] = grp.key;
+      for (const env of envs) {
+        logGroupsMap[env + grp.value] = grp.key;
+      }
     }
 
     let idx = 0;
