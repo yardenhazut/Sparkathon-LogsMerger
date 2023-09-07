@@ -109,9 +109,11 @@ export class SearchAreaComponent implements OnInit {
       return;
     }
 
-    if(!this.relativeTerm) {
-      this.showMsg("Please type a relative term");
-      return;
+    if(this.selectedTimeFrame==0){
+      if(!this.relativeTerm) {
+        this.showMsg("Please type a relative term");
+        return;
+      }
     }
 
     let data:any = {
@@ -119,17 +121,26 @@ export class SearchAreaComponent implements OnInit {
       "parameters" : this.searchTerm,
       "resultLimit" : "10000"
     }
-    if(this.timeType==0){
-      data["searchLastMinutes"] = this.relativeTerm * 60;
-      data["searchLastHours"] = "0";
-    }else {
-      data["searchLastMinutes"] = "0";
-      data["searchLastHours"] = this.relativeTerm;
-      if(this.timeType==2) {
-        data["searchLastHours"] = this.relativeTerm * 24;
-      }else if(this.timeType==3) {
-        data["searchLastHours"] = this.relativeTerm * 24 * 7;
+    if(this.selectedTimeFrame==0) {
+      if (this.timeType == 0) {
+        data["searchLastMinutes"] = this.relativeTerm * 60;
+        data["searchLastHours"] = "0";
+      } else {
+        data["searchLastMinutes"] = "0";
+        data["searchLastHours"] = this.relativeTerm;
+        if (this.timeType == 2) {
+          data["searchLastHours"] = this.relativeTerm * 24;
+        } else if (this.timeType == 3) {
+          data["searchLastHours"] = this.relativeTerm * 24 * 7;
+        }
       }
+    }else{
+
+      data["searchLastHours"] = "0";
+      data["searchLastMinutes"] = "0";
+      data["searchRange"] = "PRIOD";
+      data["searchBeginPeriod"] = this.filterForm.get("dateFrom")?.value;
+      data["searchEndPeriod"] = this.filterForm.get("dateTo")?.value;
     }
 
     this.isLoading = true;
