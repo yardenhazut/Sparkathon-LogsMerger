@@ -13,7 +13,7 @@ import * as moment from 'moment';
 })
 export class SearchAreaComponent implements OnInit {
   searchTerm: string = "";
-  relativeTerm: string = "72";
+  relativeTerm: number = 72;
   historySearch:string[]= [];
   isLoading: boolean = false;
   showNoData: boolean = false;
@@ -65,9 +65,7 @@ export class SearchAreaComponent implements OnInit {
     this.selectedTimeFrame = selectedTimeFrameVal=="1" ? 1:0;
   }
 
-  onFocusOut() {
-    localStorage.setItem("relativeKey", this.relativeTerm);
-  }
+
 
   onSearch() {
     if (this.searchTerm && !this.historySearch.includes(this.searchTerm)) {
@@ -103,12 +101,17 @@ export class SearchAreaComponent implements OnInit {
       return;
     }
 
-    const data = {
+    let data:any = {
       "logGroups" : filtered.map(item=>item.value),
       "parameters" : this.searchTerm,
-      "searchLastHours" : this.relativeTerm,
       "resultLimit" : "10000"
     }
+    if(this.relativeTerm<1){
+      data["searchLastMinutes"] = this.relativeTerm * 60;
+    } else{
+      data["searchLastHours"] = this.relativeTerm;
+    }
+
     this.isLoading = true;
     this.showNoData = false;
     this.dataArrived.emit([]);
@@ -154,7 +157,7 @@ export class SearchAreaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.relativeTerm = localStorage.getItem("relativeKey") || "24";
+    this.relativeTerm = Number(localStorage.getItem("relativeKey") || "24");
 
     // When DateFrom changes we set the min selectable value for DateTo
     if(this.filterForm) {

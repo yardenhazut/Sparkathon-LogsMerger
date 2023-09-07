@@ -31,6 +31,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { SummaryDialogComponent } from './summary-dialog/summary-dialog.component';
 import {MatTabsModule} from "@angular/material/tabs";
 import {DpDatePickerModule} from "ng2-date-picker";
+import { RelativeTimeSelectionComponent } from './relative-time-selection/relative-time-selection.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +48,8 @@ import {DpDatePickerModule} from "ng2-date-picker";
     SafeHtmlPipe,
     ColorsAreaComponent,
     ColorsDialogComponent,
-    SummaryDialogComponent
+    SummaryDialogComponent,
+    RelativeTimeSelectionComponent
   ],
     imports: [
         BrowserModule,

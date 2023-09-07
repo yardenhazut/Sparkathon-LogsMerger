@@ -21,6 +21,7 @@ public class UploadInputForm {
     private String parameters;
 
     private Integer searchLastHours;
+    private Integer searchLastMinutes;
     private String searchBeginPeriod;
     private String searchEndPeriod;
     private RangeType searchRange;

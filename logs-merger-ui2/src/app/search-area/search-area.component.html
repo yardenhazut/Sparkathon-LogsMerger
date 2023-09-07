@@ -33,12 +33,7 @@
       </mat-expansion-panel-header>
       <mat-tab-group [(selectedIndex)]="selectedTimeFrame" (selectedIndexChange)="selectedTabChanged()" >
         <mat-tab label="Relative">
-          <div class="col-md-12" style="padding: 15px">
-            <label for="relativeTime">Relative Time In Hours</label>
-            <input id="relativeTime" min="1" max="10000" class="form-control" placeholder="Type relative time period in hours" type="number"
-                   [(ngModel)]="relativeTerm" (focusout)="onFocusOut()" >
-
-          </div>
+          <app-relative-time-selection [(relativeTerm)]="relativeTerm"></app-relative-time-selection>
         </mat-tab>
         <mat-tab label="Absolute">
           <div [formGroup]="filterForm" style="padding: 15px">

@@ -27,6 +27,7 @@ import static flow.logsmerger.business.logic.utils.Utils.ERROR_RESULT_LIMIT_VALI
 import static flow.logsmerger.business.logic.utils.Utils.ERROR_RULES_VALIDATION;
 import static flow.logsmerger.business.logic.utils.Utils.ERROR_SEARCH_END_PERIOD_MISSING;
 import static flow.logsmerger.business.logic.utils.Utils.ERROR_SEARCH_LAST_HOURS_MISSING;
+import static flow.logsmerger.business.logic.utils.Utils.ERROR_SEARCH_LAST_MINUTES_MISSING;
 import static flow.logsmerger.business.logic.utils.Utils.MAXIMUM_LIMIT_RESULT;
 import static flow.logsmerger.business.logic.utils.Utils.MINIMUM_LIMIT_RESULT;
 
@@ -36,6 +37,9 @@ import static flow.logsmerger.business.logic.utils.Utils.MINIMUM_LIMIT_RESULT;
 public class FlowConfig {
     @NotNull(message = ERROR_SEARCH_LAST_HOURS_MISSING)
     private int searchLastHours;
+
+    @NotNull(message = ERROR_SEARCH_LAST_MINUTES_MISSING)
+    private int searchLastMinutes;
 
     @NotNull(message = ERROR_SEARCH_BEGIN_PERIOD_MISSING)
     private String searchBeginPeriod;
