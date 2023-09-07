@@ -8,7 +8,6 @@ import {DataService} from "../services/data-service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {SummaryItem} from "../model/SummaryItem";
 import {MatDialog} from "@angular/material/dialog";
-import {FiltersDialogComponent} from "../filters-dialog/filters-dialog.component";
 import {SummaryDialogComponent} from "../summary-dialog/summary-dialog.component";
 
 
@@ -28,6 +27,7 @@ export class LogsAreaComponent implements OnInit {
   public logGroupFilter:any[] = [];
 
   public logGroupsCount = 0;
+  public noWrap = false;
 
   public callIds:string[] = [];
   public callIdToColor:any = {};
@@ -106,7 +106,6 @@ export class LogsAreaComponent implements OnInit {
 
     this.createLogFilter(logGroups);
 
-
     const rulesRegExs = rules.map(item=>new RegExp((item).value));
     const excludesRegExs = excludes.map(item=>new RegExp((item).value));
 
@@ -173,8 +172,16 @@ export class LogsAreaComponent implements OnInit {
   }
 
   private formatLine(line:DataItem) {
+
     let msg = line.message.replaceAll("<","&lt;").replaceAll(">","&gt;");
-    msg = msg.replaceAll("\r\n","<br>").replaceAll("\n","<br>");
+    if(!this.noWrap){
+      msg = msg.replaceAll("\r\n","<br>").replaceAll("\n","<br>");
+    }else{
+      msg = msg.replaceAll("\r\n"," ").replaceAll("\n"," ");
+    }
+    if(this.noWrap){
+      msg = "<label style=\"background-color: "+line.logGroupBGColor+"\">" + line.logGroupLabel +"</label> " + msg;
+    }
 
     let callIdIdx = 0;
 
@@ -219,6 +226,15 @@ export class LogsAreaComponent implements OnInit {
     }
     return "";
   }
+  private findCorrelationKey(line:DataItem):string|null {
+    const corIdx = line.message.indexOf("X-Correlation-Key:");
+    if (corIdx > 0) {
+      const endCorIdx = line.message.indexOf("\n", corIdx);
+      const correlation = line.message.substring(corIdx + 18, endCorIdx);
+      return correlation;
+    }
+    return "";
+  }
 
   private read(key:string){
     const ret = localStorage.getItem(key);
@@ -240,6 +256,10 @@ export class LogsAreaComponent implements OnInit {
     return this.read("ExcludeLabels");
   }
 
+  onNoWrap() {
+    this.noWrap = !this.noWrap;
+    this.processData();
+  }
   onSave() {
     const copiedData:any[] = _.cloneDeep(this.filteredData);
     copiedData.forEach(item=>item.message = item.message.replaceAll("<br>", "\n\n"));
@@ -326,6 +346,18 @@ export class LogsAreaComponent implements OnInit {
     }
   }
 
+  getLineInRequest(line:string,property:string){
+    const idx = line.indexOf(property);
+    if(idx<0){
+      return "";
+    }
+    const idx2 = line.indexOf("\n",idx+1);
+    if(idx2<0){
+      return "";
+    }
+    return line.substring(idx,idx2);
+  }
+
   summary() {
       const summaryMap:Map<string,SummaryItem> = new Map<string, SummaryItem>();
       const invites:string[] = ["Received SIP INVITE request","Received a SIP INVITE request"];
@@ -347,6 +379,12 @@ export class LogsAreaComponent implements OnInit {
                   item.groups.push(line.logGroupLabel);
                 }
               }else{
+
+                const from = this.getLineInRequest(line.message,"From:");
+                const to = this.getLineInRequest(line.message,"To:");
+                const fromLabel = this.findLabel(from);
+                const toLabel = this.findLabel(to);
+                const correlation:string = this.findCorrelationKey(line) || "";
                 summaryMap.set(callId,{
                   inviteTime: this.findTimeStamp(line),
                   callId:callId,
@@ -355,7 +393,12 @@ export class LogsAreaComponent implements OnInit {
                   inviteTimeFull: line.timestamp,
                   byeTimeFull:"",
                   groups:[line.logGroupLabel],
-                  diff:0
+                  diff:0,
+                  fromLabel:fromLabel,
+                  from:from,
+                  toLabel:toLabel,
+                  to:to,
+                  correlation:correlation
                 });
               }
             }
@@ -374,6 +417,11 @@ export class LogsAreaComponent implements OnInit {
                   item.groups.push(line.logGroupLabel);
                 }
               }else{
+                const from = this.getLineInRequest(line.message,"From:");
+                const to = this.getLineInRequest(line.message,"To:");
+                const fromLabel = this.findLabel(from);
+                const toLabel = this.findLabel(to);
+                const correlation:string = this.findCorrelationKey(line) || "";
                 summaryMap.set(callId,{
                   byeTime: this.findTimeStamp(line),
                   callId:callId,
@@ -382,7 +430,12 @@ export class LogsAreaComponent implements OnInit {
                   inviteTimeFull: "",
                   byeTimeFull:line.timestamp,
                   groups:[line.logGroupLabel],
-                  diff:0
+                  diff:0,
+                  fromLabel:fromLabel,
+                  from:from,
+                  toLabel:toLabel,
+                  to:to,
+                  correlation:correlation
                 });
               }
             }
@@ -411,5 +464,19 @@ export class LogsAreaComponent implements OnInit {
     this.snackBar.open("Copied!",'', {
       duration: 2000,
     });
+  }
+
+  private findLabel(line: string) {
+    const index1 = line.indexOf("\"");
+    if(index1>0){
+      const index2 = line.indexOf("\"",index1+1);
+      return line.substring(index1+1,index2);
+    }
+    const indexOfSmallerThanSign = line.indexOf("<");
+    if(indexOfSmallerThanSign>0){
+      const indexOfShtrudel = line.indexOf("@",indexOfSmallerThanSign+1);
+      return line.substring(indexOfSmallerThanSign+1,indexOfShtrudel);
+    }
+    return line;
   }
 }

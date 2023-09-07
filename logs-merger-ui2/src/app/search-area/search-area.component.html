@@ -25,7 +25,43 @@
 
   <br>
   <mat-accordion multi="true" >
-    <mat-expansion-panel expanded="true">
+    <mat-expansion-panel expanded="false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Time Frame
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-tab-group [(selectedIndex)]="selectedTimeFrame" (selectedIndexChange)="selectedTabChanged()" >
+        <mat-tab label="Relative">
+          <app-relative-time-selection [(relativeTerm)]="relativeTerm" [(timeType)]="timeType"></app-relative-time-selection>
+        </mat-tab>
+        <mat-tab label="Absolute">
+          <div [formGroup]="filterForm" style="padding: 15px">
+            <label style="width: 80px">From:</label>
+            <input type="text"
+                   class="form-control" style="width: 60%;display: inline"
+                   #dateFromDp="dpDayPicker"
+                   [dpDayPicker]="dayPickerConfig"
+                   [theme]="'dp-material'"
+                   formControlName="dateFrom"
+                   [mode]="'daytime'"
+                   (onChange)="date = $event" />
+
+            <br>
+            <label style="width: 80px;">To:</label>
+            <input type="text" class="form-control" style="width: 60%;display: inline;margin-top: 5px"
+                   #dateToDp="dpDayPicker"
+                   [dpDayPicker]="dayPickerConfig"
+                   [displayDate]="displayDate"
+                   [theme]="'dp-material'"
+                   formControlName="dateTo"
+                   [mode]="'daytime'"
+                   (onChange)="date = $event" />
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-expansion-panel>
+    <mat-expansion-panel expanded="false">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Log Groups
@@ -56,19 +92,6 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <app-colors-area (colorsChanged)="onColorsChanged($event)"></app-colors-area>
-    </mat-expansion-panel>
-    <mat-expansion-panel expanded="false">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Relative
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <div class="col-md-12">
-        <label for="relativeTime">Relative Time In Hours</label>
-        <input id="relativeTime" min="1" max="10000" class="form-control" placeholder="Type relative time period in hours" type="number"
-               [(ngModel)]="relativeTerm" (focusout)="onFocusOut()" >
-
-      </div>
     </mat-expansion-panel>
   </mat-accordion>
 

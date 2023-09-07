@@ -54,7 +54,13 @@ public class ConfigLoader {
 //                flowConfig.setSearchEndPeriod(uploadInput.getSearchEndPeriod());
 //                break;
 //            case LASTHOURS:
-                flowConfig.setSearchLastHours(uploadInput.getSearchLastHours());
+                if(uploadInput.getSearchLastMinutes()>0){
+                    flowConfig.setSearchLastMinutes(uploadInput.getSearchLastMinutes());
+                    flowConfig.setSearchRange("LastMinutes");
+                }else {
+                    flowConfig.setSearchLastHours(uploadInput.getSearchLastHours());
+                    flowConfig.setSearchRange("LastHours");
+                }
                 flowConfig.setSearchBeginPeriod("");
                 flowConfig.setSearchEndPeriod("");
 //                break;

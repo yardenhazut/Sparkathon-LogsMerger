@@ -70,8 +70,10 @@ public class CloudWatchQueryBroker implements QueryBroker {
 
         if (flowConfig.getSearchRange().equals(QueryTimestamps.PERIOD.toString())) {
             addQuerySearchPeriodTime(queryRequest);
-        } else {
+        } else if (flowConfig.getSearchRange().equals(QueryTimestamps.LASTHOURS.toString())) {
             addQuerySearchLastHoursTime(queryRequest);
+        } else {
+            addQuerySearchLastMinutesTime(queryRequest);
         }
 
         return queryRequest;
@@ -86,6 +88,11 @@ public class CloudWatchQueryBroker implements QueryBroker {
 
     private void addQuerySearchLastHoursTime(StartQueryRequest queryRequest) {
         queryRequest.withStartTime(Timestamp.valueOf(LocalDateTime.now().minusHours(this.flowConfig.getSearchLastHours())).getTime())
+                .withEndTime(Timestamp.valueOf(LocalDateTime.now()).getTime());
+    }
+
+    private void addQuerySearchLastMinutesTime(StartQueryRequest queryRequest) {
+        queryRequest.withStartTime(Timestamp.valueOf(LocalDateTime.now().minusMinutes(this.flowConfig.getSearchLastMinutes())).getTime())
                 .withEndTime(Timestamp.valueOf(LocalDateTime.now()).getTime());
     }
 

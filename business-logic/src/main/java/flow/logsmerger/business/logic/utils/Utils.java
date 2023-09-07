@@ -40,6 +40,7 @@ public class Utils {
     public static final String ERROR_SOURCE_COMPONENT_VALIDATION = "The \"source component\" field of a rule can not be missing";
     public static final String ERROR_DESTINATION_COMPONENT_VALIDATION = "The \"destination component\" field of a rule can not be missing";
     public static final String ERROR_SEARCH_LAST_HOURS_MISSING = "The \"search Last Hours\" field of configuration file can not be missing";
+    public static final String ERROR_SEARCH_LAST_MINUTES_MISSING = "The \"search Last Minutes\" field of configuration file can not be missing";
     public static final String ERROR_SEARCH_BEGIN_PERIOD_MISSING = "The \"search Begin Period\" field of configuration file can not be missing";
     public static final String ERROR_SEARCH_END_PERIOD_MISSING = "The \"search End Period\" field of configuration file can not be missing";
     public static final String AWS_LOGS_LOG_FIELD_NAME = "@log";

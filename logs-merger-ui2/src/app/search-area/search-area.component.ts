@@ -1,7 +1,10 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {ApiService} from "../services/api-service";
 import {DataItem} from "../model/DataItem";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {DatePickerComponent, IDayCalendarConfig} from "ng2-date-picker";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import * as moment from 'moment';
 
 @Component({
   selector: 'search-area',
@@ -10,27 +13,60 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class SearchAreaComponent implements OnInit {
   searchTerm: string = "";
-  relativeTerm: string = "72";
+  relativeTerm: number = 24;
+  timeType: number = 0;
   historySearch:string[]= [];
   isLoading: boolean = false;
   showNoData: boolean = false;
+  selectedTimeFrame:number = 0;
+
+  public dayPickerConfig = <IDayCalendarConfig>{
+    locale: "en",
+    format: "DD.MM.YYYY HH:mm",
+    monthFormat: "MMMM, YYYY",
+    hours24Format:"HH",
+    firstDayOfWeek: "su"
+  };
+  @ViewChild("dateFromDp")
+  public dateFromDp?: DatePickerComponent;
+
+  @ViewChild("dateToDp")
+  public dateToDp?: DatePickerComponent;
 
   @Output() dataArrived:EventEmitter<DataItem[]> = new EventEmitter<DataItem[]>();
   @Output() filterChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() excludeChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() colorsChanged:EventEmitter<any[]> = new EventEmitter<any[]>();
 
+  public filterForm: FormGroup;
+  public displayDate:any;
+  public date:any;
 
-  constructor(private apiService: ApiService,private snackBar: MatSnackBar) {
+
+  constructor(private apiService: ApiService,private snackBar: MatSnackBar,private fb: FormBuilder) {
     const ret = localStorage.getItem("SearchHistory");
     if (ret) {
       this.historySearch = JSON.parse(ret);
     }
+
+    let timeFrom = localStorage.getItem("timeFrom");
+    let timeTo = localStorage.getItem("timeTo");
+    if(!timeFrom){
+        timeFrom = moment().format("DD.MM.YYYY 00:00");
+    }
+    if(!timeTo){
+      timeTo = moment().format("DD.MM.YYYY 23:59");
+    }
+
+    this.filterForm = this.fb.group({
+      dateFrom: new FormControl(timeFrom),
+      dateTo: new FormControl(timeTo),
+    });
+    const selectedTimeFrameVal = localStorage.getItem("selectedTimeFrame");
+    this.selectedTimeFrame = selectedTimeFrameVal=="1" ? 1:0;
   }
 
-  onFocusOut() {
-    localStorage.setItem("relativeKey", this.relativeTerm);
-  }
+
 
   onSearch() {
     if (this.searchTerm && !this.historySearch.includes(this.searchTerm)) {
@@ -78,12 +114,24 @@ export class SearchAreaComponent implements OnInit {
       return;
     }
 
-    const data = {
+    let data:any = {
       "logGroups" : filtered,
       "parameters" : this.searchTerm,
-      "searchLastHours" : this.relativeTerm,
       "resultLimit" : "10000"
     }
+    if(this.timeType==0){
+      data["searchLastMinutes"] = this.relativeTerm * 60;
+      data["searchLastHours"] = "0";
+    }else {
+      data["searchLastMinutes"] = "0";
+      data["searchLastHours"] = this.relativeTerm;
+      if(this.timeType==2) {
+        data["searchLastHours"] = this.relativeTerm * 24;
+      }else if(this.timeType==3) {
+        data["searchLastHours"] = this.relativeTerm * 24 * 7;
+      }
+    }
+
     this.isLoading = true;
     this.showNoData = false;
     this.dataArrived.emit([]);
@@ -129,7 +177,31 @@ export class SearchAreaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.relativeTerm = localStorage.getItem("relativeKey") || "24";
+    this.relativeTerm = Number(localStorage.getItem("relativeKey") || "1");
+    this.timeType = Number(localStorage.getItem("relativePeriodKey") || "1");
+
+    // When DateFrom changes we set the min selectable value for DateTo
+    if(this.filterForm) {
+      let dateFrom = this.filterForm.get("dateFrom");
+      if(dateFrom) {
+        dateFrom.valueChanges.subscribe(value => {
+          // this.dateToDp.displayDate = value; // DateTo
+          this.dayPickerConfig = {
+            min: value,
+            ...this.dayPickerConfig
+          }
+
+          localStorage.setItem("timeFrom",value);
+        });
+      }
+
+      let dateTo = this.filterForm.get("dateTo");
+      if(dateTo) {
+        dateTo.valueChanges.subscribe(value => {
+          localStorage.setItem("timeTo",value);
+        });
+      }
+    }
   }
 
   deleteItemFromHistory(historyItem:string ) {
@@ -138,5 +210,7 @@ export class SearchAreaComponent implements OnInit {
     this.searchTerm = "";
   }
 
-
+  selectedTabChanged() {
+    localStorage.setItem("selectedTimeFrame",this.selectedTimeFrame==0?"0":"1");
+  }
 }
