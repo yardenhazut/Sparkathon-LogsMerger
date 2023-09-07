@@ -47,13 +47,13 @@ public class ConfigLoader {
     }
 
     private void completeFromOnlineParameters(String configFile, UploadInputForm uploadInput, FlowConfig flowConfig) throws ValidateFlowConfigException {
-//        switch(uploadInput.getSearchRange()){
-//            case PERIOD:
-//                flowConfig.setSearchLastHours(0);
-//                flowConfig.setSearchBeginPeriod(uploadInput.getSearchBeginPeriod());
-//                flowConfig.setSearchEndPeriod(uploadInput.getSearchEndPeriod());
-//                break;
-//            case LASTHOURS:
+        switch(uploadInput.getSearchRange()){
+            case PERIOD:
+                flowConfig.setSearchLastHours(0);
+                flowConfig.setSearchBeginPeriod(uploadInput.getSearchBeginPeriod());
+                flowConfig.setSearchEndPeriod(uploadInput.getSearchEndPeriod());
+                break;
+            case LASTHOURS:
                 if(uploadInput.getSearchLastMinutes()>0){
                     flowConfig.setSearchLastMinutes(uploadInput.getSearchLastMinutes());
                     flowConfig.setSearchRange("LastMinutes");
@@ -63,9 +63,9 @@ public class ConfigLoader {
                 }
                 flowConfig.setSearchBeginPeriod("");
                 flowConfig.setSearchEndPeriod("");
-//                break;
-//        }
-        //flowConfig.setSearchRange(uploadInput.getSearchRange().toString());
+                break;
+        }
+        flowConfig.setSearchRange(uploadInput.getSearchRange().toString());
         flowConfig.setResultLimit(uploadInput.getResultLimit());
 
         validateConfigFile(flowConfig, configFile);
