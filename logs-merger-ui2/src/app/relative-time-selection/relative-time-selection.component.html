@@ -1,7 +1,16 @@
 <div class="col-md-12" style="padding: 15px">
-  <label for="relativeTime">Relative Time In Hours</label>
-  <input id="relativeTime" min="1" max="10000" class="form-control" style="width: 50%" placeholder="Type relative time period in hours" type="number"
-         [(ngModel)]="relativeTerm"  (focusout)="onFocusOut()" >
+
+  <div style="display: flex">
+    <input id="relativeTime" min="1" max="10000" class="form-control" style="width: 30%" placeholder="Type relative time period in hours" type="number"
+           [(ngModel)]="relativeTerm"  (focusout)="onFocusOut()" >
+    <select class="form-control" [(ngModel)]="timeType" style="width: 30%;">
+      <option value="0">Minutes</option>
+      <option value="1">Hours</option>
+      <option value="2">Days</option>
+      <option value="3">Weeks</option>
+    </select>
+  </div>
+
   <br>
   <div class="row">
     <div class="col-md-12">

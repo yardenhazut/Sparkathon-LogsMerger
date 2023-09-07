@@ -7,6 +7,8 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 })
 export class RelativeTimeSelectionComponent {
 
+  timeType:number = 0;
+
   @Output()
   relativeTermChange:EventEmitter<number> = new EventEmitter<number>();
 
