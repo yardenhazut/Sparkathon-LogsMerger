@@ -22,7 +22,7 @@ export class SearchAreaComponent implements OnInit {
 
   public dayPickerConfig = <IDayCalendarConfig>{
     locale: "en",
-    format: "DD.MM.YYYY HH:mm",
+    format: "DD/MM/YYYY HH:mm",
     monthFormat: "MMMM, YYYY",
     hours24Format:"HH",
     firstDayOfWeek: "su"
@@ -52,10 +52,10 @@ export class SearchAreaComponent implements OnInit {
     let timeFrom = localStorage.getItem("timeFrom");
     let timeTo = localStorage.getItem("timeTo");
     if(!timeFrom){
-        timeFrom = moment().format("DD.MM.YYYY 00:00");
+        timeFrom = moment().format("DD/MM/YYYY 00:00");
     }
     if(!timeTo){
-      timeTo = moment().format("DD.MM.YYYY 23:59");
+      timeTo = moment().format("DD/MM/YYYY 23:59");
     }
 
     this.filterForm = this.fb.group({
@@ -136,11 +136,16 @@ export class SearchAreaComponent implements OnInit {
       }
     }else{
 
+      const dateFromStr = this.filterForm.get("dateFrom")?.value;
+      const dateToStr = this.filterForm.get("dateTo")?.value;
+      const dateFrom = moment(dateFromStr,"DD/MM/YYYY HH:mm").format("MM/DD/YYYY HH:mm:00");
+      const dateTo = moment(dateToStr,"DD/MM/YYYY HH:mm").format("MM/DD/YYYY HH:mm:59");
+
       data["searchLastHours"] = "0";
       data["searchLastMinutes"] = "0";
       data["searchRange"] = "PERIOD";
-      data["searchBeginPeriod"] = this.filterForm.get("dateFrom")?.value;
-      data["searchEndPeriod"] = this.filterForm.get("dateTo")?.value;
+      data["searchBeginPeriod"] = dateFrom;
+      data["searchEndPeriod"] = dateTo;
     }
 
     this.isLoading = true;

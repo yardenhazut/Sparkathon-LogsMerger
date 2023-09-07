@@ -9,6 +9,10 @@
   cursor: pointer;
 }
 
+.box.selected {
+  border: solid thin blue;
+}
+
 .num-row {
   display: flex;
   align-items: center;

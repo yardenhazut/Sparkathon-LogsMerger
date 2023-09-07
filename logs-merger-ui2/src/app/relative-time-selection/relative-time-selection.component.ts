@@ -38,4 +38,11 @@ export class RelativeTimeSelectionComponent {
       this.timeInputClass = '';
     },1000);
   }
+
+  isSelectedTime(value: number, period: number) {
+    if(value == this.relativeTerm && period==this.timeType) {
+      return "selected";
+    }
+    return "";
+  }
 }
