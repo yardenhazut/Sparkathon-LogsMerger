@@ -9,6 +9,13 @@ import {ConfigureDialogComponent} from "../configure-dialog/configure-dialog.com
 })
 export class LogsGroupSelectionComponent implements OnInit {
   public labelsList:any[] = [];
+  public selectedEnvironment:any;
+  environments = {
+    dev: "dev-",
+    test: 'test-',
+    perf: 'perf-',
+    staging: 'staging-',
+  };
   constructor(public dialog: MatDialog) {}
   onConfigure() {
     this.dialog.open(ConfigureDialogComponent).afterClosed().subscribe(()=>{
@@ -25,10 +32,22 @@ export class LogsGroupSelectionComponent implements OnInit {
     if(ret) {
       this.labelsList = JSON.parse(ret);
     }
+    const envRet = localStorage.getItem("EnvPrefix");
+    if(envRet) {
+      this.selectedEnvironment = JSON.parse(envRet);
+    }
   }
 
   onSelectionChanged() {
     const clearList = this.labelsList.filter(item=>item.key);
     localStorage.setItem("LogGroupLabels",JSON.stringify(clearList));
+  }
+
+  onEnvironmentChanged() {
+    localStorage.setItem("EnvPrefix",JSON.stringify(this.selectedEnvironment));
+  }
+
+  getEnvironmentKeys() {
+    return Object.keys(this.environments);
   }
 }

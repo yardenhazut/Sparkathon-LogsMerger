@@ -50,9 +50,21 @@ export class SearchAreaComponent implements OnInit {
     }
 
     const list:any[] = JSON.parse(ret);
-    const filtered = list.filter(item=>item.selected);
+    let filtered = list.filter(item=>item.selected);
+
+    const envPrefix = localStorage.getItem("EnvPrefix");
+    if (envPrefix !== null) {
+      const parsedEnvPrefix = JSON.parse(envPrefix);
+      filtered = filtered.map(item => parsedEnvPrefix + "-" + item.value);
+    }
+
     if(!filtered || filtered.length===0) {
       this.showMsg("Please select log groups");
+      return;
+    }
+
+    if(!envPrefix) {
+      this.showMsg("Please select Environment");
       return;
     }
 
@@ -67,7 +79,7 @@ export class SearchAreaComponent implements OnInit {
     }
 
     const data = {
-      "logGroups" : filtered.map(item=>item.value),
+      "logGroups" : filtered,
       "parameters" : this.searchTerm,
       "searchLastHours" : this.relativeTerm,
       "resultLimit" : "10000"
