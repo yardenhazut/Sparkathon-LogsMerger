@@ -1,7 +1,13 @@
 <div style="max-height: 150px;overflow-y: auto">
   <button type="button" class="btn btn-link float-btn"  (click)="onConfigure()" >
-    <i class="fas fa-cogs"></i>
+    <i class="fas fa-cogs" style="cursor:pointer"></i>
   </button>
+
+  <select class="form-control float-btn" style="width: 80px;right: 90px;" [(ngModel)]="selectedEnvironment" (ngModelChange)="onEnvironmentChanged()">
+    <option *ngFor="let label of getEnvironmentKeys()" [value]="label">
+      {{label | titlecase}}
+    <option>
+  </select>
 
   <div *ngFor="let label1 of labelsList" class="row" style="margin: 10px 0">
     <div class="col-md-10">
