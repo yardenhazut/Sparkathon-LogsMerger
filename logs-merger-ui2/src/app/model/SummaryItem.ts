@@ -7,4 +7,9 @@ export class SummaryItem {
   color:string = "";
   groups:string[] = [];
   diff:number = 0;
+  fromLabel:string = "";
+  from:string = "";
+  toLabel:string = "";
+  to:string = "";
+  correlation:string = "";
 }

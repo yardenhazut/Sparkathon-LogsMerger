@@ -41,9 +41,9 @@
     <div *ngFor="let singleLine of filteredData;let odd=odd;let idx=index"  style="margin: 5px 10px;" >
       <div class="row">
         <div class="col-md-1" *ngIf="logGroupsCount>1" style="text-align: center">
-          <span style="font-weight: bold">#{{idx+1}}</span>
+
           <span *ngIf="!noWrap" style="background-color: {{singleLine.logGroupBGColor}};writing-mode: vertical-rl;padding:15px 5px">
-            {{singleLine.logGroupLabel}}
+            #{{idx+1}} - {{singleLine.logGroupLabel}}
           </span>
         </div>
         <div [ngClass]="logGroupsCount>1?'col-md-11':'col-md-12'">

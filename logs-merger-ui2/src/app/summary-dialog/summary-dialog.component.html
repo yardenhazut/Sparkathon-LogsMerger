@@ -18,13 +18,16 @@
 <div mat-dialog-content>
   <div style="padding: 10px">
     <table class="table table-striped table-bordered table-hover">
-      <tr><th>Call Id</th><th>Group(s)</th><th>Invite</th><th>Bye</th><th>Duration (ms)</th></tr>
+      <tr><th>Call Id</th><th>Group(s)</th><th>Correlation</th><th>Invite</th><th>Bye</th><th>Duration (ms)</th><th>From</th><th>To</th></tr>
       <tr *ngFor="let item of findSelectedItems(items)">
         <td style="color:{{item.color}}">{{item.callId}}</td>
         <td>{{item.groups}}</td>
+        <td>{{item.correlation}}</td>
         <td>{{item.inviteTime}}</td>
         <td>{{item.byeTime}}</td>
         <td>{{item.diff}}</td>
+        <td>{{item.fromLabel}}</td>
+        <td>{{item.toLabel}}</td>
     </table>
   </div>
 </div>
