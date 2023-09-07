@@ -33,7 +33,7 @@
       </mat-expansion-panel-header>
       <mat-tab-group [(selectedIndex)]="selectedTimeFrame" (selectedIndexChange)="selectedTabChanged()" >
         <mat-tab label="Relative">
-          <app-relative-time-selection [(relativeTerm)]="relativeTerm"></app-relative-time-selection>
+          <app-relative-time-selection [(relativeTerm)]="relativeTerm" [(timeType)]="timeType"></app-relative-time-selection>
         </mat-tab>
         <mat-tab label="Absolute">
           <div [formGroup]="filterForm" style="padding: 15px">

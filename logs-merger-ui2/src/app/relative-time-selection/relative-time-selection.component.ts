@@ -7,20 +7,35 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 })
 export class RelativeTimeSelectionComponent {
 
-  timeType:number = 0;
+
+  @Input()
+  timeType: number = 0;
+
+  @Output()
+  timeTypeChange:EventEmitter<number> = new EventEmitter<number>();
 
   @Output()
   relativeTermChange:EventEmitter<number> = new EventEmitter<number>();
 
   @Input()
-  relativeTerm: number = 72;
+  relativeTerm: number = 24;
+
+  timeInputClass:string = '';
   onFocusOut() {
     localStorage.setItem("relativeKey", this.relativeTerm.toString());
+    localStorage.setItem("relativePeriodKey", this.timeType.toString());
   }
 
-  setTime(value: number) {
+  setTime(value: number,tPeriod:number) {
     this.relativeTerm = value;
     this.onFocusOut();
     this.relativeTermChange.emit(this.relativeTerm);
+
+    this.timeType = tPeriod;
+    this.timeTypeChange.emit(this.timeType);
+    this.timeInputClass = "glow";
+    setTimeout(()=> {
+      this.timeInputClass = '';
+    },1000);
   }
 }
