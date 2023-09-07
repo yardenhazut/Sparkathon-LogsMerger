@@ -109,6 +109,7 @@ export class SearchAreaComponent implements OnInit {
     if(this.relativeTerm<1){
       data["searchLastMinutes"] = this.relativeTerm * 60;
     } else{
+      data["searchLastMinutes"] = "0";
       data["searchLastHours"] = this.relativeTerm;
     }
 
