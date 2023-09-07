@@ -1,0 +1,51 @@
+<div class="col-md-12" style="padding: 15px">
+  <label for="relativeTime">Relative Time In Hours</label>
+  <input id="relativeTime" min="1" max="10000" class="form-control" style="width: 50%" placeholder="Type relative time period in hours" type="number"
+         [(ngModel)]="relativeTerm"  (focusout)="onFocusOut()" >
+  <br>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="num-row">
+        <span style="width: 100px;">Minutes</span>
+        <div class="box" (click)="setTime(1/60)">1</div>
+        <div class="box" (click)="setTime(2/60)">2</div>
+        <div class="box" (click)="setTime(5/60)">5</div>
+        <div class="box" (click)="setTime(10/60)">10</div>
+        <div class="box" (click)="setTime(15/60)">15</div>
+        <div class="box" (click)="setTime(30/60)">30</div>
+        <div class="box" (click)="setTime(45/60)">45</div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="num-row">
+        <span style="width: 100px;">Hours</span>
+        <div class="box" (click)="setTime(1)">1</div>
+        <div class="box" (click)="setTime(2)">2</div>
+        <div class="box" (click)="setTime(3)">3</div>
+        <div class="box" (click)="setTime(6)">6</div>
+        <div class="box" (click)="setTime(8)">8</div>
+        <div class="box" (click)="setTime(12)">12</div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="num-row">
+        <span style="width: 100px;">Days</span>
+        <div class="box" (click)="setTime(24)">1</div>
+        <div class="box" (click)="setTime(48)">2</div>
+        <div class="box" (click)="setTime(72)">3</div>
+        <div class="box" (click)="setTime(96)">4</div>
+        <div class="box" (click)="setTime(120)">5</div>
+        <div class="box" (click)="setTime(144)">6</div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="num-row">
+        <span style="width: 100px;">Weeks</span>
+        <div class="box" (click)="setTime(7*24)">1</div>
+        <div class="box" (click)="setTime(2*7*24)">2</div>
+        <div class="box" (click)="setTime(3*7*24)">3</div>
+        <div class="box" (click)="setTime(4*7*24)">4</div>
+      </div>
+    </div>
+  </div>
+</div>

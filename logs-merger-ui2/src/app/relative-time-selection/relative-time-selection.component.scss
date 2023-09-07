@@ -1,0 +1,16 @@
+.box {
+  width:40px;
+  height:40px;
+  border: solid thin #eeeeee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.num-row {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
