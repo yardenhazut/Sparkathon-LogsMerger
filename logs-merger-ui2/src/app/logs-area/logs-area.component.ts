@@ -282,8 +282,6 @@ export class LogsAreaComponent implements OnInit {
   }
   private enhanceData(logGroups: any[]) {
 
-
-
     const logGroupsMap:any = {};
     const logGroupsColorMap:any = {};
 
@@ -481,7 +479,9 @@ export class LogsAreaComponent implements OnInit {
     const indexOfSmallerThanSign = line.indexOf("<");
     if(indexOfSmallerThanSign>0){
       const indexOfShtrudel = line.indexOf("@",indexOfSmallerThanSign+1);
-      return line.substring(indexOfSmallerThanSign+1,indexOfShtrudel);
+      if(indexOfShtrudel>0) {
+        return line.substring(indexOfSmallerThanSign + 1, indexOfShtrudel);
+      }
     }
     return line;
   }
