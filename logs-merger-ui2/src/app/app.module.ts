@@ -32,6 +32,7 @@ import { SummaryDialogComponent } from './summary-dialog/summary-dialog.componen
 import {MatTabsModule} from "@angular/material/tabs";
 import {DpDatePickerModule} from "ng2-date-picker";
 import { RelativeTimeSelectionComponent } from './relative-time-selection/relative-time-selection.component';
+import { HistoryDialogComponent } from './history-dialog/history-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,7 +50,8 @@ import { RelativeTimeSelectionComponent } from './relative-time-selection/relati
     ColorsAreaComponent,
     ColorsDialogComponent,
     SummaryDialogComponent,
-    RelativeTimeSelectionComponent
+    RelativeTimeSelectionComponent,
+    HistoryDialogComponent
   ],
     imports: [
         BrowserModule,

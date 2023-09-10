@@ -5,6 +5,10 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {DatePickerComponent, IDayCalendarConfig} from "ng2-date-picker";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import * as moment from 'moment';
+import {FiltersDialogComponent} from "../filters-dialog/filters-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
+import {HistoryDialogComponent} from "../history-dialog/history-dialog.component";
+import {HistoryItem} from "../model/HistoryItem";
 
 @Component({
   selector: 'search-area',
@@ -15,7 +19,7 @@ export class SearchAreaComponent implements OnInit {
   searchTerm: string = "";
   relativeTerm: number = 24;
   timeType: number = 0;
-  historySearch:string[]= [];
+  historySearch:HistoryItem[]= [];
   isLoading: boolean = false;
   showNoData: boolean = false;
   selectedTimeFrame:number = 0;
@@ -43,11 +47,11 @@ export class SearchAreaComponent implements OnInit {
   public date:any;
 
 
-  constructor(private apiService: ApiService,private snackBar: MatSnackBar,private fb: FormBuilder) {
-    const ret = localStorage.getItem("SearchHistory");
-    if (ret) {
-      this.historySearch = JSON.parse(ret);
-    }
+  constructor(private apiService: ApiService,
+              private snackBar: MatSnackBar,
+              private fb: FormBuilder,
+              public dialog: MatDialog) {
+    this.readHistory();
 
     let timeFrom = localStorage.getItem("timeFrom");
     let timeTo = localStorage.getItem("timeTo");
@@ -68,15 +72,38 @@ export class SearchAreaComponent implements OnInit {
 
 
 
-  onSearch() {
-    if (this.searchTerm && !this.historySearch.includes(this.searchTerm)) {
-      this.historySearch.unshift(this.searchTerm);
+  onHistory() {
+    this.dialog.open(HistoryDialogComponent,{
+      width: "70%"
+    }).afterClosed().subscribe((item:HistoryItem)=>{
+        this.readHistory();
+        if(item) {
+          this.searchTerm = item.searchTerm;
+          this.onSearch();
+        }
+    });
+  }
 
-      // Limit the history list size to 10
-      if (this.historySearch.length > 10) {
-        this.historySearch.pop();
+  onSearch() {
+    if (this.searchTerm) {
+      const found = this.historySearch.find((item)=>item.searchTerm === this.searchTerm);
+      if(!found) {
+        const hi: HistoryItem = new HistoryItem();
+        hi.searchTerm = this.searchTerm;
+        hi.dateAdded = new Date().toDateString();
+        this.historySearch.unshift(hi);
+
+        // Limit the history list size to 10
+        if (this.historySearch.length > 10) {
+          this.historySearch.pop();
+        }
       }
-      localStorage.setItem('SearchHistory', JSON.stringify(this.historySearch));
+      else {
+        const idx = this.historySearch.indexOf(found);
+        this.historySearch.splice(idx,1);
+        this.historySearch.unshift(found);
+      }
+      localStorage.setItem('SearchItems', JSON.stringify(this.historySearch));
     }
 
     const ret = localStorage.getItem("LogGroupLabels");
@@ -216,12 +243,19 @@ export class SearchAreaComponent implements OnInit {
   }
 
   deleteItemFromHistory(historyItem:string ) {
-    this.historySearch.splice(this.historySearch.indexOf(historyItem),1);
-    localStorage.setItem('SearchHistory', JSON.stringify(this.historySearch));
-    this.searchTerm = "";
+    /*this.historySearch.splice(this.historySearch.indexOf(historyItem),1);
+    localStorage.setItem('SearchItems', JSON.stringify(this.historySearch));
+    this.searchTerm = "";*/
   }
 
   selectedTabChanged() {
     localStorage.setItem("selectedTimeFrame",this.selectedTimeFrame==0?"0":"1");
+  }
+
+  private readHistory() {
+    const ret = localStorage.getItem("SearchItems");
+    if (ret) {
+      this.historySearch = JSON.parse(ret);
+    }
   }
 }
