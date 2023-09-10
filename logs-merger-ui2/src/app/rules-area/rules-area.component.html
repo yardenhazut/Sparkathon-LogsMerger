@@ -1,5 +1,5 @@
 <div class="bordered-component p-3 mb-2 bg-light border border-dark rounded full-height"
-     style="overflow-y: auto;position: relative">
+     style="overflow-y: auto;position: relative;min-height:calc(100vh - 80px);">
   <button type="button" class="btn btn-close"
           style="position: absolute;
     border: solid thin black;
@@ -9,4 +9,7 @@
                (filterChanged)="onFilterChanged($event)"
                (excludeChanged)="onExcludeChanged($event)"
                (colorsChanged)="onColorsChanged($event)" ></search-area>
+  <button type="button" title="Export/Import" class="btn btn-light" style="color:#666666;margin-top: 5px" (click)="exportImport()">
+    <i class="fas fa-file-export" ></i> Import/Export
+  </button>
 </div>

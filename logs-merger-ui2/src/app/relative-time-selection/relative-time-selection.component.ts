@@ -22,8 +22,8 @@ export class RelativeTimeSelectionComponent {
 
   timeInputClass:string = '';
   onFocusOut() {
-    localStorage.setItem("relativeKey", this.relativeTerm.toString());
-    localStorage.setItem("relativePeriodKey", this.timeType.toString());
+    localStorage.setItem("RelativeKey", this.relativeTerm.toString());
+    localStorage.setItem("RelativePeriodKey", this.timeType.toString());
   }
 
   setTime(value: number,tPeriod:number) {

@@ -9,6 +9,7 @@ import {FiltersDialogComponent} from "../filters-dialog/filters-dialog.component
 import {MatDialog} from "@angular/material/dialog";
 import {HistoryDialogComponent} from "../history-dialog/history-dialog.component";
 import {HistoryItem} from "../model/HistoryItem";
+import {ExportImportDialogComponent} from "../export-import-dialog/export-import-dialog.component";
 
 @Component({
   selector: 'search-area',
@@ -53,8 +54,8 @@ export class SearchAreaComponent implements OnInit {
               public dialog: MatDialog) {
     this.readHistory();
 
-    let timeFrom = localStorage.getItem("timeFrom");
-    let timeTo = localStorage.getItem("timeTo");
+    let timeFrom = localStorage.getItem("TimeFrom");
+    let timeTo = localStorage.getItem("TimeTo");
     if(!timeFrom){
         timeFrom = moment().format("DD/MM/YYYY 00:00");
     }
@@ -66,7 +67,7 @@ export class SearchAreaComponent implements OnInit {
       dateFrom: new FormControl(timeFrom),
       dateTo: new FormControl(timeTo),
     });
-    const selectedTimeFrameVal = localStorage.getItem("selectedTimeFrame");
+    const selectedTimeFrameVal = localStorage.getItem("SelectedTimeFrame");
     this.selectedTimeFrame = selectedTimeFrameVal=="1" ? 1:0;
   }
 
@@ -74,8 +75,7 @@ export class SearchAreaComponent implements OnInit {
 
   onHistory() {
     this.dialog.open(HistoryDialogComponent,{
-      width: "70%"
-    }).afterClosed().subscribe((item:HistoryItem)=>{
+                width: "70%"}).afterClosed().subscribe((item:HistoryItem)=>{
         this.readHistory();
         if(item) {
           this.searchTerm = item.searchTerm;
@@ -221,35 +221,29 @@ export class SearchAreaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.relativeTerm = Number(localStorage.getItem("relativeKey") || "1");
-    this.timeType = Number(localStorage.getItem("relativePeriodKey") || "1");
+    this.relativeTerm = Number(localStorage.getItem("RelativeKey") || "1");
+    this.timeType = Number(localStorage.getItem("RelativePeriodKey") || "1");
 
     // When DateFrom changes we set the min selectable value for DateTo
     if(this.filterForm) {
       let dateFrom = this.filterForm.get("dateFrom");
       if(dateFrom) {
         dateFrom.valueChanges.subscribe(value => {
-          localStorage.setItem("timeFrom",value);
+          localStorage.setItem("TimeFrom",value);
         });
       }
 
       let dateTo = this.filterForm.get("dateTo");
       if(dateTo) {
         dateTo.valueChanges.subscribe(value => {
-          localStorage.setItem("timeTo",value);
+          localStorage.setItem("TimeTo",value);
         });
       }
     }
   }
 
-  deleteItemFromHistory(historyItem:string ) {
-    /*this.historySearch.splice(this.historySearch.indexOf(historyItem),1);
-    localStorage.setItem('SearchItems', JSON.stringify(this.historySearch));
-    this.searchTerm = "";*/
-  }
-
   selectedTabChanged() {
-    localStorage.setItem("selectedTimeFrame",this.selectedTimeFrame==0?"0":"1");
+    localStorage.setItem("SelectedTimeFrame",this.selectedTimeFrame==0?"0":"1");
   }
 
   private readHistory() {

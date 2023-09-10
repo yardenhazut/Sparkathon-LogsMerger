@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Export/Import Settings</h2>
+<div mat-dialog-content>
+  <mat-tab-group dynamicHeight>
+    <mat-tab label="Export">
+        <button mat-button color="primary" style="margin-top:8px"
+                (click)="onCopy()"
+                [cdkCopyToClipboard]="onExport()"
+              mat-raised-button>Export Settings</button>
+    </mat-tab>
+    <mat-tab label="Import"  >
+      <textarea class="form-control" [(ngModel)]="importText" style="height: 300px;" ></textarea>
+      <button mat-button color="primary" style="margin-top:8px"
+              (click)="onImport()"
+              mat-raised-button>Import Settings</button>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+<div mat-dialog-actions align="end" >
+  <button mat-button color="primary"
+          mat-dialog-close
+          mat-raised-button style="margin-right: 8px;margin-bottom: 8px">Close</button>
+</div>
