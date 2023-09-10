@@ -28,11 +28,13 @@ export class RelativeTimeSelectionComponent {
 
   setTime(value: number,tPeriod:number) {
     this.relativeTerm = value;
-    this.onFocusOut();
     this.relativeTermChange.emit(this.relativeTerm);
 
     this.timeType = tPeriod;
     this.timeTypeChange.emit(this.timeType);
+
+    this.onFocusOut();
+
     this.timeInputClass = "glow";
     setTimeout(()=> {
       this.timeInputClass = '';

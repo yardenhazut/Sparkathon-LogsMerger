@@ -122,6 +122,7 @@ export class SearchAreaComponent implements OnInit {
       "resultLimit" : "10000"
     }
     if(this.selectedTimeFrame==0) {
+      data["searchRange"] = "LASTHOURS";
       if (this.timeType == 0) {
         data["searchLastMinutes"] = this.relativeTerm * 60;
         data["searchLastHours"] = "0";
@@ -201,12 +202,6 @@ export class SearchAreaComponent implements OnInit {
       let dateFrom = this.filterForm.get("dateFrom");
       if(dateFrom) {
         dateFrom.valueChanges.subscribe(value => {
-          // this.dateToDp.displayDate = value; // DateTo
-          this.dayPickerConfig = {
-            min: value,
-            ...this.dayPickerConfig
-          }
-
           localStorage.setItem("timeFrom",value);
         });
       }
