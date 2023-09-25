@@ -151,7 +151,7 @@ export class SearchAreaComponent implements OnInit {
     if(this.selectedTimeFrame==0) {
       data["searchRange"] = "LASTHOURS";
       if (this.timeType == 0) {
-        data["searchLastMinutes"] = this.relativeTerm * 60;
+        data["searchLastMinutes"] = this.relativeTerm;
         data["searchLastHours"] = "0";
       } else {
         data["searchLastMinutes"] = "0";

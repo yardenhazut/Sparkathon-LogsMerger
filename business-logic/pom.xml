@@ -12,6 +12,7 @@
     </parent>
 
     <artifactId>Sparkathon-LogsMerger-business-logic</artifactId>
+    <packaging>jar</packaging>
 
     <properties>
         <java.version>11</java.version>

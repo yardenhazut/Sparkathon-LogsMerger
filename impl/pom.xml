@@ -14,17 +14,18 @@
     <name>${project.artifactId}</name>
     <packaging>jar</packaging>
 
+
     <properties>
         <docker.image.name>${project.parent.artifactId}</docker.image.name>
         <platform.lib>1.1-198-gae606e7</platform.lib>
     </properties>
 
     <dependencies>
-        <dependency>
+        <!--dependency>
             <groupId>com.nice.saas.openrec</groupId>
-            <artifactId>cxone-open-rec-flow-visualization-business-logic</artifactId>
+            <artifactId>Sparkathon-LogsMerger-business-logic</artifactId>
             <version>1.0.0-SNAPSHOT</version>
-        </dependency>
+        </dependency-->
     </dependencies>
 
     <build>
