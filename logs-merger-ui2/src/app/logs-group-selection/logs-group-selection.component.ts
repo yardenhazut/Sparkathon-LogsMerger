@@ -15,6 +15,7 @@ export class LogsGroupSelectionComponent implements OnInit {
     test: 'test-',
     perf: 'perf-',
     staging: 'staging-',
+    production: 'production-'
   };
   constructor(public dialog: MatDialog) {}
   onConfigure() {

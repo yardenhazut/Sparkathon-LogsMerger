@@ -41,10 +41,7 @@ public class LogsMergerController {
     @CrossOrigin(origins = "*")
     public ResponseEntity<List<LogsResponse>> validateFlow(@RequestBody UploadInputForm uploadInput) {
         try {
-         //   LogResults result = new LogResults(logsMergerService.validateFlow(uploadInput));
-
             return ResponseEntity.ok().body(logsMergerService.validateFlow(uploadInput));
-
         } catch (LoadFlowConfigException e) {
             e.printStackTrace();
         } catch (InvalidRestRequestParamException e) {

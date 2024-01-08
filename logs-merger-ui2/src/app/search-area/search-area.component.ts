@@ -118,7 +118,13 @@ export class SearchAreaComponent implements OnInit {
     const envPrefix = localStorage.getItem("EnvPrefix");
     if (envPrefix !== null) {
       const parsedEnvPrefix = JSON.parse(envPrefix);
-      filtered = filtered.map(item => parsedEnvPrefix + "-" + item.value);
+      filtered = filtered.map(item =>  {
+        const val:string = item.value;
+        if(val.includes("env")){
+          return item.value.replace("env",parsedEnvPrefix);
+        }
+        return parsedEnvPrefix + "-" + item.value;
+      });
     }
 
     if(!filtered || filtered.length===0) {
