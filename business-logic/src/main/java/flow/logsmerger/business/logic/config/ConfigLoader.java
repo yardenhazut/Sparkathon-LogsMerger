@@ -57,6 +57,7 @@ public class ConfigLoader {
                 if(uploadInput.getSearchLastMinutes()>0){
                     flowConfig.setSearchLastMinutes(uploadInput.getSearchLastMinutes());
                     flowConfig.setSearchRange("LastMinutes");
+                    flowConfig.setSearchLastHours(0);
                 }else {
                     flowConfig.setSearchLastHours(uploadInput.getSearchLastHours());
                     flowConfig.setSearchRange("LastHours");
