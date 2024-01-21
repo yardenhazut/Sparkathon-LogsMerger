@@ -23,6 +23,7 @@ export class SearchAreaComponent implements OnInit {
   historySearch:HistoryItem[]= [];
   isLoading: boolean = false;
   showNoData: boolean = false;
+  showErrorMsg: boolean = false;
   selectedTimeFrame:number = 0;
 
   public dayPickerConfig = <IDayCalendarConfig>{
@@ -184,6 +185,7 @@ export class SearchAreaComponent implements OnInit {
 
     this.isLoading = true;
     this.showNoData = false;
+    this.showErrorMsg = false;
     this.dataArrived.emit([]);
     this.apiService.postSearch(data).subscribe(
       response => {
@@ -199,11 +201,12 @@ export class SearchAreaComponent implements OnInit {
         }
 
         this.dataArrived.emit(response);
-        this.showNoData = response.length == 0;
+        this.showNoData = response==null || response.length == 0;
       },
       error =>  {
         console.error('Error:', error);
         this.isLoading = false;
+        this.showErrorMsg = true;
       }
     );
   }

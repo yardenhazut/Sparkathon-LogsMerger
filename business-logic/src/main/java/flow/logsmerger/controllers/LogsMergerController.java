@@ -39,7 +39,7 @@ public class LogsMergerController {
 
     @PostMapping("/search")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<List<LogsResponse>> validateFlow(@RequestBody UploadInputForm uploadInput) {
+    public ResponseEntity<List<LogsResponse>> validateFlow(@RequestBody UploadInputForm uploadInput) throws FlowVisualizationErrorException {
         try {
             return ResponseEntity.ok().body(logsMergerService.validateFlow(uploadInput));
         } catch (LoadFlowConfigException e) {
@@ -50,6 +50,7 @@ public class LogsMergerController {
             e.printStackTrace();
         } catch (FlowVisualizationErrorException e) {
             e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
         }
         return null;
     }
