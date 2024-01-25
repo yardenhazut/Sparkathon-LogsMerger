@@ -52,6 +52,7 @@ public class ConfigLoader {
                 flowConfig.setSearchLastHours(0);
                 flowConfig.setSearchBeginPeriod(uploadInput.getSearchBeginPeriod());
                 flowConfig.setSearchEndPeriod(uploadInput.getSearchEndPeriod());
+                flowConfig.setSearchRange(uploadInput.getSearchRange().toString());
                 break;
             case LASTHOURS:
                 if(uploadInput.getSearchLastMinutes()>0){
@@ -66,7 +67,7 @@ public class ConfigLoader {
                 flowConfig.setSearchEndPeriod("");
                 break;
         }
-        flowConfig.setSearchRange(uploadInput.getSearchRange().toString());
+
         flowConfig.setResultLimit(uploadInput.getResultLimit());
 
         validateConfigFile(flowConfig, configFile);
@@ -124,7 +125,8 @@ public class ConfigLoader {
     }
 
     private void validateLastHoursSearchQuery(FlowConfig flowConfig, String configFile) throws ValidateFlowConfigException {
-        if (flowConfig.getSearchLastHours() < MINIMUM_FLOW_DURATION)
+        if (flowConfig.getSearchLastHours() < MINIMUM_FLOW_DURATION &&
+            flowConfig.getSearchLastMinutes() < MINIMUM_FLOW_DURATION)
         {
             logger.error(ERROR_LAST_HOURS_QUERY_SEARCH_VALIDATION);
             throw new ValidateFlowConfigException(configFile);
