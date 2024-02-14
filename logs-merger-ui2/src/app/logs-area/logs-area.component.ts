@@ -174,6 +174,10 @@ export class LogsAreaComponent implements OnInit {
   private formatLine(line:DataItem) {
 
     let msg = line.message.replaceAll("<","&lt;").replaceAll(">","&gt;");
+    const firstBreak = msg.indexOf(" ");
+    const date = msg.substring(0,firstBreak);
+    msg = msg.replaceAll(date,"<b>"+date+"</b>");
+
     if(!this.noWrap){
       msg = msg.replaceAll("\r\n","<br>").replaceAll("\n","<br>");
     }else{
@@ -285,7 +289,7 @@ export class LogsAreaComponent implements OnInit {
     const logGroupsMap:any = {};
     const logGroupsColorMap:any = {};
 
-    const colors = ["aquamarine","chartreuse","fuchsia","violet","yellow","orange"];
+    const colors = ["aquamarine","chartreuse","fuchsia","violet","yellow","orange","pink"];
     const envs = ["dev-",'test-','perf-','perf-wcx-','staging-','production-'];
     for (const grp of logGroups) {
       for (const env of envs) {
