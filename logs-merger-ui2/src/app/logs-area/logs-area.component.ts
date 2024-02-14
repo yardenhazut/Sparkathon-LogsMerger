@@ -286,7 +286,7 @@ export class LogsAreaComponent implements OnInit {
     const logGroupsColorMap:any = {};
 
     const colors = ["aquamarine","chartreuse","fuchsia","violet","yellow","orange"];
-    const envs = ["dev-",'test-','perf-','staging-','production-'];
+    const envs = ["dev-",'test-','perf-','perf-wcx-','staging-','production-'];
     for (const grp of logGroups) {
       for (const env of envs) {
         logGroupsMap[env + grp.value] = grp.key;

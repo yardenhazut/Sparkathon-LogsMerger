@@ -14,6 +14,7 @@ export class LogsGroupSelectionComponent implements OnInit {
     dev: "dev-",
     test: 'test-',
     perf: 'perf-',
+    "perf-wcx": 'perf-wcx-',
     staging: 'staging-',
     production: 'production-'
   };
