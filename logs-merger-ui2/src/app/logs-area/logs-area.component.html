@@ -37,10 +37,12 @@
     </div>
   </div>
 
-  <div style="max-height: calc(100vh - 190px);overflow-y: auto;overflow-x: auto;padding-right: 5px">
+  <div style="max-height: calc(100vh - 190px);overflow-y: auto;overflow-x: auto;padding-right: 5px"  >
     <div *ngFor="let singleLine of filteredData;let odd=odd;let idx=index"  style="margin: 5px 10px;"
          [ngClass]="singleLine.selected?'selected': odd?'odd-not-selected':''"
          (click)="singleLine.selected = !singleLine.selected"
+         tabindex="{{idx}}"
+         (keydown)="onKeyDown(singleLine,$event)"
     >
       <div class="row">
         <div class="col-md-1" *ngIf="logGroupsCount>1" style="text-align: center">

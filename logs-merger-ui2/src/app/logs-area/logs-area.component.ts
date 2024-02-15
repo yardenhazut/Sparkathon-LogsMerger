@@ -343,6 +343,12 @@ export class LogsAreaComponent implements OnInit {
     return line.message;
   }
 
+  onKeyDown(iten:DataItem,event: KeyboardEvent) {
+    if (event.key === 'Delete') {
+      this.deleteLines();
+    }
+  }
+
   deleteLines() {
     if(this._data){
       this._data = this._data.filter((item)=>!item.selected);
@@ -485,4 +491,6 @@ export class LogsAreaComponent implements OnInit {
     }
     return line;
   }
+
+
 }
