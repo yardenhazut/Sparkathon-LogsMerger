@@ -289,7 +289,7 @@ export class LogsAreaComponent implements OnInit {
     const logGroupsMap:any = {};
     const logGroupsColorMap:any = {};
 
-    const colors = ["aquamarine","chartreuse","fuchsia","violet","yellow","orange","pink"];
+    const colors = ["aquamarine","chartreuse","burlywood","violet","yellow","orange","orchid"];
     const envs = ["dev-",'test-','perf-','perf-wcx-','staging-','production-'];
     for (const grp of logGroups) {
       for (const env of envs) {
@@ -343,14 +343,10 @@ export class LogsAreaComponent implements OnInit {
     return line.message;
   }
 
-  cleanLogs() {
-    const regEx = new RegExp("\\[[\\w-]*\\] \\[\\d+\\.\\d+\\] \\[\\] \\[\\] ");
+  deleteLines() {
     if(this._data){
-      for(const line of this._data){
-        line.message = line.message.replace(regEx,"");
-        line.formatted = "";
-      }
-      setTimeout(this.startFormatting,1000);
+      this._data = this._data.filter((item)=>!item.selected);
+      this.processData();
     }
   }
 

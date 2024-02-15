@@ -38,7 +38,10 @@
   </div>
 
   <div style="max-height: calc(100vh - 190px);overflow-y: auto;overflow-x: auto;padding-right: 5px">
-    <div *ngFor="let singleLine of filteredData;let odd=odd;let idx=index"  style="margin: 5px 10px;" >
+    <div *ngFor="let singleLine of filteredData;let odd=odd;let idx=index"  style="margin: 5px 10px;"
+         [ngClass]="singleLine.selected?'selected': odd?'odd-not-selected':''"
+         (click)="singleLine.selected = !singleLine.selected"
+    >
       <div class="row">
         <div class="col-md-1" *ngIf="logGroupsCount>1" style="text-align: center">
           <span *ngIf="noWrap">
@@ -49,7 +52,7 @@
           </span>
         </div>
         <div [ngClass]="logGroupsCount>1?'col-md-11':'col-md-12'">
-          <div [style.background-color]="odd?'white':null" class="main-log-line">
+          <div class="main-log-line">
             <div [style.white-space]="noWrap?'pre':'pre-wrap'"  [innerHTML]="getLine(singleLine) | safeHtml"></div>
           </div>
         </div>
@@ -77,8 +80,8 @@
                 (click)="onCopy()" class="btn btn-light" style="margin: 5px">
           <i class="fas fa-clipboard"></i>
         </button>
-        <button type="button" title="Remove Prefix"
-                (click)="cleanLogs()" [disabled]="!filteredData || !filteredData.length"  class="btn btn-light" style="margin: 5px">
+        <button type="button" title="Delete Selected Lines"
+                (click)="deleteLines()" [disabled]="!filteredData || !filteredData.length" class="btn btn-light" style="margin: 5px">
           <i class="fas fa-remove"></i>
         </button>
         <button type="button" title="Summary"

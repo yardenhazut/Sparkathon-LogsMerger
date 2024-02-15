@@ -5,4 +5,5 @@ export class DataItem {
   timestamp:string = "";
   logGroupLabel:string = "";
   logGroupBGColor:string = "";
+  selected:boolean = false;
 }
