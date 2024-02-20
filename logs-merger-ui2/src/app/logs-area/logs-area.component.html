@@ -40,8 +40,8 @@
   <div style="max-height: calc(100vh - 190px);overflow-y: auto;overflow-x: auto;padding-right: 5px"  >
     <div *ngFor="let singleLine of filteredData;let odd=odd;let idx=index"  style="margin: 5px 10px;"
          [ngClass]="singleLine.selected?'selected': odd?'odd-not-selected':''"
-         (click)="singleLine.selected = !singleLine.selected"
          tabindex="{{idx}}"
+         (dblclick)="singleLine.selected = !singleLine.selected"
          (keydown)="onKeyDown(singleLine,$event)"
     >
       <div class="row">
@@ -49,7 +49,9 @@
           <span *ngIf="noWrap">
             #{{idx+1}}
           </span>
-          <span *ngIf="!noWrap" style="background-color: {{singleLine.logGroupBGColor}};writing-mode: vertical-rl;padding:15px 5px;">
+          <span
+            (click)="singleLine.selected = !singleLine.selected"
+            *ngIf="!noWrap" style="background-color: {{singleLine.logGroupBGColor}};writing-mode: vertical-rl;padding:15px 5px;">
             #{{idx+1}} - {{singleLine.logGroupLabel}}
           </span>
         </div>
