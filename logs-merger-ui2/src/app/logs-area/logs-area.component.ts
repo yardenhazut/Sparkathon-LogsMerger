@@ -1,4 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component,  Input, OnInit} from '@angular/core';
+import {Clipboard} from '@angular/cdk/clipboard';
 import {DataItem} from "../model/DataItem";
 import {ApiService} from "../services/api-service";
 import { saveAs } from 'file-saver';
@@ -37,7 +38,8 @@ export class LogsAreaComponent implements OnInit {
   constructor(private apiService: ApiService,
               private dataService:DataService,
               private snackBar: MatSnackBar,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private clipboard: Clipboard) {
   }
   ngOnInit(): void {
       this._colors = this.read("ColorsLabels");
@@ -354,6 +356,27 @@ export class LogsAreaComponent implements OnInit {
       this.processData();
     }
   }
+  copyInteraction() {
+    if(this._data){
+      let di:DataItem | undefined = this._data.find((item)=>item.selected);
+      if(!di) {
+        di = this._data[0];
+      }
+      const idx = di.message.toLowerCase().indexOf("[interactionkey]");
+      if(idx<0){
+        this.snackBarMsg("Can not find interaction key");
+        return;
+      }
+      const idx2 = di.message.indexOf("]",idx+"[InteractionKey]".length+1);
+      if(idx2<0){
+        this.snackBarMsg("Can not find interaction key");
+        return;
+      }
+      const inter = di.message.substring(idx+"[InteractionKey]".length+2,idx2);
+      this.clipboard.copy(inter);
+      this.snackBarMsg("Copied to clipboard");
+    }
+  }
 
   getLineInRequest(line:string,property:string){
     const idx = line.indexOf(property);
@@ -469,10 +492,13 @@ export class LogsAreaComponent implements OnInit {
     return msg;
   }
 
-  onCopy() {
-    this.snackBar.open("Copied!",'', {
+  snackBarMsg(msg:string){
+    this.snackBar.open(msg,'', {
       duration: 2000,
     });
+  }
+  onCopy() {
+    this.snackBarMsg("Copied!");
   }
 
   private findLabel(line: string) {
@@ -490,6 +516,4 @@ export class LogsAreaComponent implements OnInit {
     }
     return line;
   }
-
-
 }

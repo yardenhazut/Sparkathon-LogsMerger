@@ -92,6 +92,10 @@
                 (click)="summary()" [disabled]="!filteredData || !filteredData.length" class="btn btn-light" style="margin: 5px">
           <i class="fas fa-list-alt"></i>
         </button>
+        <button type="button" title="Copy Interaction Key"
+                (click)="copyInteraction()" [disabled]="!filteredData || !filteredData.length" class="btn btn-light" style="margin: 5px">
+          <i class="fas fa-phone"></i>
+        </button>
       </div>
     </div>
   </div>
