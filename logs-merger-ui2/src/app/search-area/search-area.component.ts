@@ -10,6 +10,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {HistoryDialogComponent} from "../history-dialog/history-dialog.component";
 import {HistoryItem} from "../model/HistoryItem";
 import {ExportImportDialogComponent} from "../export-import-dialog/export-import-dialog.component";
+import {Moment} from "moment";
 
 @Component({
   selector: 'search-area',
@@ -25,6 +26,7 @@ export class SearchAreaComponent implements OnInit {
   showNoData: boolean = false;
   showErrorMsg: boolean = false;
   selectedTimeFrame:number = 0;
+  invalidDatesError:boolean = false;
 
   public dayPickerConfig = <IDayCalendarConfig>{
     locale: "en",
@@ -72,7 +74,10 @@ export class SearchAreaComponent implements OnInit {
     this.selectedTimeFrame = selectedTimeFrameVal=="1" ? 1:0;
   }
 
-
+  onToday() {
+    this.filterForm.controls["dateFrom"].setValue(moment().format("DD/MM/YYYY 00:00"));
+    this.filterForm.controls["dateTo"].setValue(moment().format("DD/MM/YYYY 23:59"));
+  }
 
   onHistory() {
     this.dialog.open(HistoryDialogComponent,{
@@ -86,7 +91,9 @@ export class SearchAreaComponent implements OnInit {
   }
 
   onSearch() {
+    this.invalidDatesError = false;
     if (this.searchTerm) {
+      this.searchTerm = this.searchTerm.replaceAll("\"","");
       const found = this.historySearch.find((item)=>item.searchTerm === this.searchTerm);
       if(!found) {
         const hi: HistoryItem = new HistoryItem();
@@ -173,8 +180,15 @@ export class SearchAreaComponent implements OnInit {
 
       const dateFromStr = this.filterForm.get("dateFrom")?.value;
       const dateToStr = this.filterForm.get("dateTo")?.value;
-      const dateFrom = moment(dateFromStr,"DD/MM/YYYY HH:mm").format("MM/DD/YYYY HH:mm:00");
-      const dateTo = moment(dateToStr,"DD/MM/YYYY HH:mm").format("MM/DD/YYYY HH:mm:59");
+      const fromMoment:Moment = moment(dateFromStr,"DD/MM/YYYY HH:mm");
+      const toMoment:Moment = moment(dateToStr,"DD/MM/YYYY HH:mm");
+      if(fromMoment.isAfter(toMoment)){
+        this.invalidDatesError = true;
+        return;
+      }
+
+      const dateFrom = fromMoment.format("MM/DD/YYYY HH:mm:00");
+      const dateTo = toMoment.format("MM/DD/YYYY HH:mm:59");
 
       data["searchLastHours"] = "0";
       data["searchLastMinutes"] = "0";
