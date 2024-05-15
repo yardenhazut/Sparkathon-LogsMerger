@@ -210,7 +210,15 @@ export class LogsAreaComponent implements OnInit {
         msg = msg.replaceAll(colorItem.value,"<label style='font-weight:bold;color:"+colorItem.color+"'>"+colorItem.value+"</label>");
       }
     }
-
+    const firstOpenBracket = msg.indexOf("{");
+    const lastCloseBracket = msg.lastIndexOf("}");
+    if(firstOpenBracket>=0 && lastCloseBracket>firstOpenBracket){
+      const json = msg.substring(firstOpenBracket,lastCloseBracket+1);
+      const obj = JSON.parse(json);
+      const fixed = JSON.stringify(obj,null,2);
+      const withColor ="<span style='color:blue'>"+fixed+"</span>";
+      msg = msg.replaceAll(json,withColor);
+    }
     line.formatted = msg;
   }
 
