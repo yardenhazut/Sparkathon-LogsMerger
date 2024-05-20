@@ -27,6 +27,15 @@ export class SearchAreaComponent implements OnInit {
   showErrorMsg: boolean = false;
   selectedTimeFrame:number = 0;
   invalidDatesError:boolean = false;
+  public selectedEnvironment:any;
+  environments = {
+    dev: "dev-",
+    test: 'test-',
+    perf: 'perf-',
+    "perf-wcx": 'perf-wcx-',
+    staging: 'staging-',
+    production: 'production-'
+  };
 
   public dayPickerConfig = <IDayCalendarConfig>{
     locale: "en",
@@ -72,6 +81,14 @@ export class SearchAreaComponent implements OnInit {
     });
     const selectedTimeFrameVal = localStorage.getItem("SelectedTimeFrame");
     this.selectedTimeFrame = selectedTimeFrameVal=="1" ? 1:0;
+    this.readStorage();
+  }
+
+  private readStorage() {
+    const envRet = localStorage.getItem("EnvPrefix");
+    if(envRet) {
+      this.selectedEnvironment = JSON.parse(envRet);
+    }
   }
 
   onToday() {
@@ -274,5 +291,13 @@ export class SearchAreaComponent implements OnInit {
     if (ret) {
       this.historySearch = JSON.parse(ret);
     }
+  }
+
+  onEnvironmentChanged() {
+    localStorage.setItem("EnvPrefix",JSON.stringify(this.selectedEnvironment));
+  }
+
+  getEnvironmentKeys() {
+    return Object.keys(this.environments);
   }
 }
