@@ -74,7 +74,7 @@ public class FlowVisualizationServiceImpl extends ServiceBase implements LogsMer
     }
 
     private String getSearchParameters(String parameters) throws InvalidRestRequestParamException {
-        if (parameters == null || parameters.isEmpty()) {
+        if (parameters == null ) {
             throw new InvalidRestRequestParamException("Empty parameters provided.");
         }
 

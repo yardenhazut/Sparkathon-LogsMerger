@@ -163,8 +163,8 @@ export class SearchAreaComponent implements OnInit {
     }
 
     if(!this.searchTerm) {
-      this.showMsg("Please type a search term");
-      return;
+      this.showMsg("Did you mean to search without search term?");
+     // return;
     }
 
     if(this.selectedTimeFrame==0){
