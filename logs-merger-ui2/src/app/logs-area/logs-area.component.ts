@@ -178,7 +178,7 @@ export class LogsAreaComponent implements OnInit {
     let msg = line.message.replaceAll("<","&lt;").replaceAll(">","&gt;");
     const firstBreak = msg.indexOf(" ");
     const date = msg.substring(0,firstBreak);
-    msg = msg.replaceAll(date,"<b>"+date+"</b>");
+    msg = msg.replaceAll(date,"<b title='"+line.timestamp+"'>"+date+"</b>");
 
     if(!this.noWrap){
       msg = msg.replaceAll("\r\n","<br>").replaceAll("\n","<br>");
