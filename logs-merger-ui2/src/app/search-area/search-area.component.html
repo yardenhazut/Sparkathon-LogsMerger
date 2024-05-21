@@ -15,13 +15,16 @@
       <button type="button" class="btn btn-success" (click)="onHistory()" title="History" style="height: 55px;margin-right: 5px">
         <i class="fas fa-history fa-xl"></i>
       </button>
-      <div>
-        <select class="form-control" style="height:55px;font-size: 1.3rem;" [(ngModel)]="selectedEnvironment" (ngModelChange)="onEnvironmentChanged()">
-          <option *ngFor="let label of getEnvironmentKeys()" [value]="label">
-            {{label | titlecase}}
-          <option>
-        </select>
-      </div>
+
+    </div>
+  </div>
+  <div class="row" style="margin-top: 8px;width: 100%">
+    <div class="col-md-12">
+      <select class="form-control" style="height:55px;font-size: 1.3rem;" [(ngModel)]="selectedEnvironment" (ngModelChange)="onEnvironmentChanged()">
+        <option *ngFor="let label of getEnvironmentKeys()" [value]="label">
+          {{label | titlecase}}
+        <option>
+      </select>
     </div>
   </div>
   <div *ngIf="showNoData" style="color: coral">No data available</div>
