@@ -298,6 +298,6 @@ export class SearchAreaComponent implements OnInit {
   }
 
   getEnvironmentKeys() {
-    return Object.keys(this.environments);
+    return Object.keys(this.environments).filter(item=>item!="");
   }
 }
