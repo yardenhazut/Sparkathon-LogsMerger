@@ -9,7 +9,7 @@ public class CloudWatchQueryBrokerUtils {
     private CloudWatchQueryBrokerUtils() {}
     private static final Logger logger = LoggerFactory.getLogger(CloudWatchQueryBrokerUtils.class);
 
-    public static final String QUERY_PATTERN = "fields @timestamp, @log, @message\n" +
+    public static final String QUERY_PATTERN = "fields @timestamp, @log, @message, @logStream\n" +
             "| filter @message like /%s/\n" +
             "| sort @timestamp asc\n" +
             "| limit %s";

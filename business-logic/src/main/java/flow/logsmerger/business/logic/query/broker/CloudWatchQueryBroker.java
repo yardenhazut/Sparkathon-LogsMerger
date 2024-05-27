@@ -39,7 +39,7 @@ public class CloudWatchQueryBroker implements QueryBroker {
         try {
             this.awsLogs = createAwsLogsClient();
         } catch (Exception e) {
-            logger.error("CloudWatchQueryBroker(CTOR) - Exception:" + e.getMessage() );
+            logger.error("CloudWatchQueryBroker(CTOR) - Exception:" + e.getMessage(),e );
             throw new AwsClientLoginException(e.getMessage());
         }
     }

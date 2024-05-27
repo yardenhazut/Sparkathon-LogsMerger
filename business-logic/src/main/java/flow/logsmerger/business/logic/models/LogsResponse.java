@@ -9,4 +9,5 @@ public class LogsResponse {
     public String timestamp;
     public String logGroup;
     public String message;
+    public String fgroup;
 }

@@ -17,7 +17,7 @@
         </mat-expansion-panel>
       </mat-accordion>
     </div>
-    <div class="col-md-6" *ngIf="callIds && callIds.length>0">
+    <div class="col-md-3" *ngIf="callIds && callIds.length>0">
       <mat-accordion>
         <mat-expansion-panel expanded="false">
           <mat-expansion-panel-header>
@@ -35,10 +35,18 @@
         </mat-expansion-panel>
       </mat-accordion>
     </div>
+    <div class="col-md-3" *ngIf="sizeOfStreams(streamNames)">
+      <select class="form-select" style="height: 50px" [(ngModel)]="selectedStream"
+              (ngModelChange)="streamChanged()" >
+        <option value="ALL_STREAMS">All Streams</option>
+        <option *ngFor="let stream of getStreams(streamNames) | sorter ;"
+                value="{{stream}}">{{stream}}</option>
+      </select>&nbsp;
+    </div>
   </div>
 
-  <div style="max-height: calc(100vh - 190px);overflow-y: auto;overflow-x: auto;padding-right: 5px"  >
-    <div *ngFor="let singleLine of filteredData;let odd=odd;let idx=index"  style="margin: 5px 10px;"
+  <div style="max-height: calc(100vh - 217px);overflow-y: auto;overflow-x: auto;padding-right: 5px"  >
+    <div *ngFor="let singleLine of filteredData;let odd=odd;let idx=index"  style="margin: 0 10px;"
          [ngClass]="singleLine.selected?'selected': odd?'odd-not-selected':''"
          tabindex="{{idx}}"
          (dblclick)="singleLine.selected = !singleLine.selected"

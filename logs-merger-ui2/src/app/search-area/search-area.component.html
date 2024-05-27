@@ -19,7 +19,7 @@
     </div>
   </div>
   <div  style="margin-top: 8px;margin-bottom: 8px;width: 100%">
-      <select class="form-control" style="height:55px;font-size: 1.3rem;" [(ngModel)]="selectedEnvironment" (ngModelChange)="onEnvironmentChanged()">
+      <select class="form-select" style="height:55px;font-size: 1.3rem;" [(ngModel)]="selectedEnvironment" (ngModelChange)="onEnvironmentChanged()">
         <option *ngFor="let label of getEnvironmentKeys()" [value]="label">
           {{label | titlecase}}
         <option>

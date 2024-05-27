@@ -24,6 +24,8 @@ export class LogsAreaComponent implements OnInit {
   private _colors:any[] = [];
 
   public filteredData:DataItem[] = [];
+  public streamNames:any = {};
+  public selectedStream:string = "ALL_STREAMS";
 
   public logGroupFilter:any[] = [];
 
@@ -93,6 +95,7 @@ export class LogsAreaComponent implements OnInit {
 
   private processData() {
     this.filteredData = [];
+    this.streamNames = {};
     if(!this._data) {
       return;
     }
@@ -116,6 +119,7 @@ export class LogsAreaComponent implements OnInit {
     const selectedLogFilters = this.logGroupFilter.filter(item=>item.selected);
     this.callIds = [];
     for(const line of this._data) {
+      this.streamNames[line.fgroup] = 1;
       const callId = this.findCallId(line);
       if(callId){
           if(!callIdsSet.has(callId)){
@@ -140,6 +144,9 @@ export class LogsAreaComponent implements OnInit {
     const tempData2:DataItem[] = [];
      // includes
     for(const line of tempData1) {
+      if(this.selectedStream !== "ALL_STREAMS" && this.selectedStream !== line.fgroup){
+        continue;
+      }
       for(const element of rulesRegExs) {
         const rule: RegExp = element;
         if(rule.test(line.message)){
@@ -158,7 +165,7 @@ export class LogsAreaComponent implements OnInit {
         }
       }
     }
-    const result = tempData2.filter(item => !toExclude.includes(item));
+    const result = tempData2.filter(item => !toExclude.includes(item) );
     this.filteredData = result;
     this.dataService.filteredData = result;
 
@@ -523,5 +530,23 @@ export class LogsAreaComponent implements OnInit {
       }
     }
     return line;
+  }
+
+  streamChanged() {
+    this.processData();
+  }
+
+  sizeOfStreams(streamNames: any) {
+    if(!streamNames){
+      return 0;
+    }
+    return Object.keys(streamNames).length;
+  }
+
+  getStreams(streamNames: any):string[] {
+    if(!streamNames){
+      return [];
+    }
+    return Object.keys(streamNames);
   }
 }

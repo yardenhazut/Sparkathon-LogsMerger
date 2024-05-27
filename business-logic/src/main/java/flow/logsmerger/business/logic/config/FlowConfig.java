@@ -82,8 +82,7 @@ public class FlowConfig {
     }
 
     public Set<String> getLogGroups() {
-        //return this.flowRules.keySet();
-        return new HashSet<>(this.rules.stream().map(l->l.getLogGroup()).collect(Collectors.toList()));
+        return this.rules.stream().map(RulesByLogGroup::getLogGroup).collect(Collectors.toSet());
     }
 
     public List<Rule> getLogGroupRules(String logGroup) throws ConvertLogMessageException {

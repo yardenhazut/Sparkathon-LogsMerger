@@ -3,7 +3,7 @@
   <div style="display: flex">
     <input id="relativeTime" min="1" max="10000" class="form-control" style="width: 30%" placeholder="Type relative time period in hours" type="number"
            [(ngModel)]="relativeTerm"  (focusout)="onFocusOut()" (ngModelChange)="onFocusOut()" [ngClass]="timeInputClass" >
-    <select class="form-control" [(ngModel)]="timeType" style="width: 30%;margin-left: 8px">
+    <select class="form-select" [(ngModel)]="timeType" style="width: 30%;margin-left: 8px">
       <option value="0">Minutes</option>
       <option value="1">Hours</option>
       <option value="2">Days</option>

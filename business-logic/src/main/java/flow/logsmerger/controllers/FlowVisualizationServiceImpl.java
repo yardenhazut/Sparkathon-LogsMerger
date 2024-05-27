@@ -26,7 +26,6 @@ public class FlowVisualizationServiceImpl extends ServiceBase implements LogsMer
 
     public List<LogsResponse> validateFlow(UploadInputForm uploadInput) throws LoadFlowConfigException, InvalidRestRequestParamException, FileNotFoundException, FlowVisualizationErrorException {
         logger.info("validateFlow() - Got user (ui) configuration:" + uploadInput);
-        //String configFile = uploadInput.getConfigFileName();
         String configFile = "dummy_dev-visualization.json";
         String parameters = uploadInput.getParameters();
 
@@ -34,12 +33,8 @@ public class FlowVisualizationServiceImpl extends ServiceBase implements LogsMer
         String searchParameters = getSearchParameters(parameters);
         logger.info("validateFlow() -  parameters:" + parameters, ", searchParameters:" + searchParameters);
 
-        logger.info("validateFlow() - start running the flow..");
         List<List<ResultField>> logResults = logFlowHandler.runFlow(configFile, uploadInput, searchParameters);
-        //logger.info("validateFlow() - returning diagramUrl:" + diagramUrl);
-
-
-        return logResults.stream().map(x->getLogResponse(x)).collect(Collectors.toList());
+        return logResults.stream().map(this::getLogResponse).collect(Collectors.toList());
     }
 
     private LogsResponse getLogResponse(List<ResultField> list){
@@ -48,29 +43,9 @@ public class FlowVisualizationServiceImpl extends ServiceBase implements LogsMer
         String fullLogGroup = list.get(1).getValue();
         logResponse.setLogGroup(fullLogGroup.substring(fullLogGroup.indexOf(":") +1 ));
         logResponse.setMessage(list.get(2).getValue());
+        String stream = list.get(3).getValue();
+        logResponse.setFgroup(stream.substring(stream.indexOf("/") +1));
         return logResponse;
-    }
-
-    private void validateConfigFileParameter(String configFile) throws LoadFlowConfigException {
-        logger.info("try to get config file parameter from the request");
-
-        if (!validateConfigFile(configFile)) {
-            throw new LoadFlowConfigException(configFile);
-        }
-
-        logger.info("got config file parameter from the request");
-    }
-
-    private boolean validateConfigFile(String configFile) {
-        if (configFile == null || configFile.isEmpty()) {
-            logger.error("configFile parameter can not be null or empty");
-            return false;
-        } else if (!configFile.contains(".json")) {
-            logger.error("configFile parameter must be json file");
-            return false;
-        }
-
-        return true;
     }
 
     private String getSearchParameters(String parameters) throws InvalidRestRequestParamException {

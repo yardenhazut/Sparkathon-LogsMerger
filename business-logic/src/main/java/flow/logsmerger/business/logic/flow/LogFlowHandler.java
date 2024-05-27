@@ -37,20 +37,14 @@ public class LogFlowHandler {
 
     public List<List<ResultField>> runFlow(String configFile, UploadInputForm uploadInput, String searchParameters) throws FlowVisualizationErrorException {
         try {
-            logger.info("runFlow() - configFile:" + configFile + ", uploadInput:" + uploadInput + ", searchParameters:" + searchParameters);
+            logger.info("runFlow() - configFile:" + configFile + ", uploadInput:"
+                    + uploadInput + ", searchParameters:" + searchParameters);
             FlowConfig flowConfig = this.configLoader.loadConfig(configFile, uploadInput);
             QueryBroker queryBroker = QueryBrokerFactory.getQueryBroker(Utils.AWS_LOGS_PLATFORM, flowConfig, queryConvertor);
             GetQueryResultsResult getQueryResultsResult = queryBroker.runQuery(searchParameters);
             return getQueryResultsResult.getResults();
-//            List<String> stringLogMessages = logsMessages.get().stream().map(LogMessage::getMessageBody).collect(Collectors.toList());
-//            if (logsMessages.isPresent()) {
-//                return stringLogMessages;
-//            } else {
-//                String msg = "runFlow() - no log messages that match the config file rules and input parameters were found while running AWS query";
-//                logger.error(msg);
-//                throw new FlowVisualizationErrorException(msg);
-//            }
-        } catch (GetQueryBrokerException | ValidateFlowConfigException | CloudWatchQueryBrokerException | AwsClientLoginException e) {
+        } catch (GetQueryBrokerException | ValidateFlowConfigException |
+                 CloudWatchQueryBrokerException | AwsClientLoginException e) {
             logger.error(e.getMessage());
             throw new FlowVisualizationErrorException(e.getMessage());
         }
